@@ -1,23 +1,23 @@
 The contents of this repository are data and code for Chapter 2 of my PhD dissertation:
-Metabolomics demonstrate that genetic context is critical for analysis of sex differences
+Metabolomics demonstrate that genetic context is critical for analysis of sex differences  
 From:
 Coig, R. (2024). Modeling sex as a personalized biological variable using the drosophila metabolome (Order No. 31491474). Available from Dissertations & Theses @ University of Washington WCLP; ProQuest Dissertations & Theses Global. (3106367589). Retrieved from https://www.proquest.com/dissertations-theses/modeling-sex-as-personalized-biological-variable/docview/3106367589/se-2
 
-All R scripts are contained within self-contained .Rmd notebooks for each task
-It is recommended to download all folders to avoid dependency errors; code and folders are numbered in the order in which notebooks should be run and later notebooks utilize .rdata output files from previous notebooks
+All R scripts are contained within self-contained .Rmd notebooks for each task  
+It is recommended to download all folders to avoid dependency errors; code and folders are numbered in the order in which notebooks should be run and later notebooks utilize .rdata output files from previous notebooks  
 
 A summary of contents of this repository:
 
-data/: houses shared .rdata output files across folders
-doc/: original metabolome data from Raftery Lab, a README.xls workbook noting .Rmd inputs and outputs
-Figures/: .Rmd files for creating figures used in the chapter
-src/: .R files sourced in various .Rmd files
+data/: houses shared .rdata output files across folders  
+doc/: original metabolome data from Raftery Lab, a README.xls workbook noting .Rmd inputs and outputs  
+Figures/: .Rmd files for creating figures used in the chapter  
+src/: .R files sourced in various .Rmd files  
 
-00_compile_TAG_pheno/: raw phenotype data and .Rmd files for compiling phenotype summaries
-  data/raw: 
-    MassSamples.csv : raw mass values (per 5 flies) with corresponding sex, genotype and metabolome sampleID
-    TAGSamples.csv : sex, genotype, metabolome sampleID and TAG sample number corresponding to Plate data
-  data/raw/Plates: Triglyceride assay absorbances and standards raw data
+00_compile_TAG_pheno/: raw phenotype data and .Rmd files for compiling phenotype summaries  
+  data/raw:   
+    MassSamples.csv : raw mass values (per 5 flies) with corresponding sex, genotype and metabolome sampleID  
+    TAGSamples.csv : sex, genotype, metabolome sampleID and TAG sample number corresponding to Plate data  
+  data/raw/Plates: Triglyceride assay absorbances and standards raw data  
   output: receives output of .Rmd files in 00_compile_TAG_pheno folder
 
 00_process_TAG_metabolome/: raw metabolome data and .Rmd files for normalizing metabolome data
