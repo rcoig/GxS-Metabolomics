@@ -1,0 +1,171 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Univariate Analysis"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary:  Univariate summary of metabolite levels
+```{r,load required libraries}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+```
+Loading in batch corrected data for analysis
+```{r,loading in batch corrected metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+```
+Making all values positive for calculating SD (F-M) and log SD log(F/M)
+```{r,positive values}
+melted_dat_sd<-melted_dat
+minvalue<-min(melted_dat_sd$value, na.rm=T)
+melted_dat_sd$value<-(melted_dat_sd$value-minvalue+1)#making all values positive
+```
+Calculating the sex difference in metabolite level for each genotype by subtracting values
+```{r}
+# Create an empty list to store the results
+SD_by_geno <- list()
+# Loop through each unique COMPOUND in mz
+for (compound in mz) {
+  # Filter the data for the current COMPOUND
+  filtered_data <- melted_dat_sd %>% filter(COMPOUND == compound)
+  # Calculate the difference between female and male mz levels
+  diff_geno <- filtered_data %>%
+    dplyr::group_by(genotype, sex) %>%
+    dplyr::reframe(mean = mean(value, na.rm = TRUE)) %>%
+    tidyr::pivot_wider(names_from = sex, values_from = c(mean))%>%
+    #dplyr::mutate(mz_diff = mean_female-mean_male) %>%
+    dplyr::reframe(genotype, 
+                     COMPOUND = compound,
+                     mz_SD = (female - male),
+                     mz_logSD = (log(female/male)))
+  # Add the result to the list
+  SD_by_geno[[compound]] <- diff_geno
+}
+SD_by_geno <- bind_rows(SD_by_geno)
+rm(diff_geno)
+```
+Calculating the means by sex and genotype for each group using original melted data
+```{r}
+# Create an empty list to store the results
+mz_means_by_sex_geno <- list()
+# Loop through each unique COMPOUND in mz
+for (compound in mz) {
+  # Filter the data for the current COMPOUND
+  filtered_data <- melted_dat %>% filter(COMPOUND == compound)
+  # Calculate summaries for the current COMPOUND, grouping by genotype and sex
+  summary <- filtered_data %>%
+    dplyr::group_by(genotype, sex) %>%
+    dplyr::reframe(COMPOUND=COMPOUND,
+                   mean=mean(value,na.rm=TRUE),
+                   variance = var(value, na.rm = TRUE),
+                   sd = sd(value, na.rm = TRUE),
+                   range = max(value) - min(value),
+                   se = sd(value, na.rm = TRUE) / sqrt(n()),  # Calculate standard error
+                   n_sex_geno = n()
+)
+  # Add the result to the list
+  mz_means_by_sex_geno[[compound]] <- summary
+}
+mz_means_by_sex_geno <- bind_rows(mz_means_by_sex_geno)%>%distinct()
+rm(filtered_data,summary)
+```
+Calculating the means by sex for each group using original melted data
+```{r}
+# Create an empty list to store the results
+mz_means_by_sex <- list()
+# Loop through each unique COMPOUND in mz
+for (compound in mz) {
+  # Filter the data for the current COMPOUND
+  filtered_data <- melted_dat %>% filter(COMPOUND == compound)
+  # Calculate the summaries for each COMPOUND, grouping by sex
+  summary <- filtered_data %>%
+    dplyr::group_by(sex) %>%
+    dplyr::reframe(COMPOUND=COMPOUND,
+                   mean=mean(value,na.rm=TRUE),
+                   variance = var(value, na.rm = TRUE),
+                   sd = sd(value, na.rm = TRUE),
+                   range = max(value) - min(value),
+                   se = sd(value, na.rm = TRUE) / sqrt(n()),  # Calculate standard error
+                   n_sex = n()
+)
+  # Add the result to the list
+  mz_means_by_sex[[compound]] <- summary
+}
+mz_means_by_sex <- bind_rows(mz_means_by_sex)%>%distinct()
+rm(filtered_data,summary)
+```
+Calculating the means by genotype for each group using original melted data
+```{r}
+# Create an empty list to store the results
+mz_means_by_geno <- list()
+# Loop through each unique COMPOUND in mz
+for (compound in mz) {
+  # Filter the data for the current COMPOUND
+  filtered_data <- melted_dat %>% filter(COMPOUND == compound)
+  # Calculate the summaries for the current COMPOUND, grouping by genotype
+  summary <- filtered_data %>%
+    dplyr::group_by(genotype) %>%
+    dplyr::reframe(COMPOUND=COMPOUND,
+                   mean=mean(value,na.rm=TRUE),
+                   variance = var(value, na.rm = TRUE),
+                   sd = sd(value, na.rm = TRUE),
+                   range = max(value) - min(value),
+                   se = sd(value, na.rm = TRUE) / sqrt(n()),  # Calculate standard error
+                   n_samples = n()
+)
+  # Add the result to the list
+  mz_means_by_geno[[compound]] <- summary
+}
+mz_means_by_geno <- bind_rows(mz_means_by_geno)%>%distinct()
+rm(filtered_data,summary)
+```
+Calculating the Euclidean distance across metabolites for each genotype *Not sure if this is correct??
+```{r}
+# Spread the data from long to wide format
+mz_means_by_sex_geno_wide <- mz_means_by_sex_geno[,c(1:4)]
+mz_means_by_sex_geno_wide <- pivot_wider(data = mz_means_by_sex_geno_wide, names_from = COMPOUND, values_from = mean)
+
+female_means<-mz_means_by_sex_geno_wide%>%filter(sex=="female")%>%select(-genotype,-sex)
+male_means<-mz_means_by_sex_geno_wide%>%filter(sex=="male")%>%select(-genotype,-sex)
+
+# Number of genotypes
+n_genotypes <- nrow(female_means)
+
+# Initialize a vector to store the Euclidean distances for each genotype
+ESD <- numeric(n_genotypes)
+
+# Calculate Euclidean distance for each genotype
+for(i in 1:n_genotypes) {
+  ESD[i] <- sqrt(sum((female_means[i, ] - male_means[i, ])^2))
+}
+
+euclidean_distances<-as.data.frame(ESD)
+euclidean_distances$genotype<-levels(mz_means_by_sex_geno$genotype)
+
+SD_by_geno<-merge(SD_by_geno,euclidean_distances,by="genotype")
+```
+Calculating number of samples per genotype for weighting regressions
+```{r}
+n_samples <- key %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarise(n_samples = dplyr::n())
+
+mz_means_by_sex_geno<-merge(mz_means_by_sex_geno,n_samples,by="genotype")
+```
+Saving out summaries
+```{r}
+write.csv(SD_by_geno,"output/01_Metabolite_within_genotype_SD.csv",row.names=F)
+
+write.csv(mz_means_by_sex_geno,"output/01_Metabolite_means_by_sex_and_genotype.csv",row.names=F)
+write.csv(mz_means_by_sex,"output/01_Metabolite_means_by_sex.csv",row.names=F)
+write.csv(mz_means_by_geno,"output/01_Metabolite_means_by_genotype.csv",row.names=F)
+```
+Saving out r files
+```{r}
+save(file='../data/processed/mz_means.data', mz_means_by_sex_geno, mz_means_by_sex, mz_means_by_geno, mz)
+save(file='../data/processed/mz_SD.data', SD_by_geno, mz)
+rm(list = ls())
+```

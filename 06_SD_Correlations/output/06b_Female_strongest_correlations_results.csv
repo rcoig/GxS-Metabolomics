@@ -1,0 +1,43 @@
+"","rowname","colname","p_F","R_F"
+"1","Erythrose-4-Phosphate","G1P/F1P/F6P",5.4538344080878e-200,0.988669950738916
+"2","Erythrose-4-Phosphate","G6P",9.69115698912061e-158,0.988669950738916
+"3","Guanosine","Xanthosine",4.12645900974377e-143,0.986206896551724
+"4","2-Aminoisobutyric Acid","3-Aminoisobutyrate",2.38581671765076e-163,0.983743842364532
+"5","G1P/F1P/F6P","G6P",8.76104128866714e-160,0.983251231527093
+"6","Lactose/Trehalose","UMP",1.90766737541029e-113,0.975862068965517
+"7","Glycerol-3-P","Homocitrulline",3.11142013464171e-118,0.97192118226601
+"8","S-Methylcysteine","Tyrosine",5.40281787340411e-136,0.966995073891626
+"9","Adipic Acid / 3-Methylglutaric Acid","Suberic Acid",5.16501228534582e-169,0.96551724137931
+"10","Deoxyguanosine","Guanine",1.24418157016022e-97,0.963054187192118
+"11","Indole-2-Carboxylic Acid","Indole-3-Carboxylic Acid",1.55466464739858e-130,0.959605911330049
+"12","Cadaverine","Oxalacetate",1.1236543300212e-147,0.955172413793103
+"13","Azelaic Acid","Suberic Acid",3.59732851715791e-156,0.948768472906404
+"14","Adipic Acid / 3-Methylglutaric Acid","Azelaic Acid",6.73138228299589e-154,0.944334975369458
+"15","1-Methylnicotinamide","Cadaverine",6.56450962160644e-114,0.943349753694581
+"16","Glucosamine","Glyceraldehyde",3.32664915655911e-114,0.927093596059113
+"17","1-Methylnicotinamide","Oxalacetate",1.68647263997537e-111,0.924630541871921
+"18","cAMP","cGMP",2.75630294704182e-101,0.914285714285714
+"19","4-Guanidinobutanoate","Deoxycarnitine",4.50911162320349e-84,0.91231527093596
+"20","Azelaic Acid","Glutaric Acid",2.02195816390854e-103,0.895566502463054
+"21","Glutaric Acid","Suberic Acid",1.22900862672654e-100,0.885714285714285
+"22","Pyridoxamine","Urate",1.03260040657213e-103,0.88423645320197
+"23","Cysteinyl-Glycine (Cys-Gly)","Oxidized Glutathione",5.4646130327148e-56,0.881773399014778
+"24","Hypoxanthine","Xanthine",1.17912538076443e-91,0.876354679802955
+"25","DHAP/D-GA3P","Ribulose 5-Phosphate",4.08267341105041e-96,0.864532019704433
+"26","2-Hydroxyphenylacetate","Hydrocinnamic Acid",5.27602906302195e-100,0.852709359605911
+"27","N-AcetylGlycine","Suberic Acid",6.35384436377243e-102,0.851724137931034
+"28","Adipic Acid / 3-Methylglutaric Acid","N-AcetylGlycine",1.20510091612978e-100,0.851231527093596
+"29","ADP","NAD",5.29422129271248e-82,0.850738916256157
+"30","Glucose","Glyceraldehyde",1.47185814821894e-42,0.849753694581281
+"31","Threonine","Valine",1.65550950127898e-51,0.845320197044335
+"32","5,6-Dihydrouracil","Agmatine",2.61887571851266e-82,0.843349753694581
+"33","2-Hydroxyphenylacetate","Cholecalciferol",1.50936671401381e-114,0.840886699507389
+"34","Adipic Acid / 3-Methylglutaric Acid","Glutaric Acid",6.94721187231085e-88,0.836945812807882
+"35","Leucine /D-Norleucine","Valine",4.15533888610677e-63,0.83448275862069
+"36","Glutaric Acid","Maleic Acid",6.82788748084418e-105,0.830541871921182
+"37","D-Leucic Acid","Glutaric Acid",2.13065482989846e-94,0.829556650246305
+"38","GMP","IMP",1.77399094193374e-85,0.826600985221675
+"39","Glucosamine","Glucose",3.29458173011733e-48,0.824137931034483
+"40","2-Hydroxyphenylacetate","Glutaric Acid",1.48214074419704e-112,0.815763546798029
+"41","Azelaic Acid","Cholecalciferol",1.40813731208094e-87,0.808866995073891
+"42","1/3-Methylhistidine","S-Adenosylmethionine (SAM)",3.07677442347551e-94,0.801477832512315

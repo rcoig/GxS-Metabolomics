@@ -1,0 +1,97 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Phenotype"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Phenotype summaries for mass 
+---
+Load required packages.
+```{r}
+library(tidyr)#data manipulation
+library(dplyr)#data manipulation
+library(reshape2)#data manipulation
+```
+Reading in raw mass data. Masses were measured as 5 flies per sample.
+```{r}
+rm(list = ls())
+mass <- read.csv("data/raw/MassSamples.csv")#raw mass data
+mass$genotype<-as.factor(mass$genotype)
+mass$sex<-as.factor(mass$sex)
+```
+Calculating mass summaries
+```{r}
+B7_mass_summary_sex_geno <- mass %>%
+  dplyr::group_by(sex, genotype) %>%
+  dplyr::reframe(
+    genotype = first(genotype),
+    sex = first(sex),
+    mass_4_mu_ss = ifelse(all(is.na(massn5)), NA, round(mean(massn5, na.rm = TRUE), 2)),
+    mass_4_sd_ss = round(sd(massn5,na.rm=T), 2),
+    mass_4_var_ss = round(var(massn5,na.rm=T), 2),  # Calculate variance
+    mass_4_cv_ss = round((mass_4_sd_ss / mass_4_mu_ss) * 100, 2),  # Calculate CV
+    mass_4_se_ss = round(mass_4_sd_ss / sqrt(n()), 2),  # Calculate SE
+    mass_4_n_ss = n()) %>% # Calculate sample size
+  distinct()
+
+B7_mass_summary_sex_geno_wide <- B7_mass_summary_sex_geno %>%
+  pivot_wider(
+    id_cols = genotype,
+    names_from = sex,
+    values_from = c(mass_4_mu_ss, mass_4_sd_ss, mass_4_var_ss, mass_4_cv_ss, mass_4_se_ss, mass_4_n_ss)
+  )
+
+B7_mass_summary_geno <- mass %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarize(
+    genotype = first(genotype),
+    mass_4_mu_line = ifelse(all(is.na(massn5)), NA, round(mean(massn5, na.rm = TRUE), 2)),
+    mass_4_sd_line = round(sd(massn5,na.rm=T), 2),
+    mass_4_var_line = round(var(massn5,na.rm=T), 2),  # Calculate variance
+    mass_4_cv_line = round((mass_4_sd_line / mass_4_mu_line) * 100, 2),  # Calculate CV
+    mass_4_se_line = round(mass_4_sd_line / sqrt(n()), 2),  # Calculate SE
+    mass_4_n_line = n())
+
+B7_mass_summary_sex <- mass %>%
+  dplyr::group_by(sex) %>%
+  dplyr::summarize(
+    sex = first(sex),
+    mass_4_mu = ifelse(all(is.na(massn5)), NA, round(mean(massn5, na.rm = TRUE), 2)),
+    mass_4_sd = round(sd(massn5,na.rm=T), 2),
+    mass_4_var = round(var(massn5,na.rm=T), 2),  # Calculate variance
+    mass_4_cv = round((mass_4_sd / mass_4_mu) * 100, 2),  # Calculate CV
+    mass_4_se = round(mass_4_sd / sqrt(n()), 2),  # Calculate SE
+    mass_4_n = n())
+    
+B7_mass_pooled <- mass %>%
+  filter(!is.na(massn5)) %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarise(
+    n_female = sum(sex == "female"),
+    n_male = sum(sex == "male"),
+    sd_female = sd(massn5[sex == "female"]),
+    sd_male = sd(massn5[sex == "male"]),
+    mass_4_pl_sd = round(sqrt(((n_female - 1) * sd_female^2 + (n_male - 1) * sd_male^2) / (n_female + n_male - 2)),4),  # Calculate pooled_sd between sexes
+    mass_4_pl_se = round(sqrt(((n_female - 1) * sd_female^2 + (n_male - 1) * sd_male^2) / (n_female + n_male - 2)) / sqrt(n_female + n_male),4)  # Calculate pooled_se between sexes
+  ) %>%
+  select(genotype, mass_4_pl_sd, mass_4_pl_se)
+```
+Combining summaries into dfs for later analysis.
+```{r}
+mass_sex_geno_wide<- left_join(B7_mass_summary_geno,B7_mass_summary_sex_geno_wide,by="genotype")
+mass_sex_geno_wide<- left_join(mass_sex_geno_wide,B7_mass_pooled,by="genotype")
+mass_sex_geno_long<- left_join(B7_mass_summary_sex_geno,B7_mass_summary_geno, by="genotype")
+```
+Saving out summaries 
+```{r}
+write.csv(mass_sex_geno_wide,"output/01_mass_summary_wide_format.csv",row.names=F)
+write.csv(mass_sex_geno_long,"output/01_mass_summary_long_format.csv",row.names=F)
+write.csv(B7_mass_summary_sex,"output/01_mass_population_sex_summary.csv",row.names=F)
+```
+saving out r data files
+```{r}
+save(file='../data/processed/phenotype-mass.data', mass_sex_geno_wide, mass_sex_geno_long)
+rm(list=ls())
+```

@@ -1,0 +1,292 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Univariate"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Univariate analysis, sex/genotype regressions without phenotype
+```{r,load required libraries}
+library(tidyr)#Data manipulation
+library(dplyr)#Data manipulation
+library(car)#For specificying Type III ANOVA
+```
+Loading in metabolome for analysis
+```{r,loading in metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+read.csv("output/02a_AIC_analysis_by_metabolite.csv")->AIC
+```
+Calculating number of samples per genotype for weighting regressions
+```{r}
+n_samples <- key %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarise(n_samples = dplyr::n())
+
+melted_dat<-merge(melted_dat,n_samples,by="genotype")
+```
+Running the sex x genotype Type III ANOVA for all metabolites (Individual Sex)
+```{r}
+# Create an empty results data frame to store the results
+mz_sex_by_geno_results <- data.frame(COMPOUND = character(0), 
+                          R_squared = numeric(0),
+                          R_adj = numeric(0),
+                          sex_p = numeric(0),
+                          geno_p=numeric(0),
+                          int_p=numeric(0),
+                          sex_eta=numeric(0),
+                          geno_eta=numeric(0),
+                          int_eta=numeric(0))
+
+# Loop through unique mzs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+SG.int.full <- lm(value ~ sex*genotype, data = subset_data, weights=n_samples)    
+anova_results <- Anova(SG.int.full, type="III")
+summary <- summary(SG.int.full)
+R_squared<- summary$r.squared
+R_adj<-summary$adj.r.squared
+sex_p<-anova_results$`Pr(>F)`[2]
+geno_p<-anova_results$`Pr(>F)`[3]
+int_p<-anova_results$`Pr(>F)`[4]
+# Extract Sum Sq for genotype and Residuals
+SS_sex <- anova_results$`Sum Sq`[2]
+SS_geno <- anova_results$`Sum Sq`[3]
+SS_int <- anova_results$`Sum Sq`[4]
+SS_total <- sum(anova_results$`Sum Sq`)
+# Calculate Eta Squared for genotype
+eta_squared_sex <- SS_sex / SS_total
+eta_squared_geno <- SS_geno / SS_total
+eta_squared_int <- SS_int / SS_total
+
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, 
+    R_squared=R_squared,
+    R_adj=R_adj,
+    sex_p=sex_p,
+    geno_p=geno_p,
+    int_p=int_p,
+    sex_eta=eta_squared_sex,
+    geno_eta=eta_squared_geno,
+    int_eta=eta_squared_int)
+
+    # Append the temporary data frame to the results
+    mz_sex_by_geno_results <- distinct(rbind(mz_sex_by_geno_results, temp_df))
+      }
+}
+
+# Adjust p-values for False Discovery Rate
+mz_sex_by_geno_results$sex_p_adj <- p.adjust(mz_sex_by_geno_results$sex_p, method = "fdr")
+mz_sex_by_geno_results$geno_p_adj <- p.adjust(mz_sex_by_geno_results$geno_p, method = "fdr")
+mz_sex_by_geno_results$int_p_adj <- p.adjust(mz_sex_by_geno_results$int_p, method = "fdr")
+```
+Running the sex + genotype Type III ANOVA for all metabolites (Individual Sex)
+```{r}
+# Create an empty results data frame to store the results
+mz_sex_plus_geno_results <- data.frame(COMPOUND = character(0), 
+                          R_squared = numeric(0),
+                          R_adj = numeric(0),
+                          sex_p = numeric(0),
+                          geno_p=numeric(0),
+                          int_p=numeric(0),
+                          sex_eta=numeric(0),
+                          geno_eta=numeric(0),
+                          int_eta=numeric(0))
+
+# Loop through unique mzs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+SG.int.full <- lm(value ~ sex + genotype, data = subset_data, weights=n_samples)    
+anova_results <- Anova(SG.int.full, type="III")
+summary <- summary(SG.int.full)
+R_squared<- summary$r.squared
+R_adj<-summary$adj.r.squared
+sex_p<-anova_results$`Pr(>F)`[2]
+geno_p<-anova_results$`Pr(>F)`[3]
+#int_p<-anova_results$`Pr(>F)`[4]
+# Extract Sum Sq for genotype and Residuals
+SS_sex <- anova_results$`Sum Sq`[2]
+SS_geno <- anova_results$`Sum Sq`[3]
+#SS_int <- anova_results$`Sum Sq`[4]
+SS_total <- sum(anova_results$`Sum Sq`)
+# Calculate Eta Squared for genotype
+eta_squared_sex <- SS_sex / SS_total
+eta_squared_geno <- SS_geno / SS_total
+#eta_squared_int <- SS_int / SS_total
+
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, 
+    R_squared=R_squared,
+    R_adj=R_adj,
+    sex_p=sex_p,
+    geno_p=geno_p,
+    int_p=NA,
+    sex_eta=eta_squared_sex,
+    geno_eta=eta_squared_geno,
+    int_eta=NA)
+
+    # Append the temporary data frame to the results
+    mz_sex_plus_geno_results <- distinct(rbind(mz_sex_plus_geno_results, temp_df))
+      }
+}
+
+# Adjust p-values for False Discovery Rate
+mz_sex_plus_geno_results$sex_p_adj <- p.adjust(mz_sex_plus_geno_results$sex_p, method = "fdr")
+mz_sex_plus_geno_results$geno_p_adj <- p.adjust(mz_sex_plus_geno_results$geno_p, method = "fdr")
+mz_sex_plus_geno_results$int_p_adj <- NA
+
+```
+Running the sex only Type III ANOVA for all metabolites (Population Sex)
+```{r}
+# Create an empty results data frame to store the results
+mz_sex_only_results <- data.frame(COMPOUND = character(0), 
+                          R_squared = numeric(0),
+                          R_adj = numeric(0),
+                          sex_p = numeric(0),
+                          geno_p=numeric(0),
+                          int_p=numeric(0),
+                          sex_eta=numeric(0),
+                          geno_eta=numeric(0),
+                          int_eta=numeric(0))
+
+# Loop through unique mzs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+SG.int.full <- lm(value ~ sex, data = subset_data, weights=n_samples)    
+anova_results <- Anova(SG.int.full, type="III")
+summary <- summary(SG.int.full)
+R_squared<- summary$r.squared
+R_adj<-summary$adj.r.squared
+sex_p<-anova_results$`Pr(>F)`[2]
+#geno_p<-anova_results$`Pr(>F)`[3]
+#int_p<-anova_results$`Pr(>F)`[4]
+# Extract Sum Sq for genotype and Residuals
+SS_sex <- anova_results$`Sum Sq`[2]
+#SS_geno <- anova_results$`Sum Sq`[3]
+#SS_int <- anova_results$`Sum Sq`[4]
+SS_total <- sum(anova_results$`Sum Sq`)
+# Calculate Eta Squared for genotype
+eta_squared_sex <- SS_sex / SS_total
+#eta_squared_geno <- SS_geno / SS_total
+#eta_squared_int <- SS_int / SS_total
+
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, 
+    R_squared=R_squared,
+    R_adj=R_adj,
+    sex_p=sex_p,
+    geno_p=NA,
+    int_p=NA,
+    sex_eta=eta_squared_sex,
+    geno_eta=NA,
+    int_eta=NA)
+
+    # Append the temporary data frame to the results
+    mz_sex_only_results <- distinct(rbind(mz_sex_only_results, temp_df))
+      }
+}
+
+# Adjust p-values for False Discovery Rate
+mz_sex_only_results$sex_p_adj <- p.adjust(mz_sex_only_results$sex_p, method = "fdr")
+mz_sex_only_results$geno_p_adj <- NA
+mz_sex_only_results$int_p_adj <- NA
+```
+Running the genotype only Type III ANOVA for all metabolites 
+```{r}
+# Create an empty results data frame to store the results
+mz_geno_only_results <- data.frame(COMPOUND = character(0), 
+                          R_squared = numeric(0),
+                          R_adj = numeric(0),
+                          sex_p = numeric(0),
+                          geno_p=numeric(0),
+                          int_p=numeric(0),
+                          sex_eta=numeric(0),
+                          geno_eta=numeric(0),
+                          int_eta=numeric(0))
+
+# Loop through unique mzs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+SG.int.full <- lm(value ~ genotype, data = subset_data, weights=n_samples)    
+anova_results <- Anova(SG.int.full, type="III")
+summary <- summary(SG.int.full)
+R_squared<- summary$r.squared
+R_adj<-summary$adj.r.squared
+#sex_p<-anova_results$`Pr(>F)`[2]
+geno_p<-anova_results$`Pr(>F)`[2]
+#int_p<-anova_results$`Pr(>F)`[4]
+# Extract Sum Sq for genotype and Residuals
+#SS_sex <- anova_results$`Sum Sq`[2]
+SS_geno <- anova_results$`Sum Sq`[2]
+#SS_int <- anova_results$`Sum Sq`[4]
+SS_total <- sum(anova_results$`Sum Sq`)
+# Calculate Eta Squared for genotype
+#eta_squared_sex <- SS_sex / SS_total
+eta_squared_geno <- SS_geno / SS_total
+#eta_squared_int <- SS_int / SS_total
+
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, 
+    R_squared=R_squared,
+    R_adj=R_adj,
+    sex_p=NA,
+    geno_p=geno_p,
+    int_p=NA,
+    sex_eta=NA,
+    geno_eta=eta_squared_geno,
+    int_eta=NA)
+
+    # Append the temporary data frame to the results
+    mz_geno_only_results <- distinct(rbind(mz_geno_only_results, temp_df))
+      }
+}
+
+# Adjust p-values for False Discovery Rate
+mz_geno_only_results$sex_p_adj <- NA
+mz_geno_only_results$geno_p_adj <- p.adjust(mz_geno_only_results$geno_p, method = "fdr")
+mz_geno_only_results$int_p_adj <- NA
+```
+Combining results into one df, keeping only the correct results per metabolite by previously determined model.
+```{r}
+mz_sex_by_geno_results <- merge(AIC[, c(1, 13)], mz_sex_by_geno_results, by = "COMPOUND")
+mz_sex_plus_geno_results <- merge(AIC[, c(1, 13)], mz_sex_plus_geno_results, by = "COMPOUND")
+mz_sex_only_results <- merge(AIC[, c(1, 13)], mz_sex_only_results, by = "COMPOUND")
+mz_geno_only_results <- merge(AIC[, c(1, 13)], mz_geno_only_results, by = "COMPOUND")
+
+# Merge the data frames based on the values in the AIC column
+mz_sex_geno_combined_results <- bind_rows(
+  mz_sex_by_geno_results %>% filter(best_fit == "AIC_int" | best_fit == "AIC_null"),
+  mz_sex_plus_geno_results %>% filter(best_fit == "AIC_sex_geno"),
+  mz_geno_only_results %>% filter(best_fit == "AIC_geno"),
+  mz_sex_only_results %>% filter(best_fit == "AIC_sex")
+)%>% mutate(COMPOUND = factor(COMPOUND, levels = mz)) %>%
+  arrange(COMPOUND) %>%
+  mutate(COMPOUND = as.character(COMPOUND)) 
+
+mz_sex_geno_combined_results <- mz_sex_geno_combined_results %>%
+  mutate(across(-c(COMPOUND, best_fit), ~ if_else(best_fit == "AIC_null", NA, .)))
+```
+Saving out Univariate results for summary document
+```{r}
+write.csv(mz_sex_by_geno_results,"output/02b_mz_sex_by_geno_results.csv",row.names=T)
+write.csv(mz_sex_plus_geno_results,"output/02b_mz_sex_plus_geno_results.csv",row.names=T)
+write.csv(mz_sex_only_results,"output/02b_mz_sex_only_results.csv",row.names=T)
+write.csv(mz_geno_only_results,"output/02b_mz_geno_only_results.csv",row.names=T)
+
+write.csv(mz_sex_geno_combined_results,"output/02b_mz_combined_results.csv",row.names=T)
+```
+Saving out r files
+```{r}
+save(file='../data/results/mz_sex_geno_results.data', mz_sex_geno_combined_results, mz_sex_only_results, mz)
+save(file='../data/results/mz_sex_by_geno_results.data', mz_sex_by_geno_results, mz)
+rm(list = ls())
+```

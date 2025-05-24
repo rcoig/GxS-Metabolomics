@@ -1,0 +1,28 @@
+---
+title:   "GxS Metabolome - Number of Samples"
+output:   html_notebook
+by:       R. Coig
+updated:  7/24/24
+---
+Project Summary: The overarching goal of this project is to measure the prevalence of genotype-by-sex (G×S) interactions in the metabolome and explore their connection to downstream phenotypes. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high SSD" or "low SSD".
+
+Notebook Summary:  Supplementary Table 1: Tallying number of samples per sex and genotype
+```{r,load required libraries}
+library(dplyr)
+library(tidyr)
+```
+Loading in batch corrected data for analysis
+```{r,loading in batch corrected metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+```
+Calculating number of samples by sex and genotype
+```{r}
+n_samples <- key %>%
+  dplyr::group_by(genotype,sex) %>%
+  dplyr::summarise(n_samples = dplyr::n())
+```
+Saving out summaries
+```{r}
+write.csv(n_samples,"output/01_Samples_per_sex_and_genotype.csv",row.names=F)
+```

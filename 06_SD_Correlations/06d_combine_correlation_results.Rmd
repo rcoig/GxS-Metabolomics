@@ -1,0 +1,38 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Combining Results"
+output:   html_notebook
+by:       R. Coig
+updated:  6/1/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: 
+```{r,load required libraries}
+```
+Loading in data
+```{r,loading data}
+rm(list = ls())
+load('../data/results/Correlations_results.data')
+load('../data/results/SexGenomeans_Correlated_mzs_results.data')
+load('../data/results/WithinSex_Allsamples_Correlated_mzs_results.data')
+load('../data/results/WithinSex_Correlated_mzs_results.data')
+load('../data/results/Correlated_SDmzs_results.data')
+```
+Combine dfs
+```{r}
+mz_CORR_results<-left_join(Correlations_Means,Correlations,by=c("rowname","colname"))
+mz_CORR_results<-left_join(mz_CORR_results,Correlations_F_allsamples,by=c("rowname","colname"))
+mz_CORR_results<-left_join(mz_CORR_results,Correlations_F,by=c("rowname","colname"))
+mz_CORR_results<-left_join(mz_CORR_results,Correlations_M_allsamples,by=c("rowname","colname"))
+mz_CORR_results<-left_join(mz_CORR_results,Correlations_M,by=c("rowname","colname"))
+mz_CORR_results<-left_join(mz_CORR_results,Correlations_SD,by=c("rowname","colname"))
+mz_CORR_results<-mz_CORR_results%>%arrange(R_means)
+```
+Save out results:
+```{r,save out results in csv format}
+write.csv(mz_CORR_results,"output/06d_Correlation_combined_results.csv",row.names = F)
+```
+Saving out .rds files
+```{r,save out r files}
+save(file='../data/results/mz_CORR_results.data', mz_CORR_results,mz)
+```

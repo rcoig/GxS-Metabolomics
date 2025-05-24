@@ -1,0 +1,287 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Univariate means analysis"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Univariate analysis, TAG-Metabolite level correlations (Sample Means, without sex as a covariate)
+```{r,load required libraries}
+library(tidyr)#Data manipulation
+library(dplyr)#Data manipulation
+library(smatr)#Computing relative TAG
+library(reshape2)
+```
+Loading in metabolite means data 
+```{r,loading in metabolome data}
+rm(list = ls())
+load('../data/processed/mz_means.data')
+load('../data/processed/batch_corrected.data')
+
+load('../data/processed/phenotype-TAG.data')
+load('../data/processed/phenotype-mass.data')
+```
+TAG Correlations across all metabolites for female means
+```{r}
+#formatting df
+mz_means_by_TAG<-merge(mz_means_by_sex_geno,TAG_sex_geno_long,by=c("sex","genotype"))
+mz_means_by_FTAG<-mz_means_by_TAG%>%filter(sex=="female")
+
+# Create an empty results data frame to store the results
+FTAG_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    FTAG_R_spearman = numeric(0),
+                                    FTAG_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_FTAG, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$tTAG_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          FTAG_R_spearman = spearman_result$estimate,
+                          FTAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    FTAG_mz_COR_means_results <- distinct(rbind(FTAG_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+FTAG_mz_COR_means_results$FTAG_adj <- p.adjust(FTAG_mz_COR_means_results$FTAG_p, method = "fdr")
+FTAG_mz_COR_means_results<-FTAG_mz_COR_means_results%>%arrange(FTAG_p)
+FTAG_mz_COR_means_results$sig_FTAG <- ifelse(FTAG_mz_COR_means_results$FTAG_adj < 0.05, "SIG", "NS")
+
+sig_meanFTAG_mz<-FTAG_mz_COR_means_results%>%filter(sig_FTAG=="SIG")%>%pull(COMPOUND)
+```
+TAG Correlations across all metabolites for male means
+```{r}
+#formatting df
+mz_means_by_MTAG<-mz_means_by_TAG%>%filter(sex=="male")
+
+# Create an empty results data frame to store the results
+MTAG_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    MTAG_R_spearman = numeric(0),
+                                    MTAG_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_MTAG, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$tTAG_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          MTAG_R_spearman = spearman_result$estimate,
+                          MTAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    MTAG_mz_COR_means_results <- distinct(rbind(MTAG_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+MTAG_mz_COR_means_results$MTAG_adj <- p.adjust(MTAG_mz_COR_means_results$MTAG_p, method = "fdr")
+MTAG_mz_COR_means_results<-MTAG_mz_COR_means_results%>%arrange(MTAG_p)
+MTAG_mz_COR_means_results$sig_MTAG <- ifelse(MTAG_mz_COR_means_results$MTAG_adj < 0.05, "SIG", "NS")
+
+sig_meanMTAG_mz<-MTAG_mz_COR_means_results%>%filter(sig_MTAG=="SIG")%>%pull(COMPOUND)
+```
+Mass Correlations across all metabolites for female means
+```{r}
+#formatting df
+mz_means_by_mass<-merge(mz_means_by_sex_geno,mass_sex_geno_long,by=c("sex","genotype"))
+#Removing sex/geno combos that do not have mass values
+mz_means_by_mass<-mz_means_by_mass%>%filter(!is.na(mass_4_mu_ss))
+#formatting df
+mz_means_by_Fmass<-mz_means_by_mass%>%filter(sex=="female")
+
+# Create an empty results data frame to store the results
+Fmass_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    Fmass_R_spearman = numeric(0),
+                                    Fmass_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_Fmass, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$mass_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          Fmass_R_spearman = spearman_result$estimate,
+                          Fmass_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    Fmass_mz_COR_means_results <- distinct(rbind(Fmass_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+Fmass_mz_COR_means_results$Fmass_adj <- p.adjust(Fmass_mz_COR_means_results$Fmass_p, method = "fdr")
+Fmass_mz_COR_means_results<-Fmass_mz_COR_means_results%>%arrange(Fmass_p)
+Fmass_mz_COR_means_results$sig_Fmass <- ifelse(Fmass_mz_COR_means_results$Fmass_adj < 0.01, "SIG", "NS")
+
+sig_meanFmass_mz<-Fmass_mz_COR_means_results%>%filter(sig_Fmass=="SIG")%>%pull(COMPOUND)
+```
+Mass Correlations across all metabolites for male means
+```{r}
+mz_means_by_Mmass<-mz_means_by_mass%>%filter(sex=="male")
+
+# Create an empty results data frame to store the results
+Mmass_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    Mmass_R_spearman = numeric(0),
+                                    Mmass_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_Mmass, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$mass_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          Mmass_R_spearman = spearman_result$estimate,
+                          Mmass_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    Mmass_mz_COR_means_results <- distinct(rbind(Mmass_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+Mmass_mz_COR_means_results$Mmass_adj <- p.adjust(Mmass_mz_COR_means_results$Mmass_p, method = "fdr")
+Mmass_mz_COR_means_results<-Mmass_mz_COR_means_results%>%arrange(Mmass_p)
+Mmass_mz_COR_means_results$sig_Mmass <- ifelse(Mmass_mz_COR_means_results$Mmass_adj < 0.01, "SIG", "NS")
+
+sig_meanMmass_mz<-Mmass_mz_COR_means_results%>%filter(sig_Mmass=="SIG")%>%pull(COMPOUND)
+```
+Creating relative TAG as the residuals of TAG~Mass
+```{r}
+rTAG_sex_geno_long<-merge(mass_sex_geno_long,TAG_sex_geno_long,by=c("sex","genotype"))%>%select(sex,genotype,tTAG_4_mu_ss,mass_4_mu_ss)%>%filter(!is.na(mass_4_mu_ss))
+rTAG_sex_geno_long<-rTAG_sex_geno_long%>%filter(!is.na(tTAG_4_mu_ss))
+
+# Perform SMA regression
+sma_model <- sma(rTAG_sex_geno_long$tTAG_4_mu_ss ~ rTAG_sex_geno_long$mass_4_mu_ss, na.rm=T)
+
+# Extract the residuals
+rTAG_sex_geno_long$rTAG_4_mu_ss <- residuals(sma_model)
+
+mz_means_by_rTAG<-merge(mz_means_by_sex_geno,rTAG_sex_geno_long,by=c("sex","genotype"))
+
+```
+rTAG Correlations across all metabolites for female means
+```{r}
+mz_means_by_FrTAG<-mz_means_by_rTAG%>%filter(sex=="female")
+
+# Create an empty results data frame to store the results
+FrTAG_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    FrTAG_R_spearman = numeric(0),
+                                    FrTAG_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_FrTAG, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$rTAG_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          FrTAG_R_spearman = spearman_result$estimate,
+                          FrTAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    FrTAG_mz_COR_means_results <- distinct(rbind(FrTAG_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+FrTAG_mz_COR_means_results$FrTAG_adj <- p.adjust(FrTAG_mz_COR_means_results$FrTAG_p, method = "fdr")
+FrTAG_mz_COR_means_results<-FrTAG_mz_COR_means_results%>%arrange(FrTAG_p)
+FrTAG_mz_COR_means_results$sig_FrTAG <- ifelse(FrTAG_mz_COR_means_results$FrTAG_adj < 0.01, "SIG", "NS")
+
+sig_meanFrTAG_mz<-FrTAG_mz_COR_means_results%>%filter(sig_FrTAG=="SIG")%>%pull(COMPOUND)
+```
+rTAG Correlations across all metabolites for female means
+```{r}
+mz_means_by_MrTAG<-mz_means_by_rTAG%>%filter(sex=="male")
+
+# Create an empty results data frame to store the results
+MrTAG_mz_COR_means_results <- data.frame(COMPOUND = character(0), 
+                                    MrTAG_R_spearman = numeric(0),
+                                    MrTAG_p = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(mz_means_by_MrTAG, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$rTAG_4_mu_ss, subset_data$mean, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          MrTAG_R_spearman = spearman_result$estimate,
+                          MrTAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    MrTAG_mz_COR_means_results <- distinct(rbind(MrTAG_mz_COR_means_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+MrTAG_mz_COR_means_results$MrTAG_adj <- p.adjust(MrTAG_mz_COR_means_results$MrTAG_p, method = "fdr")
+MrTAG_mz_COR_means_results<-MrTAG_mz_COR_means_results%>%arrange(MrTAG_p)
+MrTAG_mz_COR_means_results$sig_MrTAG <- ifelse(MrTAG_mz_COR_means_results$MrTAG_adj < 0.01, "SIG", "NS")
+
+sig_meanMrTAG_mz<-MrTAG_mz_COR_means_results%>%filter(sig_MrTAG=="SIG")%>%pull(COMPOUND)
+```
+Combining Phenotype Results
+```{r}
+Female_Results_Means<-merge(FTAG_mz_COR_means_results,Fmass_mz_COR_means_results,by="COMPOUND")
+Female_Results_Means<-merge(Female_Results_Means,FrTAG_mz_COR_means_results,by="COMPOUND")
+
+Male_Results_Means<-merge(MTAG_mz_COR_means_results,Mmass_mz_COR_means_results,by="COMPOUND")
+Male_Results_Means<-merge(Male_Results_Means,MrTAG_mz_COR_means_results,by="COMPOUND")
+
+WithinSex_Results_Means<-merge(Female_Results_Means,Male_Results_Means,by="COMPOUND")
+```
+Saving out results for summary document
+```{r}
+write.csv(FTAG_mz_COR_means_results,"output/04_Mean_Ftag_mz_results.csv",row.names=F)
+write.csv(Fmass_mz_COR_means_results,"output/04_Mean_Fmass_mz_results.csv",row.names=F)
+write.csv(FrTAG_mz_COR_means_results,"output/04_Mean_Frtag_mz_results.csv",row.names=F)
+write.csv(MTAG_mz_COR_means_results,"output/04_Mean_Mtag_mz_results.csv",row.names=F)
+write.csv(Mmass_mz_COR_means_results,"output/04_Mean_Mmass_mz_results.csv",row.names=F)
+write.csv(MrTAG_mz_COR_means_results,"output/04_Mean_Mrtag_mz_results.csv",row.names=F)
+write.csv(WithinSex_Results_Means,"output/04_Mean_pheno_mz_results.csv",row.names=F)
+```
+Saving out r files
+```{r}
+save(file='../data/results/Within_Sex_TAG_mz_Means_COR_results.data', WithinSex_Results_Means, mz)
+#rm(list = ls())
+```

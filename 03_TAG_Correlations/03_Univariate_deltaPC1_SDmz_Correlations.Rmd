@@ -1,0 +1,101 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - PC-Univariate analysis"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Regression for delta PC1 by sex differences in metabolite level
+```{r,load required libraries}
+#library(tidyr)#Data manipulation
+library(dplyr)#Data manipulation
+library(car)#For specificying Type III ANOVA
+```
+Loading in batch corrected data for analysis
+```{r,loading in batch corrected metabolome data}
+rm(list = ls())
+load('../data/processed/PCA.data')
+load('../data/processed/mz_SD.data')
+melted_dat<-merge(SD_by_geno,PC_distances[,1:3],by="genotype")
+```
+Spearman's Correlation with deltaPC1 across delta mean metabolites level
+```{r}
+# Create an empty results data frame to store the results
+deltaPC1_SD_mz_COR_results <- data.frame(COMPOUND = character(0), 
+                                    deltaPC1_R_spearman = numeric(0),
+                                    deltaPC1_p = numeric(0),
+                                    SSD = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$mz_SD, subset_data$PC1, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          deltaPC1_R_spearman = spearman_result$estimate,
+                          deltaPC1_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    deltaPC1_SD_mz_COR_results <- distinct(rbind(deltaPC1_SD_mz_COR_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+deltaPC1_SD_mz_COR_results$deltaPC1_adj <- p.adjust(deltaPC1_SD_mz_COR_results$deltaPC1_p, method = "fdr")
+deltaPC1_SD_mz_COR_results<-deltaPC1_SD_mz_COR_results%>%arrange(deltaPC1_p)
+deltaPC1_SD_mz_COR_results$sig_deltaPC1 <- ifelse(deltaPC1_SD_mz_COR_results$deltaPC1_adj < 0.01, "SIG", "NS")
+
+sig_SD_deltaPC1<-deltaPC1_SD_mz_COR_results%>%filter(sig_deltaPC1=="SIG")%>%pull(COMPOUND)
+```
+Spearman's Correlation with deltaPC1 across delta mean metabolites level
+```{r}
+# Create an empty results data frame to store the results
+deltaPC2_SD_mz_COR_results <- data.frame(COMPOUND = character(0), 
+                                    deltaPC2_R_spearman = numeric(0),
+                                    deltaPC2_p = numeric(0),
+                                    SSD = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$mz_SD, subset_data$PC2, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          deltaPC2_R_spearman = spearman_result$estimate,
+                          deltaPC2_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    deltaPC2_SD_mz_COR_results <- distinct(rbind(deltaPC2_SD_mz_COR_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+deltaPC2_SD_mz_COR_results$deltaPC2_adj <- p.adjust(deltaPC2_SD_mz_COR_results$deltaPC2_p, method = "fdr")
+deltaPC2_SD_mz_COR_results<-deltaPC2_SD_mz_COR_results%>%arrange(deltaPC2_p)
+deltaPC2_SD_mz_COR_results$sig_deltaPC2 <- ifelse(deltaPC2_SD_mz_COR_results$deltaPC2_adj < 0.01, "SIG", "NS")
+
+sig_SD_deltaPC2<-deltaPC2_SD_mz_COR_results%>%filter(sig_deltaPC2=="SIG")%>%pull(COMPOUND)
+```
+Saving out Univariate results for PC1 ESD regression
+```{r}
+write.csv(deltaPC1_SD_mz_COR_results,"output/03_deltaPC1_SD_mz_COR_results.csv",row.names=F)
+write.csv(deltaPC2_SD_mz_COR_results,"output/03_deltaPC2_SD_mz_COR_results.csv",row.names=F)
+```
+Saving out r files
+```{r}
+save(file='../data/results/deltaPC1_SD_mz_COR_results.data', deltaPC1_SD_mz_COR_results, deltaPC2_SD_mz_COR_results, sig_SD_deltaPC1, mz)
+rm(list = ls())
+```

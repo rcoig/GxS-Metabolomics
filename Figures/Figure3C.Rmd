@@ -1,0 +1,54 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure 3C
+```{r,load required libraries}
+library(ggplot2)
+library(dplyr)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/processed/phenotype-dimorphism.data')
+load('../data/processed/phenotype-TAG.data')
+```
+Formatting df for plot 
+```{r}
+Pheno_Plot<-merge(TAG_sex_geno_long,dimorphism_summary[,c(1,4)],by="genotype")
+```
+Calculating Spearman's correlation coefficients and p-values
+```{r}
+spearman_cor_deltaTAG_FTAG4 <- cor.test(dimorphism_summary$diff_TAG, dimorphism_summary$tTAG_4_mu_ss_female, method = "spearman")
+deltaTAG_FTAG4_cor_coef<- round(spearman_cor_deltaTAG_FTAG4$estimate,2)
+deltaTAG_FTAG4_p <- round(spearman_cor_deltaTAG_FTAG4$p.value,6)
+
+spearman_cor_deltaTAG_MTAG4 <- cor.test(dimorphism_summary$diff_TAG, dimorphism_summary$tTAG_4_mu_ss_male, method = "spearman")
+deltaTAG_MTAG4_cor_coef<- round(spearman_cor_deltaTAG_MTAG4$estimate,2)
+deltaTAG_MTAG4_p <- round(spearman_cor_deltaTAG_MTAG4$p.value,1)
+```
+Plot for delta TAG by sex-specific TAG for both sexes
+```{r}
+
+ggplot(Pheno_Plot, aes(x = diff_TAG, y = tTAG_4_mu_ss)) +
+  geom_smooth(aes(color=sex),method = "lm", se = T) +  # Add linear regression line
+  geom_point(aes(fill = sex), size = 5, stroke = 1, shape = 21) +
+  labs(x = "\u0394TAG", y = "Mean TAG") +
+  #geom_text(aes(label = genotype), size = 2.5, check_overlap = FALSE) +
+  scale_color_manual(values=c("turquoise","purple")) +
+  scale_fill_manual(values=c("turquoise","purple")) +
+  theme_classic() +
+  theme(text = element_text(size = 30),
+    legend.position = "none"  # Remove the default legend
+  )+
+    geom_text(x = min(Pheno_Plot$diff_TAG),
+            y = max(Pheno_Plot$tTAG_4_mu_ss),
+            label = paste("p.F =", deltaTAG_FTAG4_p, "\np.M =", deltaTAG_MTAG4_p),
+            size = 10, hjust = 0, vjust = 1, color = "black")
+
+ggsave("plots/Fig3C.jpg", width = 7, height = 7)
+```

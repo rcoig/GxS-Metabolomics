@@ -1,0 +1,166 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - SD Correlations"
+output:   html_notebook
+by:       R. Coig
+updated:  6/1/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Metabolite SD Correlations across all samples
+```{r,load required libraries}
+library(reshape2)
+library(tidyr)
+library(dplyr)
+```
+Loading in metabolome data for analysis
+```{r,loading in metabolome data}
+rm(list = ls())
+load('../data/processed/mz_means.data')
+source("../src/compute_p_values_matrix.R")
+source("../src/remove_duplicate_cors.R")
+```
+Create correlation matrix of sex differences across all metabolites using Spearman's correlation (non-parametric)
+```{r}
+# Pivot the data from long to wide format
+wide_mz_means <- mz_means_by_sex_geno[,1:4] %>%
+  pivot_wider(names_from = COMPOUND, values_from = mean)
+
+# Extract columns 15 to 74
+female_mz_means<-wide_mz_means%>%filter(sex=="female")
+male_mz_means<-wide_mz_means%>%filter(sex=="male")
+selected_females <- female_mz_means[, 3:187]
+selected_males <- male_mz_means[, 3:187]
+
+# Calculate correlations for the selected columns
+correlation_matrix_F <- cor(selected_females, method = "spearman")
+correlation_matrix_M <- cor(selected_males, method = "spearman")
+
+correlation_matrix_F<-as.matrix(correlation_matrix_F)
+correlation_matrix_M<-as.matrix(correlation_matrix_M)
+
+# Create an empty matrix to store adjusted p-values
+p_F_matrix <- matrix(NA, nrow = ncol(correlation_matrix_F), ncol = ncol(correlation_matrix_F))
+p_M_matrix <- matrix(NA, nrow = ncol(correlation_matrix_M), ncol = ncol(correlation_matrix_M))
+
+# Loop through each pair of columns and compute adjusted p-values
+for (i in 1:ncol(correlation_matrix_F)) {
+  for (j in 1:ncol(correlation_matrix_F)) {
+    p_F_matrix[i, j] <- compute_p_values(correlation_matrix_F[, i], correlation_matrix_F[, j])
+  }
+}
+for (i in 1:ncol(correlation_matrix_M)) {
+  for (j in 1:ncol(correlation_matrix_M)) {
+    p_M_matrix[i, j] <- compute_p_values(correlation_matrix_M[, i], correlation_matrix_M[, j])
+  }
+}
+
+# Adjust the p-values matrix
+adjusted_F_matrix <- p.adjust(p_F_matrix, method = "fdr")
+adjusted_M_matrix <- p.adjust(p_M_matrix, method = "fdr")
+# Ensure that the adjusted p-values matrix remains a matrix
+dim(adjusted_F_matrix) <- dim(p_F_matrix)
+dim(adjusted_M_matrix) <- dim(p_M_matrix)
+
+rownames(adjusted_F_matrix)<-rownames(correlation_matrix_F)
+colnames(adjusted_F_matrix)<-colnames(correlation_matrix_F)
+rownames(adjusted_M_matrix)<-rownames(correlation_matrix_M)
+colnames(adjusted_M_matrix)<-colnames(correlation_matrix_M)
+
+
+```
+Within-sex correlations FDR <.05
+```{r}
+# Initialize an empty data frame to store the significant correlations
+significant_correlations_F <- data.frame(rowname = character(),
+                                          colname = character(),
+                                          pvalue = numeric(),
+                                          stringsAsFactors = FALSE)
+significant_correlations_M <- data.frame(rowname = character(),
+                                          colname = character(),
+                                          pvalue = numeric(),
+                                          stringsAsFactors = FALSE)
+
+# Loop through the indices of the adjusted p-value matrix
+for (i in 1:nrow(adjusted_F_matrix)) {
+  for (j in 1:ncol(adjusted_F_matrix)) {
+    if (adjusted_F_matrix[i, j] < 0.05 && i != j) {  # Check if rowname and colname are different
+      # Store the significant correlation information in the data frame
+      significant_correlations_F[nrow(significant_correlations_F) + 1,] <- list(rownames(adjusted_F_matrix)[i],
+                                                                                   colnames(adjusted_F_matrix)[j],
+                                                                                   adjusted_F_matrix[i, j])
+    }
+  }
+}
+
+for (i in 1:nrow(adjusted_M_matrix)) {
+  for (j in 1:ncol(adjusted_M_matrix)) {
+    if (adjusted_M_matrix[i, j] < 0.05 && i != j) {  # Check if rowname and colname are different
+      # Store the significant correlation information in the data frame
+      significant_correlations_M[nrow(significant_correlations_M) + 1,] <- list(rownames(adjusted_M_matrix)[i],
+                                                                                   colnames(adjusted_M_matrix)[j],
+                                                                                   adjusted_M_matrix[i, j])
+    }
+  }
+}
+
+# Remove rows where A,B = B,A
+significant_correlations_F <- remove_duplicates(significant_correlations_F)%>%arrange(pvalue)
+significant_correlations_M <- remove_duplicates(significant_correlations_M)%>%arrange(pvalue)
+```
+Adding Spearman's Rho
+```{r}
+# Initialize an empty data frame to store the significant correlations
+Correlations_F <- data.frame(rowname = character(),
+                                          colname = character(),
+                                          R_squared = numeric(),
+                                          stringsAsFactors = FALSE)
+Correlations_M <- data.frame(rowname = character(),
+                                          colname = character(),
+                                          R_squared = numeric(),
+                                          stringsAsFactors = FALSE)
+
+# Loop through the indices of the adjusted p-value matrix
+for (i in 1:nrow(correlation_matrix_F)) {
+  for (j in 1:ncol(correlation_matrix_F)) {
+    if (i != j) {  # Check if rowname and colname are different
+      # Store the significant correlation information in the data frame
+      Correlations_F[nrow(Correlations_F) + 1,] <- list(rownames(correlation_matrix_F)[i],
+                                                                                   colnames(correlation_matrix_F)[j],
+                                                                                   correlation_matrix_F[i, j])
+    }
+  }
+}
+for (i in 1:nrow(correlation_matrix_M)) {
+  for (j in 1:ncol(correlation_matrix_M)) {
+    if (i != j) {  # Check if rowname and colname are different
+      # Store the significant correlation information in the data frame
+      Correlations_M[nrow(Correlations_M) + 1,] <- list(rownames(correlation_matrix_M)[i],
+                                                                                   colnames(correlation_matrix_M)[j],
+                                                                                   correlation_matrix_M[i, j])
+    }
+  }
+}
+Correlations_F<-merge(significant_correlations_F,Correlations_F,by=c("rowname","colname"))%>%arrange(pvalue)%>%dplyr::rename(p_F=pvalue,R_F=R_squared)
+Correlations_M<-merge(significant_correlations_M,Correlations_M,by=c("rowname","colname"))%>%arrange(pvalue)%>%dplyr::rename(p_M=pvalue,R_M=R_squared)
+```
+With rho greater than .80
+```{r}
+strong_anticorrelations_F<-Correlations_F%>%filter(R_F < -0.80)%>%arrange(R_F)
+strong_correlations_F<-Correlations_F%>%dplyr::filter(R_F > 0.80)%>%arrange(-R_F)
+
+strong_anticorrelations_M<-Correlations_M%>%filter(R_M < -0.80)%>%arrange(R_M)
+strong_correlations_M<-Correlations_M%>%dplyr::filter(R_M > 0.80)%>%arrange(-R_M)
+```
+Saving out correlations and p values csvs
+```{r}
+write.csv(Correlations_M,"output/06b_Male_correlations_results.csv",row.names=T)
+write.csv(strong_correlations_M,"output/06b_Male_strongest_correlations_results.csv",row.names=T)
+write.csv(strong_anticorrelations_M,"output/06b_Male_strongest_anticorrelations_results.csv",row.names=T)
+write.csv(Correlations_F,"output/06b_Female_correlations_results.csv",row.names=T)
+write.csv(strong_correlations_F,"output/06b_Female_strongest_correlations_results.csv",row.names=T)
+write.csv(strong_anticorrelations_F,"output/06b_Female_strongest_anticorrelations_results.csv",row.names=T)
+```
+Saving out .rds files
+```{r,save out r files}
+save(file='../data/results/WithinSex_Correlated_mzs_results.data', Correlations_F, Correlations_M, mz)
+```

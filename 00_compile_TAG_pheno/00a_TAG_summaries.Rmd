@@ -1,0 +1,97 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Phenotype"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary:  Phenotype summaries for TAG absorbances 
+---
+Load required packages.
+```{r}
+library(tidyr)#data manipulation
+library(dplyr)#data manipulation
+library(reshape2)#data manipulation
+```
+Reading in raw phenotype data. TAG was measured using the ThermoFisher infinity reagent assay, and absorbance was read by plate reader. 5 flies were measured per well. 
+```{r}
+rm(list = ls())
+TAG <- read.csv("data/raw/raw_absorbances.csv")#raw TAG data
+TAG$genotype<-as.factor(TAG$genotype)
+TAG$sex<-as.factor(TAG$sex)
+TAG<-TAG%>%filter(!is.na(absn5))
+```
+Calculating TAG summaries
+```{r}
+B7_TAG_summary_sex_geno <- TAG %>%
+  dplyr::group_by(sex, genotype) %>%
+  dplyr::summarize(
+    genotype = first(genotype),
+    sex = first(sex),
+    tTAG_4_mu_ss = round(mean(absn5), 4),
+    tTAG_4_sd_ss = round(sd(absn5), 4),
+    tTAG_4_var_ss = round(var(absn5), 4),  # Calculate variance
+    tTAG_4_cv_ss = round((tTAG_4_sd_ss / tTAG_4_mu_ss) * 100, 2),  # Calculate CV
+    tTAG_4_se_ss = round(tTAG_4_sd_ss / sqrt(n()), 4),  # Calculate SE
+    tTAG_4_n_ss = n()) %>% # Calculate sample size
+  distinct()
+
+B7_TAG_summary_sex_geno_wide <- B7_TAG_summary_sex_geno %>%
+  pivot_wider(
+    id_cols = genotype,
+    names_from = sex,
+    values_from = c(tTAG_4_mu_ss, tTAG_4_sd_ss, tTAG_4_var_ss, tTAG_4_cv_ss, tTAG_4_se_ss, tTAG_4_n_ss)
+  )
+
+B7_TAG_summary_geno <- TAG %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarize(
+    genotype = first(genotype),
+    tTAG_4_mu_line = round(mean(absn5), 4),
+    tTAG_4_sd_line = round(sd(absn5), 4),
+    tTAG_4_var_line = round(var(absn5), 4),  # Calculate variance
+    tTAG_4_cv_line = round((tTAG_4_sd_line / tTAG_4_mu_line) * 100, 2),  # Calculate CV
+    tTAG_4_se_line = round(tTAG_4_sd_line / sqrt(n()), 4),  # Calculate SE
+    tTAG_4_n_line = n())
+
+B7_TAG_summary_sex <- TAG %>%
+  dplyr::group_by(sex) %>%
+  dplyr::summarize(
+    sex = first(sex),
+    tTAG_4_mu = round(mean(absn5), 4),
+    tTAG_4_sd = round(sd(absn5), 4),
+    tTAG_4_var = round(var(absn5), 4),  # Calculate variance
+    tTAG_4_cv = round((tTAG_4_sd / tTAG_4_mu) * 100, 2),  # Calculate CV
+    tTAG_4_se = round(tTAG_4_sd / sqrt(n()), 4),  # Calculate SE
+    tTAG_4_n = n())
+    
+B7_TAG_pooled <- TAG %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarize(
+    n_female = sum(sex == "female"),
+    n_male = sum(sex == "male"),
+    sd_female = sd(absn5[sex == "female"]),
+    sd_male = sd(absn5[sex == "male"]),
+    tTAG_4_pl_sd = round(sqrt(((n_female - 1) * sd_female^2 + (n_male - 1) * sd_male^2) / (n_female + n_male - 2)),4),  # Calculate pooled_sd between sexes
+    tTAG_4_pl_se = round(sqrt(((n_female - 1) * sd_female^2 + (n_male - 1) * sd_male^2) / (n_female + n_male - 2)) / sqrt(n_female + n_male),4)  # Calculate pooled_se between sexes
+  ) %>%
+  select(genotype, tTAG_4_pl_sd, tTAG_4_pl_se)
+```
+Combining summaries into dfs for later analysis.
+```{r}
+TAG_sex_geno_wide<- left_join(B7_TAG_summary_geno,B7_TAG_summary_sex_geno_wide,by="genotype")
+TAG_sex_geno_wide<- left_join(TAG_sex_geno_wide,B7_TAG_pooled, by="genotype")
+TAG_sex_geno_long<- left_join(B7_TAG_summary_sex_geno,B7_TAG_summary_geno, by="genotype")
+```
+Saving out summaries 
+```{r}
+write.csv(TAG_sex_geno_wide,"output/01_TAG_summary_wide_format.csv",row.names=F)
+write.csv(TAG_sex_geno_long,"output/01_TAG_summary_long_format.csv",row.names=F)
+write.csv(B7_TAG_summary_sex,"output/01_TAG_population_sex_summary.csv",row.names=F)
+```
+saving out r data files
+```{r}
+save(file='../data/processed/phenotype-TAG.data', TAG_sex_geno_wide, TAG_sex_geno_long)
+rm(list=ls())
+```

@@ -1,0 +1,102 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Pathway"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: FELLA Analysis
+load required packages
+```{r,load required packages}
+library(FELLA)
+library(dplyr)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/results/TAG_results.data')
+info<-read.csv("../data/metabolite_info.csv")
+TAG_results<-merge(TAG_results,info,by="COMPOUND")
+```
+Some KEGG IDs are missing. Are they metabolites of interest in our results?
+```{r}
+Missing_KEGG<-TAG_results%>%filter(KEGG.ID=="N/A")
+Results_with_KEGG<-TAG_results%>%filter(KEGG.ID!="N/A")
+```
+Setting background metabolite KEGG IDs - 172 metabolites
+And enrichment groups
+```{r}
+background<-Results_with_KEGG$KEGG.ID
+deltaTAGFDR01<-Results_with_KEGG%>%filter(deltaTAG_adj<.01)%>%pull(KEGG.ID)
+deltaTAGFDR05<-Results_with_KEGG%>%filter(deltaTAG_adj<.05)%>%pull(KEGG.ID)
+deltaPC1FDR0001<-Results_with_KEGG%>%filter(deltaPC1_adj<.0001)%>%pull(KEGG.ID)
+setdiff(deltaTAGFDR01,deltaPC1FDR0001)
+```
+FELLA Pathway Analysis: Building dmel KEGG Network
+```{r}
+set.seed(1) 
+#Filter overview pathways (this removes pathways you don't want)
+graph<-buildGraphFromKEGGREST(organism="dme",filter.path=c("01100"))
+tmpdir<-paste0(tempdir(),"/my_database") 
+#Make sure the database does not exist from a former vignette build #Otherwise the vignette will rise an error
+#because FELLA will not overwrite an existing database 
+unlink(tmpdir,recursive=TRUE) 
+buildDataFromGraph(keggdata.graph=graph,databaseDir=tmpdir,internalDir=FALSE,matrices="diffusion",normality="diffusion",niter=1000)
+fella.data<-loadKEGGdata(databaseDir=tmpdir,internalDir=FALSE,loadMatrix="diffusion")#use 10,000 iterations 
+fella.data
+cat(getInfo(fella.data))
+```
+Running analyses
+```{r}
+deltaPC1FDR0001_enrichment <- enrich(compounds = deltaTAGFDR05, compoundsBackground = background, 
+                          data = fella.data, method = 'diffusion', approx = "simulation", niter=10000)
+results_deltaPC10001<-generateResultsTable(object=deltaPC1FDR0001_enrichment,data=fella.data,nlimit=1000)
+paths_deltaPC1FDR0001<-results_deltaPC10001%>%filter(Entry.type=="pathway")
+paths_deltaPC1FDR0001$FDR<-p.adjust(paths_deltaPC1FDR0001$p.score,method="fdr")
+paths_deltaPC1FDR0001<-paths_deltaPC1FDR0001%>%filter(FDR<.01)
+modules_deltaPC1FDR0001<-results_deltaPC10001%>%filter(Entry.type=="module")
+modules_deltaPC1FDR0001$FDR<-p.adjust(modules_deltaPC1FDR0001$p.score,method="fdr")
+modules_deltaPC1FDR0001<-modules_deltaPC1FDR0001%>%filter(FDR<.05)
+enzymes_deltaPC1FDR0001<-results_deltaPC10001%>%filter(Entry.type=="enzyme")
+enzymes_deltaPC1FDR0001$FDR<-p.adjust(enzymes_deltaPC1FDR0001$p.score,method="fdr")
+enzymes_deltaPC1FDR0001<-enzymes_deltaPC1FDR0001%>%filter(FDR<.01)
+compounds_deltaPC1FDR0001<-results_deltaPC10001%>%filter(Entry.type=="compound")
+compounds_deltaPC1FDR0001$FDR<-p.adjust(compounds_deltaPC1FDR0001$p.score,method="fdr")
+compounds_deltaPC1FDR0001<-compounds_deltaPC1FDR0001%>%filter(FDR<.01)
+```
+
+
+```{r}
+deltaTAGFDR01_enrichment <- enrich(compounds = deltaTAGFDR01, compoundsBackground = background, 
+                          data = fella.data, method = 'diffusion', approx = "simulation", niter=10000)
+results_deltaTAGFDR01<-generateResultsTable(object=deltaTAGFDR01_enrichment,data=fella.data,nlimit=1000)
+paths_deltaTAGFDR01<-results_deltaTAGFDR01%>%filter(Entry.type=="pathway")
+paths_deltaTAGFDR01$FDR<-p.adjust(paths_deltaTAGFDR01$p.score,method="fdr")
+paths_deltaTAGFDR01<-paths_deltaTAGFDR01%>%filter(FDR<.01)
+modules_deltaTAGFDR01<-results_deltaPC10001%>%filter(Entry.type=="module")
+modules_deltaTAGFDR01$FDR<-p.adjust(modules_deltaTAGFDR01$p.score,method="fdr")
+modules_deltaTAGFDR01<-modules_deltaTAGFDR01%>%filter(FDR<.05)
+
+deltaTAGFDR05_enrichment <- enrich(compounds = deltaTAGFDR05, compoundsBackground = background, 
+                          data = fella.data, method = 'diffusion', approx = "simulation", niter=10000)
+results_deltaTAGFDR05<-generateResultsTable(object=deltaTAGFDR05_enrichment,data=fella.data,nlimit=1000)
+paths_deltaTAGFDR05<-results_deltaTAGFDR05%>%filter(Entry.type=="pathway")
+paths_deltaTAGFDR05$FDR<-p.adjust(paths_deltaTAGFDR05$p.score,method="fdr")
+paths_deltaTAGFDR05<-paths_deltaTAGFDR05%>%filter(FDR<.01)
+modules_deltaTAGFDR05<-results_deltaPC10001%>%filter(Entry.type=="module")
+modules_deltaTAGFDR05$FDR<-p.adjust(modules_deltaTAGFDR05$p.score,method="fdr")
+modules_deltaTAGFDR05<-modules_deltaTAGFDR05%>%filter(FDR<.05)
+
+```
+Write out results tables
+```{r}
+write.csv(results_deltaPC10001,"output/05_FELLA_deltaPC1FDR0001_Results.csv",row.names=F)
+write.csv(results_deltaTAGFDR01,"output/05_FELLA_deltaTAGFDR01_Results.csv",row.names=F)
+write.csv(results_deltaTAGFDR05,"output/05_FELLA_deltaTAGFGR05_pathways.csv",row.names=F)
+```
+Saving out .rds files
+```{r,save out r files}
+save(file='../data/results/FELLA_results.data', deltaTAGFDR01, deltaTAGFDR05, deltaPC1FDR0001, results_deltaTAGFDR01, results_deltaTAGFDR05, results_deltaTAGPC10001)
+rm(list = ls())
+```

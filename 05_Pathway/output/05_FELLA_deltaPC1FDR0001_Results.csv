@@ -1,0 +1,1001 @@
+"KEGG.id","Entry.type","KEGG.name","p.score"
+"dme00310","pathway","Lysine degradation - Drosophila melanogaster ...",0.00919014737991266
+"dme00350","pathway","Tyrosine metabolism - Drosophila melanogaster...",0.00139085698689953
+"dme00860","pathway","Porphyrin metabolism - Drosophila melanogaste...",0.00449057496360986
+"M00042","module","Catecholamine biosynthesis, tyrosine => dopam...",0.00959011098981072
+"M00121","module","Heme biosynthesis, plants and bacteria, gluta...",0.0127898198689957
+"M00846","module","Siroheme biosynthesis, glutamyl-tRNA => siroh...",0.00279072962154298
+"M00868","module","Heme biosynthesis, animals and fungi, glycine...",0.00969010189228535
+"M00926","module","Heme biosynthesis, bacteria, glutamyl-tRNA =>...",0.00829022925764191
+"1.14.11.27","enzyme","[histone H3]-dimethyl-L-lysine36 demethylase",0.00599043850072782
+"1.14.11.4","enzyme","procollagen-lysine 5-dioxygenase",0.0112899563318777
+"1.14.14.18","enzyme","heme oxygenase (biliverdin-producing)",0.00369064774381373
+"1.14.17.1","enzyme","dopamine beta-monooxygenase",0.00339067503639007
+"1.14.18.1","enzyme","tyrosinase",0.00659038391557491
+"1.16.1.8","enzyme","[methionine synthase] reductase",0.00109088427947598
+"1.16.3.1","enzyme","ferroxidase",0.00389062954876276
+"1.3.3.15","enzyme","coproporphyrinogen III oxidase (coproporphyri...",0.0035906568413391
+"1.3.3.3","enzyme","coproporphyrinogen oxidase",0.00579045669577879
+"1.3.3.4","enzyme","protoporphyrinogen oxidase",0.00539049308588061
+"1.4.3.4","enzyme","monoamine oxidase",0.00169082969432319
+"2.1.1.100","enzyme","protein-S-isoprenylcysteine O-methyltransfera...",0.00229077510917029
+"2.1.1.114","enzyme","polyprenyldihydroxybenzoate methyltransferase",0.00259074781659383
+"2.1.1.201","enzyme","2-methoxy-6-polyprenyl-1,4-benzoquinol methyl...",0.00419060225618631
+"2.1.1.319","enzyme","type I protein arginine methyltransferase",0.00069092066957792
+"2.1.1.325","enzyme","juvenile hormone-III synthase",0.000790911572052436
+"2.1.1.354","enzyme","[histone H3]-lysine4 N-trimethyltransferase",9.09752547307133e-05
+"2.1.1.355","enzyme","[histone H3]-lysine9 N-trimethyltransferase",9.09752547307133e-05
+"2.1.1.356","enzyme","[histone H3]-lysine27 N-trimethyltransferase",9.09752547307133e-05
+"2.1.1.357","enzyme","[histone H3]-lysine36 N-dimethyltransferase",9.09752547307133e-05
+"2.1.1.359","enzyme","[histone H3]-lysine36 N-trimethyltransferase",9.09752547307133e-05
+"2.1.1.360","enzyme","[histone H3]-lysine79 N-trimethyltransferase",9.09752547307133e-05
+"2.1.1.361","enzyme","[histone H4]-lysine20 N-methyltransferase",0.000290957059679745
+"2.1.1.362","enzyme","[histone H4]-N-methyl-L-lysine20 N-methyltran...",0.000190966157205229
+"2.1.1.366","enzyme","[histone H3]-N6,N6-dimethyl-lysine9 N-methylt...",0.000190966157205229
+"2.1.1.367","enzyme","[histone H3]-lysine9 N-methyltransferase",0.000290957059679745
+"2.1.1.56","enzyme","mRNA (guanine-N7)-methyltransferase",0.00069092066957792
+"2.1.1.60","enzyme","calmodulin-lysine N-methyltransferase",9.09752547307133e-05
+"2.1.1.64","enzyme","3-demethylubiquinol 3-O-methyltransferase",0.00479054767103352
+"2.5.1.61","enzyme","hydroxymethylbilane synthase",0.00579045669577879
+"3.1.1.59","enzyme","juvenile-hormone esterase",0.00629041120815137
+"3.1.2.22","enzyme","palmitoyl[protein] hydrolase",0.00909015647743814
+"4.1.1.107","enzyme","3,4-dihydroxyphenylacetaldehyde synthase",0.000790911572052436
+"4.1.1.25","enzyme","tyrosine decarboxylase",0.00279072962154298
+"4.1.1.37","enzyme","uroporphyrinogen decarboxylase",0.00509052037845706
+"4.1.1.90","enzyme","peptidyl-glutamate 4-carboxylase",0.00699034752547309
+"4.2.1.24","enzyme","porphobilinogen synthase",0.00849021106259094
+"4.2.1.75","enzyme","uroporphyrinogen-III synthase",0.00449057496360986
+"4.4.1.17","enzyme","holocytochrome-c synthase",0.00799025655021836
+"4.98.1.1","enzyme","protoporphyrin ferrochelatase",0.0104900291120815
+"4.99.1.9","enzyme","coproporphyrin ferrochelatase",0.00829022925764191
+"5.3.3.12","enzyme","L-dopachrome isomerase",0.00149084788937405
+"R00009","reaction","hydrogen-peroxide:hydrogen-peroxide oxidoredu...",0.00329068413391556
+"R00031","reaction","1,2-benzenediol:oxygen oxidoreductase",0.00959011098981072
+"R00042","reaction","4-hydroxyphenylpyruvate:oxygen oxidoreductase...",0.0138897197962155
+"R00045","reaction","3,4-dihydroxy-L-phenylalanine:oxygen oxidored...",0.00379063864628825
+"R00069","reaction","4-imidazolone-5-propanoate:oxygen oxidoreduct...",0.00259074781659383
+"R00078","reaction","Fe(II):oxygen oxidoreductase",0.00989008369723438
+"R00084","reaction","porphobilinogen:(4-[2-carboxyethyl]-3-[carbox...",0.0052905021834061
+"R00273","reaction","oxalate:oxygen oxidoreductase",0.00259074781659383
+"R00310","reaction","protoheme ferro-lyase (protoporphyrin-forming...",0.0144896652110626
+"R00311","reaction","protoheme,NADPH---hemoprotein reductase:oxyge...",0.0108899927219797
+"R00312","reaction","Heme <=> Cytochrome a",0.0112899563318777
+"R00313","reaction","Heme <=> Catalase",0.0112899563318777
+"R00314","reaction","Heme <=> Peroxidase",0.0112899563318777
+"R00729","reaction","L-tyrosine:oxygen oxidoreductase (deaminating...",0.00699034752547309
+"R00730","reaction","L-tyrosine,[reduced NADPH-hemoprotein reducta...",0.0107900018195051
+"R00731","reaction","L-tyrosine:oxygen oxidoreductase",0.00839022016011642
+"R00736","reaction","L-tyrosine carboxy-lyase (tyramine-forming)",0.00729032023289664
+"R01188","reaction","S-adenosyl-L-methionine:1D-myo-inositol 1-O-m...",0.00399062045123728
+"R01189","reaction","S-adenosyl-L-methionine:1D-myo-inositol 3-O-m...",0.00399062045123728
+"R01274","reaction","palmitoyl-CoA hydrolase",0.00969010189228535
+"R01278","reaction","hexadecanoyl-CoA:NADP+ trans-2-oxidoreductase",0.0147896379184862
+"R01320","reaction","S-adenosyl-L-methionine:phosphatidyl-N-dimeth...",0.0129898016739447
+"R01973","reaction","S-adenosyl-L-methionine:(indol-3-yl)pyruvate ...",0.00309070232896652
+"R02056","reaction","S-adenosyl-L-methionine:phosphatidylethanolam...",0.00889017467248911
+"R02075","reaction","3,4-dihydroxy-L-phenylalanine:oxygen 4,5-oxid...",0.0052905021834061
+"R02076","reaction","3,4-dihydroxy-L-phenylalanine:oxygen 2,3-oxid...",0.0052905021834061
+"R02078","reaction","L-tyrosine,L-dopa:oxygen oxidoreductase",0.00559047489082964
+"R02080","reaction","3,4-dihydroxy-L-phenylalanine carboxy-lyase",0.00409061135371179
+"R02155","reaction","S-adenosyl-L-methionine:histamine N-tele-meth...",0.000790911572052436
+"R02173","reaction","tryptamine:oxygen oxidoreductase(deaminating)",0.00459056586608437
+"R02174","reaction","S-adenosyl-L-methionine:amine N-methyltransfe...",0.000990893377001467
+"R02220","reaction","sinapoyl aldehyde:NADP+ oxidoreductase (CoA-s...",0.0146896470160116
+"R02373","reaction","ecdysone:oxygen 3-oxidoreductase",0.0136897379912663
+"R02379","reaction","S-adenosyl-L-methionine:3,4-dihydroxy-trans-c...",0.00169082969432319
+"R02382","reaction","tyramine:oxygen oxidoreductase(deaminating)(f...",0.000290957059679745
+"R02384","reaction","S-adenosyl-L-methionine:tyramine N-methyltran...",0.000390947962154261
+"R02480","reaction","cytochrome c apocytochrome-c-lyase",0.0112899563318777
+"R02520","reaction","Homogentisate + Oxygen <=> Gentisate aldehyde...",0.00459056586608437
+"R02521","reaction","4-hydroxyphenylpyruvate:oxygen oxidoreductase...",0.00869019286754008
+"R02532","reaction","4-[(1R)-2-amino-1-hydroxyethyl]-1,2-benzenedi...",0.000190966157205229
+"R02533","reaction","S-adenosyl-L-methionine:phenylethanolamine N-...",0.000490938864628777
+"R02534","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000390947962154261
+"R02535","reaction","dopamine,ascorbate:oxygen oxidoreductase (bet...",0.000890902474526952
+"R02657","reaction","2,5-Dihydroxybenzoate + Hydrogen peroxide <=>...",0.0070903384279476
+"R02669","reaction","3-Hydroxyanthranilate <=> 2-Aminophenol + CO2",0.0131897834788937
+"R02670","reaction","2 3-Hydroxyanthranilate + 4 Oxygen <=> Cinnav...",0.00259074781659383
+"R02671","reaction","3-Hydroxyanthranilate + S-Adenosyl-L-methioni...",0.000490938864628777
+"R02715","reaction","D-arabinono-1,4-lactone:oxygen oxidoreductase",0.0101900564046579
+"R02858","reaction","S-adenosyl-L-methionine:macrocin 3'''-O-methy...",0.00129086608442502
+"R02859","reaction","S-adenosyl-L-methionine:demethylmacrocin 2'''...",0.0011908751819505
+"R02864","reaction","S-adenosyl-L-methionine:uroporphyrin-III C-me...",0.0064903930131004
+"R02908","reaction","5-hydroxytryptamine:oxygen oxidoreductase(dea...",0.000490938864628777
+"R02909","reaction","5-hydroxytryptamine:oxygen 2,3-dioxygenase (i...",0.00639040211062588
+"R02910","reaction","S-adenosyl-L-methionine:amine N-methyltransfe...",0.000590929767103293
+"R02919","reaction","4-[(1R)-1-hydroxy-2-(methylamino)ethyl]-1,2-b...",0.000190966157205229
+"R02920","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000390947962154261
+"R02931","reaction","S-adenosyl-L-methionine: genistein 4'-O-methy...",0.000790911572052436
+"R03030","reaction","L-3-aminobutyryl-CoA ammonia-lyase",0.00829022925764191
+"R03111","reaction","S-adenosyl-L-methionine:sterigmatocystin 8-O-...",0.000790911572052436
+"R03112","reaction","S-adenosyl-L-methionine:6-demethylsterigmatoc...",0.00109088427947598
+"R03130","reaction","S-adenosyl-L-homocysteine:N-acetylserotonin O...",0.000790911572052436
+"R03165","reaction","hydroxymethylbilane hydro-lyase(cyclizing)",0.00069092066957792
+"R03166","reaction","Hydroxymethylbilane <=> Uroporphyrinogen I + ...",0.00809024745269287
+"R03194","reaction","S-adenosyl-L-methionine:uroporphyrinogen-III ...",9.09752547307133e-05
+"R03197","reaction","uroporphyrinogen-III carboxy-lyase",0.00069092066957792
+"R03208","reaction","2 3,5-Diiodo-L-tyrosine + Hydrogen peroxide <...",0.0106900109170306
+"R03220","reaction","coproporphyrinogen:oxygen oxidoreductase (dec...",0.00189081149927222
+"R03222","reaction","protoporphyrinogen-IX:oxygen oxidoreductase",0.00179082059679771
+"R03231","reaction","S-adenosyl-L-methionine:8-amino-7-oxononanoat...",0.0070903384279476
+"R03303","reaction","3,4-dihydroxyphenylacetate:oxygen 2,3-oxidore...",0.0023907660116448
+"R03304","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000190966157205229
+"R03341","reaction","4-hydroxyphenylpyruvate carboxy-lyase",0.00139085698689953
+"R03342","reaction","3-(4-hydroxyphenyl)pyruvate keto-enol-isomera...",0.00419060225618631
+"R03366","reaction","S-adenosyl-L-methionine:3,4-dihydroxy-trans-c...",0.00109088427947598
+"R03424","reaction","S-adenosyl-L-methionine:phosphatidyl-N-methyl...",0.00309070232896652
+"R03511","reaction","phylloquinone:oxidized-dithiothreitol oxidore...",0.0100900655021834
+"R03539","reaction","Hydroiodic acid + 3-Iodo-L-tyrosine <=> Iodin...",0.0052905021834061
+"R03628","reaction","melatonin:oxygen 2,3-dioxygenase (indole-decy...",0.00229077510917029
+"R03629","reaction","melatonin,NADPH---hemoprotein reductase:oxyge...",0.00539049308588061
+"R03673","reaction","L-dopachrome delta7-delta2-isomerase",0.00169082969432319
+"R03674","reaction","L-Dopachrome <=> 5,6-Dihydroxyindole + CO2",0.000990893377001467
+"R03682","reaction","Hemoglobin + Oxygen <=> Oxyhemoglobin",0.00229077510917029
+"R03684","reaction","Hemoglobin <=> Globin + Heme",0.00669037481804954
+"R03831","reaction","(S)-reticuline:oxygen oxidoreductase (methyle...",9.09752547307133e-05
+"R03832","reaction","S-adenosyl-L-methionine:3'-hydroxy-N-methyl-(...",0.000390947962154261
+"R03833","reaction","(S)-reticuline,[reduced NADPH---hemoprotein r...",0.00389062954876276
+"R03834","reaction","(S)-scoulerine,[reduced NADPH---hemoprotein r...",0.00179082059679771
+"R03835","reaction","S-adenosyl-L-methionine:(S)-scoclaurine 9-O-m...",0.000590929767103293
+"R03875","reaction","Protein lysine + S-Adenosyl-L-methionine <=> ...",9.09752547307133e-05
+"R03943","reaction","N-Methyltyramine + S-Adenosyl-L-methionine <=...",0.000390947962154261
+"R03947","reaction","S-adenosyl-L-methionine:uroporphyrin-III C-me...",0.00449057496360986
+"R03948","reaction","S-adenosyl-L-methionine:precorrin-4 C20-methy...",0.000390947962154261
+"R03953","reaction","3-Iodo-L-tyrosine + 3,5-Diiodo-L-tyrosine + H...",0.00889017467248911
+"R03973","reaction","Hydroiodic acid + 3,5-Diiodo-L-tyrosine <=> 3...",0.0035906568413391
+"R04013","reaction","S-adenosyl-L-methionine:16-methoxy-2,3-dihydr...",0.00129086608442502
+"R04060","reaction","anhydrotetracycline,NADPH:oxygen oxidoreducta...",0.00719032933042212
+"R04085","reaction","aldehyde:oxygen oxidoreductase",0.0133897652838428
+"R04132","reaction","2-Oxohept-3-enedioate + H2O <=> 2,4-Dihydroxy...",0.00349066593886459
+"R04134","reaction","2-Oxohept-3-enedioate <=> 2-Hydroxyhepta-2,4-...",0.00129086608442502
+"R04142","reaction","5-Acetamidopentanoate + NADH + H+ + CO2 <=> 6...",0.00829022925764191
+"R04174","reaction","6-acetamido-2-oxohexanoate amidohydrolase",0.0123898562590975
+"R04178","reaction","coproporphyrinogen-III:oxygen oxidoreductase ...",0.000490938864628777
+"R04222","reaction","dTDP-L-dihydrostreptose:streptidine-6-phospha...",0.00609042940320233
+"R04237","reaction","S-adenosyl-L-methionine:magnesium-protoporphy...",0.00069092066957792
+"R04282","reaction","4-Imidazolone-5-propanoate + H2O <=> Formylis...",0.012089883551674
+"R04283","reaction","4-Imidazolone-5-propanoate + H2O <=> 4-Oxoglu...",0.00639040211062588
+"R04300","reaction","4-(2-aminoethyl)-1,2-benzenediol:oxygen oxido...",0.000190966157205229
+"R04301","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000390947962154261
+"R04305","reaction","4-hydroxyphenylacetaldehyde hydro-lyase (addi...",0.000190966157205229
+"R04313","reaction","N6,N6,N6-Trimethyl-L-lysine + 2 Protein <=> P...",0.000390947962154261
+"R04379","reaction","5-carboxymethyl-2-hydroxymuconate delta2,delt...",0.00179082059679771
+"R04380","reaction","5-oxopent-3-ene-1,2,5-tricarboxylate carboxy-...",0.000590929767103293
+"R04400","reaction","(S)-tetrahydrocolumbamine,[reduced NADPH---he...",0.000290957059679745
+"R04427","reaction","S-adenosyl-L-methionine:zymosterol C-methyltr...",0.00329068413391556
+"R04460","reaction","N-hydroxy-L-tyrosine,[reduced NADPH-hemoprote...",0.00939012918486169
+"R04496","reaction","S-adenosyl-L-methionine:protein-C-terminal-S-...",0.00129086608442502
+"R04674","reaction","N-methylhistamine:oxygen oxidoreductase (deam...",0.000190966157205229
+"R04688","reaction","2,5-diaminohexanoate:NADP+ oxidoreductase (de...",0.0119898926491994
+"R04690","reaction","(S)-cheilanthifoline,[reduced NADPH---hemopro...",0.00139085698689953
+"R04691","reaction","Stylopine + S-Adenosyl-L-methionine <=> (S)-c...",0.000590929767103293
+"R04692","reaction","S-adenosyl-L-methionine:(S)-coclaurine-N-meth...",0.000490938864628777
+"R04700","reaction","(S)-cis-N-methylstylopine,[reduced NADPH---he...",0.00169082969432319
+"R04701","reaction","6-Hydroxyprotopine <=> Dihydrosanguinarine + ...",0.00939012918486169
+"R04702","reaction","dihydrosanguinarine,[reduced NADPH---hemoprot...",0.00219078420669577
+"R04703","reaction","dihydrosanguinarine:oxygen oxidoreductase",0.00519051128093158
+"R04705","reaction","S-adenosyl-L-methionine:12-hydroxydihydrochel...",0.000490938864628777
+"R04707","reaction","S-adenosyl-L-methionine:10-hydroxydihydrosang...",0.000590929767103293
+"R04708","reaction","dihydrochelirubine,[reduced NADPH---hemoprote...",0.000490938864628777
+"R04768","reaction","dihydromacarpine:oxygen oxidoreductase",0.000190966157205229
+"R04772","reaction","S-adenosyl-L-methionine:L-methionine S-methyl...",0.0011908751819505
+"R04858","reaction","S-adenosyl-L-methionine:DNA (cytosine-5-)-met...",0.00189081149927222
+"R04866","reaction","S-adenosyl-L-methionine:cytochrome-c-L-lysine...",9.09752547307133e-05
+"R04867","reaction","S-adenosyl-L-methionine:cytochrome-c-L-lysine...",9.09752547307133e-05
+"R04875","reaction","Hydantoin-5-propionate + H2O <=> N-Carbamyl-L...",0.00639040211062588
+"R04879","reaction","Formylisoglutamine + H2O <=> Isoglutamine",0.0111899654294032
+"R04881","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000490938864628777
+"R04884","reaction","5,6-dihydroxyindole:oxygen oxidoreductase",0.00309070232896652
+"R04886","reaction","Indole-5,6-quinone + Oxygen <=> Eumelanin + H...",0.00269073871906846
+"R04887","reaction","S-adenosyl-L-methionine:catechol O-methyltran...",0.000490938864628777
+"R04890","reaction","3-methoxytyramine:oxygen oxidoreductase (deam...",0.000190966157205229
+"R04893","reaction","L-normetanephrine:oxygen oxidoreductase (deam...",0.000190966157205229
+"R04894","reaction","L-metanephrine:oxygen oxidoreductase (deamina...",0.000190966157205229
+"R04904","reaction","5-hydroxyindoleacetaldehyde:oxygen oxidoreduc...",0.000790911572052436
+"R04905","reaction","S-adenosyl-L-methionine:N-acetylserotonin O-m...",0.00069092066957792
+"R04906","reaction","5-Hydroxyindoleacetate <=> 5-Hydroxyindoleace...",0.00449057496360986
+"R04907","reaction","3-hydroxykynurenamine:oxygen oxidoreductase(d...",0.00129086608442502
+"R04908","reaction","5-hydroxykynurenamine:oxygen oxidoreductase(d...",0.00229077510917029
+"R04931","reaction","S-adenosyl-L-methionine:thiol S-methyltransfe...",0.00149084788937405
+"R04972","reaction","uroporphyrinogen I carboxy-lyase",0.0109899836244542
+"R04977","reaction","Myoglobin <=> Globin + Heme",0.0102900473071324
+"R04994","reaction","S-adenosyl-L-methionine:2-phytyl-1,4-naphthoq...",0.00109088427947598
+"R05123","reaction","S-adenosyl-L-methionine:(RS)-norcoclaurine 6-...",0.000590929767103293
+"R05144","reaction","peptidyl-glutamate 4-carboxylase (2-methyl-3-...",0.000490938864628777
+"R05149","reaction","S-adenosyl-L-methionine:1-precorrin-6Y C5,15-...",0.000390947962154261
+"R05150","reaction","precorrin-6Y:NADP+ oxidoreductase",0.00389062954876276
+"R05177","reaction","precorrin 8X 11,12-methylmutase",0.0136897379912663
+"R05180","reaction","S-adenosyl-L-methionine:precorrin-3B C17-meth...",0.00069092066957792
+"R05181","reaction","S-adenosyl-L-methionine:precorrin-4 C11 methy...",0.00069092066957792
+"R05217","reaction","precorrin-3A,NADH:oxygen oxidoreductase (20-h...",0.00519051128093158
+"R05219","reaction","Precorrin 6X + Acetate + S-Adenosyl-L-homocys...",0.000890902474526952
+"R05303","reaction","Cephamycin C + S-Adenosyl-L-homocysteine <=> ...",0.000890902474526952
+"R05374","reaction","2-oxo-5-methyl-cis-muconate carboxy-lyase",0.0128898107714702
+"R05516","reaction","dTDP-L-rhamnose <=> dTDP-L-dihydrostreptose",0.0130897925764192
+"R05520","reaction","S-adenosyl-L-methionine:erythromycin-C 3''-O-...",0.00109088427947598
+"R05522","reaction","erythromycin-D,NADPH:oxygen oxidoreductase (1...",0.00109088427947598
+"R05530","reaction","dTDP-L-mycarose:erythronolide-B 3-O-alpha-myc...",0.00149084788937405
+"R05531","reaction","dTDP-D-desosamine:3-O-mycarosylerythronolide-...",0.000790911572052436
+"R05532","reaction","S-adenosyl-L-methionine:erythromycin-D 3''-O-...",0.00109088427947598
+"R05672","reaction","N6,N6,O-Tridemethylpuromycin-5'-phosphate + A...",0.00339067503639007
+"R05673","reaction","N-Acetyl-N6,N6,O-tridemethylpuromycin-5'-phos...",0.000390947962154261
+"R05674","reaction","N-Acetyl-N6,O-didemethylpuromycin-5'-phosphat...",0.000790911572052436
+"R05675","reaction","N-Acetyl-O-demethylpuromycin-5'-phosphate <=>...",0.000790911572052436
+"R05676","reaction","N-Acetyl-O-demethylpuromycin + S-Adenosyl-L-m...",0.000990893377001467
+"R05677","reaction","N-Acetylpuromycin + H2O <=> Puromycin + Aceta...",0.004690556768559
+"R05732","reaction","(S)-N-methylcoclaurine,[reduced NADPH---hemop...",0.00069092066957792
+"R05757","reaction","S-adenosyl-L-methionine:3'-demethylstaurospor...",0.00129086608442502
+"R05759","reaction","S-adenosyl-L-methionine:jasmonate O-methyltra...",0.00209079330422125
+"R05776","reaction","S-adenosyl-L-methionine:24-methylenelophenol ...",0.00229077510917029
+"R05807","reaction","sirohydrochlorin cobalt-lyase",0.00169082969432319
+"R05808","reaction","S-adenosyl-L-methionine:cobalt-factor-II C20-...",0.000890902474526952
+"R05810","reaction","cobalt-precorrin-4 methyltransferase",0.000890902474526952
+"R05812","reaction","cobalt-precorrin-6B:NAD+ oxidoreductase",0.00749030203784567
+"R05814","reaction","precorrin-8 11,12-methylmutase",0.00639040211062588
+"R05853","reaction","Stemmadenine <=> Tabersonine",0.00919014737991266
+"R05855","reaction","tabersonine,[reduced NADPH---hemoprotein redu...",0.00259074781659383
+"R05885","reaction","S-adenosyl-L-methionine:16-hydroxytabersonine...",0.000590929767103293
+"R06254","reaction","2 I-Urobilinogen + Oxygen <=> 2 Urobilin + 2 ...",0.0142896834061135
+"R06255","reaction","2 L-Urobilinogen + Oxygen <=> 2 L-Urobilin + ...",0.00569046579330427
+"R06287","reaction","Divinyl chlorophyllide a <=> Divinylchlorophy...",0.014189692503639
+"R06427","reaction","S-adenosyl-L-methionine:dTDP-3-amino-3,4,6-tr...",0.00149084788937405
+"R06433","reaction","dTDP-4-oxo-2,6-dideoxy-D-allose 5-epimerase",0.00339067503639007
+"R06439","reaction","S-adenosyl-L-methionine:dTDP-3-amino-3,6-dide...",0.000790911572052436
+"R06450","reaction","dTDP-alpha-D-mycaminose:tylactone 5-O-beta-D-...",0.00069092066957792
+"R06451","reaction","dTDP-6-deoxy-alpha-D-allose:5-O-beta-D-mycami...",0.00159083879184856
+"R06452","reaction","dTDP-L-mycarose:demethyllactenocin 4'-O-alpha...",0.000990893377001467
+"R06455","reaction","Oleandolide + dTDP-L-olivose <=> L-Olivosyl-o...",0.000890902474526952
+"R06456","reaction","S-adenosyl-L-methionine:L-olivosyl-oleandolid...",0.0011908751819505
+"R06457","reaction","L-Oleandrosyl-oleandolide + dTDP-D-desosamine...",0.00139085698689953
+"R06460","reaction","dTDP-3-dimethylamino-3,4,6-trideoxy-alpha-D-g...",0.000990893377001467
+"R06461","reaction","dTDP-3-dimethylamino-3,4,6-trideoxy-alpha-D-g...",0.000990893377001467
+"R06473","reaction","5-Oxoavermectin ''1a'' aglycone + NADPH + H+ ...",0.0132897743813683
+"R06475","reaction","5-Oxoavermectin ''1b'' aglycone + NADPH + H+ ...",0.0132897743813683
+"R06477","reaction","Avermectin B1a aglycone + S-Adenosyl-L-methio...",0.00109088427947598
+"R06479","reaction","Avermectin B1b aglycone + S-Adenosyl-L-methio...",0.00109088427947598
+"R06488","reaction","Avermectin B1a aglycone + dTDP-L-oleandrose <...",0.000990893377001467
+"R06489","reaction","Avermectin B1a monosaccharide + dTDP-L-oleand...",0.00109088427947598
+"R06490","reaction","Avermectin A1a aglycone + dTDP-L-oleandrose <...",0.000890902474526952
+"R06491","reaction","Avermectin A1a monosaccharide + dTDP-L-oleand...",0.00109088427947598
+"R06496","reaction","Avermectin B1b aglycone + dTDP-L-oleandrose <...",0.000990893377001467
+"R06497","reaction","Avermectin B1b monosaccharide + dTDP-L-oleand...",0.00109088427947598
+"R06498","reaction","Avermectin A1b aglycone + dTDP-L-oleandrose <...",0.000890902474526952
+"R06499","reaction","Avermectin A1b monosaccharide + dTDP-L-oleand...",0.00109088427947598
+"R06560","reaction","formononetin,[reduced NADPH---hemoprotein red...",0.00229077510917029
+"R06564","reaction","S-adenosyl-L-methionine:daidzein 4'-O-methylt...",0.00169082969432319
+"R06576","reaction","S-adenosyl-L-methionine:3,4-dihydroxy-trans-c...",0.000990893377001467
+"R06578","reaction","S-adenosyl-L-methionine:caffeoyl-CoA 3-O-meth...",0.00149084788937405
+"R06612","reaction","5,6-Indolequinone-2-carboxylic acid <=> Eumel...",0.00159083879184856
+"R06626","reaction","4-Hydroxyphenylglyoxylate + L-Tyrosine <=> L-...",0.0121898744541485
+"R06627","reaction","dTDP-3-amino-2,3,6-trideoxy-4-keto-D-glucose ...",0.00149084788937405
+"R06628","reaction","dTDP-3-amino-2,3,6-trideoxy-C-methyl-D-erythr...",0.00609042940320233
+"R06632","reaction","4-hydroxyphenylpyruvate:oxygen oxidoreductase...",0.00189081149927222
+"R06633","reaction","(S)-4-hydroxymandelate:oxygen 1-oxidoreductas...",0.000790911572052436
+"R06675","reaction","S-adenosyl-L-methionine:nogalonic-acid O-meth...",0.000790911572052436
+"R06679","reaction","12-deoxyaklanonic-acid:oxygen oxidoreductase",9.09752547307133e-05
+"R06680","reaction","S-adenosyl-L-methionine:aklanonate O-methyltr...",0.000790911572052436
+"R06681","reaction","aklaviketone lyase (ring-opening)",0.000490938864628777
+"R06700","reaction","tetracenomycin-F1:oxygen C5-monooxygenase",0.000390947962154261
+"R06701","reaction","Tetracenomycin D3 <=> Tetracenomycin B3",0.000390947962154261
+"R06702","reaction","Tetracenomycin B3 <=> Tetracenomycin E",0.000590929767103293
+"R06703","reaction","S-adenosyl-L-methionine:tetracenomycin-E O-me...",0.000990893377001467
+"R06704","reaction","tetracenomycin-A2,NADPH:oxygen oxidoreductase...",0.00579045669577879
+"R06713","reaction","S-adenosyl-L-methionine:tetracenomycin-B3 O-m...",0.000790911572052436
+"R06715","reaction","S-adenosyl-L-methionine:4-demethylpremithramy...",0.00129086608442502
+"R06716","reaction","dTDP-D-olivose:premithramycinone D-olivosyltr...",0.000890902474526952
+"R06717","reaction","dTDP-D-oliose:premithramycin-A1 D-oliosyltran...",0.000990893377001467
+"R06718","reaction","Premithramycin A2' + dTDP-D-mycarose <=> Prem...",0.000890902474526952
+"R06719","reaction","S-adenosyl-L-methionine:premithramycin-A3' C-...",0.0011908751819505
+"R06770","reaction","dTDP-4-O-demethyl-beta-L-noviose:novobiocic-a...",0.0011908751819505
+"R06771","reaction","S-adenosyl-L-methionine:demethyldecarbamoylno...",0.00149084788937405
+"R06793","reaction","2-hydroxy-2,3-dihydrogenistein hydro-lyase (g...",0.000190966157205229
+"R06897","reaction","2,4-dihydroxyhept-2-enedioate hydro-lyase",0.00269073871906846
+"R07190","reaction","N,N-Dihydroxy-L-tyrosine <=> (E)-4-Hydroxyphe...",0.00199080240174674
+"R07236","reaction","S-adenosyl-L-methionine:gamma-tocopherol 5-O-...",0.00129086608442502
+"R07251","reaction","acyl-CoA:malonyl-CoA C-acyltransferase (dihyd...",0.00309070232896652
+"R07440","reaction","Ferulate + NADPH + H+ + Oxygen <=> 5-Hydroxyf...",0.0111899654294032
+"R07481","reaction","Cycloartenol + S-Adenosyl-L-methionine <=> 24...",0.00229077510917029
+"R07501","reaction","S-adenosyl-L-methionine:2-methyl-6-phytyl-1,4...",0.00129086608442502
+"R07502","reaction","gamma-tocopherol lyase (decyclizing)",0.00229077510917029
+"R07503","reaction","delta-tocopherol lyase (decyclizing)",0.00249075691411932
+"R07504","reaction","S-adenosyl-L-methionine:delta-tocopherol 5-O-...",0.00129086608442502
+"R07508","reaction","beta-Tocopherol <=> alpha-Tocopherol",0.00209079330422125
+"R07519","reaction","lycopene hydro-lyase (1-hydroxy-1,2-dihydroly...",0.00969010189228535
+"R07521","reaction","S-adenosyl-L-methionine:demethylspheroidene O...",0.00129086608442502
+"R07522","reaction","lycopene hydro-lyase (1-hydroxy-1,2-dihydroly...",0.000390947962154261
+"R07523","reaction","1-hydroxy-1,2-dihydrolycopene:acceptor oxidor...",0.00069092066957792
+"R07524","reaction","S-adenosyl-L-methionine:demethylspheroidene O...",0.000990893377001467
+"R07527","reaction","S-adenosyl-L-methionine:demethylspheroidene O...",0.0011908751819505
+"R07528","reaction","lycopene hydro-lyase (1-hydroxy-1,2-dihydroly...",0.000390947962154261
+"R07529","reaction","S-adenosyl-L-methionine:demethylspheroidene O...",0.0011908751819505
+"R07532","reaction","lycopene hydro-lyase (1-hydroxy-1,2-dihydroly...",0.00179082059679771
+"R07533","reaction","demethylspheroidene O-methyltransferase",0.00109088427947598
+"R07534","reaction","1-hydroxy-1,2-dihydrolycopene:acceptor oxidor...",0.000890902474526952
+"R07535","reaction","S-adenosyl-L-methionine:demethylspheroidene O...",0.000890902474526952
+"R07536","reaction","lycopene hydro-lyase (1-hydroxy-1,2-dihydroly...",0.000790911572052436
+"R07772","reaction","cobalt-precorrin 5A acylhydrolase",0.00809024745269287
+"R07773","reaction","S-adenosyl-L-methionine:cobalt-precorrin-5B (...",0.000590929767103293
+"R07774","reaction","S-adenosyl-L-methionine:cobalt-precorrin-6B C...",0.000390947962154261
+"R07775","reaction","S-adenosyl-L-methionine:cobalt-precorrin-7 C5...",0.00069092066957792
+"R07778","reaction","naringenin,[reduced NADPH---hemoprotein reduc...",0.00659038391557491
+"R07826","reaction","p-coumarate 3-hydroxylase",0.00409061135371179
+"R07919","reaction","S-adenosyl-L-methionine:7-methylxanthine N3-m...",0.000990893377001467
+"R07920","reaction","S-adenosyl-L-methionine:3,7-dimethylxanthine ...",0.00069092066957792
+"R07921","reaction","S-adenosyl-L-methionine:1,7-dimethylxanthine ...",0.00069092066957792
+"R07922","reaction","S-Adenosyl-L-methionine + 7-Methylxanthine <=...",0.00109088427947598
+"R07934","reaction","(6Z,9Z,12Z,15Z,18Z,21Z)-tetracosahexaenoyl-Co...",0.00659038391557491
+"R07945","reaction","1,7-Dimethylxanthine <=> 1,7-Dimethyluric aci...",0.0114899381368267
+"R07950","reaction","(6Z,9Z,12Z,15Z,18Z)-tetracosapentaenoyl-CoA:o...",0.00659038391557491
+"R07977","reaction","1,7-dimethylxanthine:oxygen oxidoreductase",0.0114899381368267
+"R07978","reaction","3,7-dimethylxanthine:oxygen oxidoreductase",0.00979009279475987
+"R07980","reaction","caffeine:ubiquinone oxidoreductase",0.0135897470887918
+"R07981","reaction","1,3,7-Trimethyluric acid + Oxygen + 2 H2O <=>...",0.00219078420669577
+"R08147","reaction","S-adenosyl-L-methionine:(2E,6E)-farnesoate O-...",0.00069092066957792
+"R08148","reaction","methyl (2E,6E)-farnesoate,[reduced NADPH---he...",0.00149084788937405
+"R08149","reaction","juvenile hormone III acylhydrolase",0.000890902474526952
+"R08150","reaction","(10S)-Juvenile hormone III diol + H2O <=> (10...",0.00849021106259094
+"R08151","reaction","S-adenosyl-L-methionine:juvenile hormone III ...",0.000590929767103293
+"R08152","reaction","Juvenile hormone III acid + H2O <=> (10S)-Juv...",0.00129086608442502
+"R08153","reaction","Juvenile hormone III + H2O <=> (10S)-Juvenile...",0.00329068413391556
+"R08155","reaction","Juvenile hormone III <=> 12-trans-Hydroxy juv...",0.00169082969432319
+"R08235","reaction","6-mercaptopurin:oxygen oxidoreductase",0.00909015647743814
+"R08236","reaction","S-adenosyl-L-methionine:6-mercaptopurin S-met...",0.00209079330422125
+"R08239","reaction","S-adenosyl-L-methionine:6-thioinosine 5'-mono...",0.00299071142649201
+"R08246","reaction","S-adenosyl-L-methionine:6-thioguanosine monop...",0.00209079330422125
+"R08343","reaction","Citalopram <=> Demethylcitalopram",0.00719032933042212
+"R08345","reaction","Demethylcitalopram <=> Didemethylcitalopram",0.00559047489082964
+"R08346","reaction","citalopram:oxygen oxidoreductase(deaminating)...",0.00279072962154298
+"R08347","reaction","demethylcitalopram:oxygen oxidoreductase(deam...",0.0011908751819505
+"R08348","reaction","didemethylcitalopram:oxygen oxidoreductase(de...",0.00209079330422125
+"R08349","reaction","citalopram aldehyde:oxygen oxidoreductase",0.00319069323144104
+"R08408","reaction","aldehyde:oxygen oxidoreductase",0.0133897652838428
+"R08464","reaction","Cathinone <=> D-Cathine",0.000890902474526952
+"R08465","reaction","S-adenosyl-L-methionine:D-cathine N-methyltra...",0.0011908751819505
+"R08466","reaction","Cathinone <=> (-)-Norephedrine",0.000990893377001467
+"R08467","reaction","S-adenosyl-L-methionine:norephedrine N-methyl...",0.00109088427947598
+"R08597","reaction","dTDP-4-oxo-2,6-dideoxy-D-glucose 3,5-epimeras...",0.00859020196506546
+"R08766","reaction","3-(4-hydroxyphenyl)lactate hydro-lyase (4-cou...",0.012089883551674
+"R08769","reaction","S-adenosyl-L-methionine:2-polyprenyl-6-hydrox...",0.00159083879184856
+"R08771","reaction","S-adenosyl-L-methionine:3,4-dihydroxy-5-polyp...",0.0011908751819505
+"R08772","reaction","3-polyprenyl-4-hydroxy-5-methoxybenzoate carb...",0.00069092066957792
+"R08789","reaction","S-adenosyl-L-methionine:(S)-canadine N-methyl...",0.000590929767103293
+"R08836","reaction","3,4-dihydroxy-L-phenylalanine:oxygen 4,5-oxid...",0.00759029294032018
+"R08846","reaction","3,4-dihydroxy-L-phenylalanine ammonia-lyase (...",0.00909015647743814
+"R08847","reaction","3,4-Dihydroxyphenylpropanoate <=> (R)-3-(3,4-...",0.00309070232896652
+"R08849","reaction","Cysteinyldopa <=> Phaeomelanin",0.00549048398835513
+"R08863","reaction","(S)-2-hydroxypropylphosphonate,NADH:oxygen ep...",0.00349066593886459
+"R08920","reaction","3,4-dihydroxy-L-phenylalanine:oxygen oxidored...",0.00559047489082964
+"R08932","reaction","S-adenosyl-L-methionine:dTDP-4-amino-2,3,4,6-...",0.00149084788937405
+"R08933","reaction","S-adenosyl-L-methionine:dTDP-4-oxo-2,6-dideox...",0.00129086608442502
+"R08934","reaction","dTDP-3-methyl-4-oxo-2,6-dideoxy-D-glucose 5-e...",0.00379063864628825
+"R08965","reaction","5,6-dihydroxyindole-2-carboxylate:oxygen oxid...",0.0023907660116448
+"R08973","reaction","S-adenosyl-L-methionine:TRIBOA-glucoside 7-O-...",0.000890902474526952
+"R08974","reaction","pheophorbide-a hydrolase (decarboxylating)",0.00349066593886459
+"R09061","reaction","chlorophyllide-a hydrolase",0.000190966157205229
+"R09063","reaction","S-adenosyl-L-methionine:bacteriochlorophyllid...",0.00129086608442502
+"R09073","reaction","S-adenosylmethionine:diacylglycerylhomoserine...",0.0119898926491994
+"R09089","reaction","Pyruvophenone <=> Cathinone",0.00179082059679771
+"R09187","reaction","C-9 Reduced nonaketamide <=> Nonaketamide mon...",0.00129086608442502
+"R09188","reaction","Nonaketamide monocyclic intermediate <=> Nona...",0.000390947962154261
+"R09189","reaction","S-adenosyl-L-methionine:pretetramid C-methylt...",0.000790911572052436
+"R09190","reaction","6-methylpretetramide,NADPH:oxygen oxidoreduct...",0.00919014737991266
+"R09191","reaction","S-adenosyl-L-methionine:4-amino-anhydrotetrac...",0.000790911572052436
+"R09196","reaction","Nonaketamide tricyclic intermediate <=> Prete...",0.000590929767103293
+"R09197","reaction","4-Keto-anhydrotetracycline <=> 4-Amino-anhydr...",0.000490938864628777
+"R09325","reaction","7,9,12-Decaketide intermediate 3 <=> Deoxynog...",0.000490938864628777
+"R09326","reaction","7,9,12-Decaketide intermediate 6 <=> 12-Deoxy...",0.000590929767103293
+"R09327","reaction","deoxynogalonate:oxygen oxidoreductase",9.09752547307133e-05
+"R09328","reaction","nogalaviketone lyase (ring-opening)",0.000490938864628777
+"R09351","reaction","dTDP-D-olivose:premithramycin-A3 D-olivosyltr...",0.000890902474526952
+"R09352","reaction","dTDP-D-olivose:3A-deolivosylpremithramycin-B ...",0.000890902474526952
+"R09369","reaction","S-adenosyl-L-methionine:methaneselenol Se-met...",0.00069092066957792
+"R09370","reaction","S-adenosyl-L-methionine:dimethyl-selenide Se-...",0.000990893377001467
+"R09371","reaction","S-adenosyl-L-methionine:hydrogen-selenide Se-...",0.000790911572052436
+"R09372","reaction","methaneselenol:NADP+ oxidoreductase",0.004690556768559
+"R09492","reaction","menaquinol:O2 oxidoreductase (H+-transporting...",0.0109899836244542
+"R09501","reaction","dimethyl sulfide:menaquinone oxidoreductase",0.00659038391557491
+"R09543","reaction","S-adenosyl-L-methionine:malonyl-[acyl-carrier...",0.00129086608442502
+"R09560","reaction","7-chloro-L-tryptophan:oxygen oxidoreductase",0.00549048398835513
+"R09568","reaction","4'-demethylrebeccamycin D-glucose-lyase",0.00549048398835513
+"R09569","reaction","S-adenosyl-L-methionine:demethylrebeccamycin-...",0.00129086608442502
+"R09736","reaction","S-adenosyl-L-methione:demethylmenaquinol meth...",0.00149084788937405
+"R09737","reaction","S-adenosyl-L-methionine:2-methoxy-6-all-trans...",0.00189081149927222
+"R09821","reaction","S-adenosyl-L-methionine:dTDP-3-amino-3,6-dide...",0.00139085698689953
+"R09822","reaction","S-adenosyl-L-methionine:mycinamicin VI 2''-O-...",0.0011908751819505
+"R09823","reaction","S-adenosyl-L-methionine:mycinamicin III 3''-O...",0.00109088427947598
+"R09846","reaction","prenylcycteine methylesterase",0.00249075691411932
+"R09847","reaction","Protein C-terminal S-farnesyl-L-cysteine meth...",0.000990893377001467
+"R09991","reaction","peptidyl-glutamate 4-carboxylase (menaquinone...",0.0011908751819505
+"R09992","reaction","menaquinone:oxidized-dithiothreitol oxidoredu...",0.010590020014556
+"R10160","reaction","cannabigerolate:oxygen oxidoreductase (cycliz...",0.0035906568413391
+"R10166","reaction","S-adenosyl-L-methionine:4-(3-methylbut-2-enyl...",0.0035906568413391
+"R10212","reaction","Furfural + H2O + Oxygen <=> 2-Furoate + Hydro...",0.00759029294032018
+"R10307","reaction","S-adenosyl-L-methionine:dihydrosterigmatocyst...",0.000790911572052436
+"R10319","reaction","8-O-methylsterigmatocystin,[reduced NADPH---h...",0.000790911572052436
+"R10320","reaction","8-O-methyldihydrosterigmatocystin,[reduced NA...",0.000490938864628777
+"R10321","reaction","tryprostatin B,[reduced NADPH---hemoprotein r...",0.00499052947598255
+"R10402","reaction","versiconal hydro-lyase (versicolorin-B formin...",0.000790911572052436
+"R10403","reaction","S-adenosyl-L-methionine:dihydrodemethylsterig...",0.00109088427947598
+"R10404","reaction","S-Adenosyl-L-methionine <=> S-Adenosyl-L-homo...",0.00209079330422125
+"R10416","reaction","tryprostatin A,[reduced NADPH---hemoprotein r...",0.00189081149927222
+"R10454","reaction","S-adenosyl-L-methionine:8-demethylnovobiocic ...",0.00169082969432319
+"R10479","reaction","Versicolorin B + Oxygen + NADPH + H+ <=> Vers...",0.00659038391557491
+"R10480","reaction","Versicolorin B <=> Dihydrodemethylsterigmatoc...",0.000390947962154261
+"R10481","reaction","Versicolorin A <=> 6-Demethylsterigmatocystin",0.000590929767103293
+"R10482","reaction","Dihydro-O-methylsterigmatocystin <=> Aflatoxi...",0.000390947962154261
+"R10483","reaction","O-Methylsterigmatocystin <=> Aflatoxin G1",0.000390947962154261
+"R10491","reaction","S-adenosyl-L-methionine:gamma-tocotrienol 5-O...",0.00129086608442502
+"R10492","reaction","S-adenosyl-L-methionine:delta-tocotrienol 5-O...",0.00129086608442502
+"R10588","reaction","S-adenosyl-L-methionine:6-hydroxytryprostatin...",0.00069092066957792
+"R10623","reaction","delta-tocotrienol lyase (decyclizing)",0.0023907660116448
+"R10624","reaction","gamma-tocotrienol lyase (decyclizing)",0.00179082059679771
+"R10671","reaction","L-tyrosine,[reduced NADPH-hemoprotein reducta...",0.00519051128093158
+"R10701","reaction","5-O-Caffeoylshikimic acid + H2O <=> Caffeate ...",0.00889017467248911
+"R10709","reaction","S-adenosyl-L-methionine:2-methyl-6-solanyl-1,...",0.00129086608442502
+"R10710","reaction","S-adenosyl-L-methionine:6-geranylgeranyl-2-me...",0.00129086608442502
+"R10874","reaction","dTDP-6-deoxy-alpha-D-allose:mycinamicin-VII 2...",0.000990893377001467
+"R10876","reaction","dTDP-3-dimethylamino-3,4,6-trideoxy-alpha-D-g...",0.000890902474526952
+"R10877","reaction","mycinamicin-IV,NADPH:oxygen oxidoreductase (1...",0.00669037481804954
+"R10925","reaction","(2E,6E)-farnesoate,[reduced NADPH---hemoprote...",0.00219078420669577
+"R10954","reaction","tetracenomycin-B2,NADPH:oxygen oxidoreductase...",0.00389062954876276
+"R10955","reaction","dTDP-beta-L-rhamnose:8-demethyltetracenomycin...",0.00109088427947598
+"R10956","reaction","S-adenosyl-L-methionine:8-demethyl-8-alpha-L-...",0.0011908751819505
+"R10957","reaction","S-adenosyl-L-methionine:8-demethyl-8-(2-metho...",0.00129086608442502
+"R10958","reaction","S-adenosyl-L-methionine:8-demethyl-8-(2,3-di-...",0.00129086608442502
+"R10959","reaction","S-adenosyl-L-methionine:8-demethyl-8-(2,3,4-t...",0.00129086608442502
+"R10963","reaction","S-adenosyl-L-methionine:2,7-dihydroxy-5-methy...",0.00129086608442502
+"R11020","reaction","S-adenosyl-L-methionine:dTDP-4-oxo-6-deoxy-D-...",0.0011908751819505
+"R11041","reaction","S-adenosyl-L-methionine:dTDP-4-oxo-2,6-dideox...",0.00129086608442502
+"R11042","reaction","dTDP-3-O-methyl-4-oxo-2,6-dideoxy-L-mannose <...",0.00249075691411932
+"R11045","reaction","S-adenosyl-L-methionine:dTDP-3-amino-2,3,6-tr...",0.00149084788937405
+"R11046","reaction","dTDP-3-N,N-dimethylamino-2,3,6-trideoxy-4-ket...",0.00759029294032018
+"R11105","reaction","7-Chloro-L-tryptophan + Oxygen <=> Monodechlo...",0.012289865356623
+"R11122","reaction","K-252c + dTDP-L-ristosamine <=> Holyrine A + ...",0.00149084788937405
+"R11123","reaction","Holyrine A <=> O-Demethyl-N-demethyl-staurosp...",0.000890902474526952
+"R11129","reaction","O-Demethyl-N-demethyl-staurosporine <=> 3'-De...",0.00109088427947598
+"R11136","reaction","Violaceinic acid + Oxygen <=> Violacein + CO2...",0.0131897834788937
+"R11138","reaction","dTDP-3-amino-2,3,6-trideoxy-4-keto-D-glucose ...",0.00609042940320233
+"R11139","reaction","dTDP-3-amino-4-oxo-2,3,6-trideoxy-L-allose <=...",0.00889017467248911
+"R11211","reaction","(-)-bursehernin,[reduced NADPH---hemoprotein ...",0.000290957059679745
+"R11222","reaction","(-)-matairesinol,[reduced NADPH---hemoprotein...",0.00189081149927222
+"R11230","reaction","S-adenosyl-L-methionine:(-)-pluviatolide 4-O-...",0.000590929767103293
+"R11329","reaction","Fe-coproporphyrin-III ferro-lyase (coproporph...",0.0070903384279476
+"R11371","reaction","S-adenosyl-L-methionine:6-methylsalicylyl-CoA...",0.00159083879184856
+"R11381","reaction","(2E,6E)-farnesol:oxygen oxidoreductase",0.0058904475982533
+"R11413","reaction","S-adenosyl-L-methionine:orsellinate-[acp] O-m...",0.000990893377001467
+"R11414","reaction","2-Methoxyorsellinate-[acp] + Iodide <=> 5-Iod...",0.000990893377001467
+"R11415","reaction","5-Iodo-2-methoxyorsellinate-[acp] <=> 3-Hydro...",0.000990893377001467
+"R11416","reaction","S-adenosyl-L-methionine:3-hydroxy-5-iodo-2-me...",0.0011908751819505
+"R11417","reaction","dTDP-4-hydroxyamino-4,6-dideoxy-alpha-D-gluco...",0.00189081149927222
+"R11418","reaction","dTDP-4-deoxy-4-thio-alpha-D-digitoxose:calich...",0.0035906568413391
+"R11420","reaction","dTDP-4-ethylamino-3-O-methyl-2,4-dideoxy-L-th...",0.00319069323144104
+"R11421","reaction","dTDP-4-ethylamino-3-O-methyl-2,4-dideoxy-L-th...",0.00189081149927222
+"R11422","reaction","dTDP-3'-O-methyl-beta-L-rhamnose:calicheamici...",0.00189081149927222
+"R11423","reaction","dTDP-3'-O-methyl-beta-L-rhamnose:calicheamici...",0.00319069323144104
+"R11445","reaction","malonyl-CoA:malonyl-CoA C-acyltransferase (de...",0.00349066593886459
+"R11491","reaction","(1R,10aS)-1,4,10,10a-tetrahydrophenazine-1-ca...",0.00189081149927222
+"R11507","reaction","S-adenosyl-L-methionine:8-ethyl-12-methyl-3-v...",0.000590929767103293
+"R11508","reaction","S-adenosyl-L-methionine:8,12-diethyl-3-vinylb...",0.000590929767103293
+"R11509","reaction","S-adenosyl-L-methionine:12-ethyl-8-propyl-3-v...",0.000590929767103293
+"R11510","reaction","8-Ethyl-12-methyl-3-vinylbacteriochlorophylli...",9.09752547307133e-05
+"R11511","reaction","8,12-Diethyl-3-vinylbacteriochlorophyllide d ...",9.09752547307133e-05
+"R11512","reaction","12-Ethyl-8-propyl-3-vinylbacteriochlorophylli...",9.09752547307133e-05
+"R11513","reaction","12-Ethyl-8-isobutyl-3-vinylbacteriochlorophyl...",9.09752547307133e-05
+"R11522","reaction","Fe-coproporphyrin III:hydrogen peroxide oxido...",0.000190966157205229
+"R11533","reaction","S-adenosyl-L-methionine:phenazine-1-carboxyla...",0.000390947962154261
+"R11545","reaction","S-adenosyl-L-methionine:(-)-5'-demethylyatein...",0.000790911572052436
+"R11546","reaction","S-adenosyl-L-methionine:methanethiol S-methyl...",0.000990893377001467
+"R11569","reaction","(1R,5aS,6R)-4a-Hydroxy-1,4,4a,5,5a,6,9,10a-oc...",0.0108899927219797
+"R11570","reaction","(1R,6R)-1,4,5,5a,6,9-Hexahydrophenazine-1,6-d...",0.00129086608442502
+"R11576","reaction","(10aS)-10,10a-Dihydrophenazine-1-carboxylate ...",0.000190966157205229
+"R11577","reaction","5,10-Dihydrophenazine-1-carboxylate + Oxygen ...",9.09752547307133e-05
+"R11580","reaction","S-adenosyl-L-methionine:cobalt-factor III 17-...",0.0035906568413391
+"R11670","reaction","S-adenosyl-L-methionine:4-hydroxy-2,2'-bipyrr...",0.0011908751819505
+"R11687","reaction","(S)-N-methylcanadine,[reduced NADPH---hemopro...",0.00159083879184856
+"R11691","reaction","(13S,14R)-13-O-Acetyl-1,8-dihydroxy-cis-N-met...",0.000490938864628777
+"R11692","reaction","S-adenosyl-L-methionine:3-O-acetyl-4'-O-demet...",0.00069092066957792
+"R11693","reaction","3-O-acetylpapaveroxine acetatehydrolase",0.00749030203784567
+"R11779","reaction","S-adenosyl-L-methionine:8-amino-8-demethylrib...",0.00129086608442502
+"R11780","reaction","S-adenosyl-L-methionine:8-demethyl-8-(methyla...",0.00129086608442502
+"R11810","reaction","16-methoxytabersonine,[reduced NADPH---hemopr...",0.00389062954876276
+"R11906","reaction","isoniazid:hydrogen-peroxide oxidoreductase",0.00889017467248911
+"R11916","reaction","L-dopa carboxy-lyase (oxidative-deaminating)",0.000990893377001467
+"R11917","reaction","L-tyrosine carboxy-lyase (oxidative-deaminati...",0.00129086608442502
+"R11935","reaction","S-adenosyl-L-methionine:norbaeocystin N-methy...",0.00129086608442502
+"R11936","reaction","S-adenosyl-L-methionine:baeocystin N-methyltr...",0.00159083879184856
+"R12000","reaction","siroheme carboxy-lyase",0.00269073871906846
+"R12001","reaction","12,18-Didecarboxysiroheme <=> Fe-coproporphyr...",0.00939012918486169
+"R12077","reaction","dTDP-6-deoxy-beta-L-mannose:N-acetyl-alpha-D-...",0.00229077510917029
+"R12101","reaction","cannabigerolate:oxygen oxidoreductase (cycliz...",0.0035906568413391
+"R12102","reaction","Delta9-Tetrahydrocannabinolate <=> Dronabinol...",0.00219078420669577
+"R12103","reaction","Cannabidiolic acid <=> Cannabidiol + CO2",0.00219078420669577
+"R12104","reaction","4-Dimethylallyl-L-abrine <=> Chanoclavine-I",0.0035906568413391
+"R12114","reaction","8-amino-8-demethylriboflavin-5'-phosphate pho...",0.00779027474526933
+"R12335","reaction","1-Carboxybiuret <=> Biuret + CO2",0.0104900291120815
+"R12611","reaction","L-tyrosine:hydrogen-peroxide oxidoreductase (...",0.00209079330422125
+"R12657","reaction","S-adenosyl-L-methionine:3-demethylubiquinol 3...",0.00199080240174674
+"R12658","reaction","2-Polyprenyl-6-methoxyphenol + Oxygen <=> 2-M...",0.00309070232896652
+"R12659","reaction","Tryptamine + [Reduced NADPH---hemoprotein red...",0.0099900745997089
+"R12854","reaction","S-Adenosyl-L-methionine + 5-Hydroxybenzimidaz...",0.00109088427947598
+"R12912","reaction","3-amino-4-hydroxybenzoate,NADPH:oxygen oxidor...",0.0107900018195051
+"R12928","reaction","S-adenosyl-L-methionine:3-amino-4-hydroxybenz...",0.00139085698689953
+"R13011","reaction","2-oxoadipate dioxygenase/carboxy lyase",0.0145896561135371
+"R13034","reaction","D-Lysine <=> 6-Amino-2-oxohexanoate",0.0140897016011645
+"R13085","reaction","Alphitonin + 2 H2O <=> 3,4-Dihydroxyphenylace...",0.0114899381368267
+"R13123","reaction","S-adenosyl-L-methionine:5-dehydro-6-demethoxy...",0.000890902474526952
+"C00011","compound","CO2",0.00669037481804954
+"C00019","compound","S-Adenosyl-L-methionine",0.00149084788937405
+"C00021","compound","S-Adenosyl-L-homocysteine",0.00069092066957792
+"C00027","compound","Hydrogen peroxide",0.00199080240174674
+"C00132","compound","Methanol",0.01398971069869
+"C00218","compound","Methylamine",0.00829022925764191
+"C00265","compound","Dithiothreitol",0.0104900291120815
+"C00355","compound","3,4-Dihydroxy-L-phenylalanine",0.00859020196506546
+"C00363","compound","dTDP",0.00159083879184856
+"C00411","compound","Sinapoyl-CoA",0.0064903930131004
+"C00482","compound","Sinapate",0.00669037481804954
+"C00483","compound","Tyramine",0.00069092066957792
+"C00524","compound","Cytochrome c",0.0112899563318777
+"C00547","compound","L-Noradrenaline",0.000290957059679745
+"C00580","compound","Dimethyl sulfide",0.0070903384279476
+"C00704","compound","Superoxide",0.00279072962154298
+"C00708","compound","Iodide",0.000990893377001467
+"C00744","compound","Macrocin",0.00129086608442502
+"C00748","compound","Siroheme",0.00389062954876276
+"C00780","compound","Serotonin",0.00169082969432319
+"C00788","compound","L-Adrenaline",0.000490938864628777
+"C00814","compound","Biochanin A",0.000790911572052436
+"C00822","compound","Dopaquinone",0.00769028384279481
+"C00856","compound","DNA cytosine",0.00189081149927222
+"C00858","compound","Formononetin",0.000790911572052436
+"C00961","compound","Sterigmatocystin",0.000990893377001467
+"C00978","compound","N-Acetylserotonin",0.00129086608442502
+"C01024","compound","Hydroxymethylbilane",0.0023907660116448
+"C01051","compound","Uroporphyrinogen III",0.000490938864628777
+"C01060","compound","3,5-Diiodo-L-tyrosine",0.00619042030567685
+"C01119","compound","Oxidized dithiothreitol",0.0104900291120815
+"C01121","compound","Streptidine 6-phosphate",0.00609042940320233
+"C01161","compound","3,4-Dihydroxyphenylacetate",0.00839022016011642
+"C01179","compound","3-(4-Hydroxyphenyl)pyruvate",0.0101900564046579
+"C01197","compound","Caffeate",0.00179082059679771
+"C01241","compound","Phosphatidyl-N-methylethanolamine",0.00459056586608437
+"C01382","compound","Iodine",0.00429059315866083
+"C01457","compound","Tylosin",0.00129086608442502
+"C01494","compound","Ferulate",0.0123898562590975
+"C01575","compound","Ephedrine",0.00129086608442502
+"C01598","compound","Melatonin",0.00169082969432319
+"C01610","compound","Puromycin",0.004690556768559
+"C01693","compound","L-Dopachrome",0.00249075691411932
+"C01708","compound","Hemoglobin",0.00369064774381373
+"C01902","compound","Cycloartenol",0.0106900109170306
+"C01912","compound","Erythromycin",0.00109088427947598
+"C01987","compound","2-Aminophenol",0.0130897925764192
+"C02079","compound","Staurosporine",0.00129086608442502
+"C02105","compound","(S)-Reticuline",9.09752547307133e-05
+"C02106","compound","(S)-Scoulerine",9.09752547307133e-05
+"C02248","compound","Apocytochrome c",0.0112899563318777
+"C02380","compound","6-Mercaptopurine",0.0087901837700146
+"C02400","compound","Demethylmacrocin",0.000990893377001467
+"C02442","compound","N-Methyltyramine",0.000390947962154261
+"C02463","compound","Precorrin 2",0.000190966157205229
+"C02477","compound","alpha-Tocopherol",0.00179082059679771
+"C02483","compound","gamma-Tocopherol",0.00179082059679771
+"C02515","compound","3-Iodo-L-tyrosine",0.00509052037845706
+"C02535","compound","Dimethyl selenide",0.000890902474526952
+"C02673","compound","Desacetoxyvindoline",0.00279072962154298
+"C02765","compound","(+)-(1S,2S)-Pseudoephedrine",0.0011908751819505
+"C02811","compound","Anhydrotetracycline",0.000490938864628777
+"C02915","compound","(S)-cis-N-Methylcanadine",0.000490938864628777
+"C02967","compound","5-Methylcytosine in DNA",0.00189081149927222
+"C03004","compound","N-Hydroxy-L-tyrosine",0.00949012008733621
+"C03063","compound","2-Oxohept-3-enedioate",0.00159083879184856
+"C03087","compound","5-Acetamidopentanoate",0.00919014737991266
+"C03198","compound","(S)-4-Hydroxymandelate",0.0011908751819505
+"C03263","compound","Coproporphyrinogen III",0.00639040211062588
+"C03313","compound","Phylloquinol",0.000590929767103293
+"C03319","compound","dTDP-L-rhamnose",0.00489053857350803
+"C03329","compound","(S)-Canadine",0.000490938864628777
+"C03442","compound","dTDP-L-dihydrostreptose",0.00789026564774384
+"C03516","compound","Magnesium protoporphyrin",0.000990893377001467
+"C03590","compound","4-Hydroxyphenylglyoxylate",0.00219078420669577
+"C03659","compound","D-Bornesitol",0.00399062045123728
+"C03660","compound","L-Bornesitol",0.00399062045123728
+"C03683","compound","6-Demethylsterigmatocystin",0.00069092066957792
+"C03686","compound","O-Methylsterigmatocystin",0.000390947962154261
+"C03758","compound","Dopamine",0.000290957059679745
+"C03765","compound","4-Hydroxyphenylacetaldehyde",0.00219078420669577
+"C03793","compound","N6,N6,N6-Trimethyl-L-lysine",0.0107900018195051
+"C03944","compound","Dihydro-O-methylsterigmatocystin",0.000390947962154261
+"C04043","compound","3,4-Dihydroxyphenylacetaldehyde",0.00369064774381373
+"C04052","compound","5-Carboxy-2-oxohept-3-enedioate",0.000990893377001467
+"C04118","compound","Isocorypalmine",0.000390947962154261
+"C04185","compound","5,6-Dihydroxyindole-2-carboxylate",0.00189081149927222
+"C04308","compound","Phosphatidyl-N-dimethylethanolamine",0.00579045669577879
+"C04350","compound","(E)-4-Hydroxyphenylacetaldehyde oxime",0.00509052037845706
+"C04425","compound","S-Adenosyl-4-methylthio-2-oxobutanoate",0.0070903384279476
+"C04506","compound","Protein C-terminal S-farnesyl-L-cysteine",0.0108899927219797
+"C04536","compound","Magnesium protoporphyrin monomethyl ester",0.00929013828238718
+"C04578","compound","16-Methoxy-2,3-dihydro-3-hydroxytabersonine",0.00519051128093158
+"C04642","compound","2-Hydroxy-5-carboxymethylmuconate semialdehyd...",0.01398971069869
+"C04748","compound","Protein C-terminal S-farnesyl-L-cysteine meth...",0.000990893377001467
+"C04831","compound","DIMBOA-glucoside",0.000890902474526952
+"C05127","compound","N-Methylhistamine",0.000490938864628777
+"C05161","compound","(2R,5S)-2,5-Diaminohexanoate",0.0137897288937409
+"C05174","compound","(S)-Cheilanthifoline",0.00149084788937405
+"C05175","compound","Stylopine",0.000490938864628777
+"C05176","compound","(S)-N-Methylcoclaurine",0.000290957059679745
+"C05189","compound","Protopine",0.004690556768559
+"C05191","compound","Dihydrosanguinarine",0.00289072052401749
+"C05193","compound","12-Hydroxydihydrochelirubine",0.000290957059679745
+"C05194","compound","Dihydrochelirubine",0.000390947962154261
+"C05202","compound","3'-Hydroxy-N-methyl-(S)-coclaurine",0.000290957059679745
+"C05247","compound","10-Hydroxydihydrosanguinarine",0.000390947962154261
+"C05316","compound","Dihydromacarpine",0.000190966157205229
+"C05350","compound","2-Hydroxy-3-(4-hydroxyphenyl)propenoate",0.00419060225618631
+"C05360","compound","Diimine",0.00889017467248911
+"C05544","compound","Protein N6-methyl-L-lysine",9.09752547307133e-05
+"C05545","compound","Protein N6,N6-dimethyl-L-lysine",9.09752547307133e-05
+"C05546","compound","Protein N6,N6,N6-trimethyl-L-lysine",9.09752547307133e-05
+"C05565","compound","Hydantoin-5-propionate",0.00259074781659383
+"C05576","compound","3,4-Dihydroxyphenylethyleneglycol",0.000590929767103293
+"C05577","compound","3,4-Dihydroxymandelaldehyde",0.00389062954876276
+"C05578","compound","5,6-Dihydroxyindole",0.00179082059679771
+"C05579","compound","Indole-5,6-quinone",0.00299071142649201
+"C05580","compound","3,4-Dihydroxymandelate",0.000990893377001467
+"C05581","compound","3-Methoxy-4-hydroxyphenylacetaldehyde",0.0099900745997089
+"C05582","compound","Homovanillate",0.000990893377001467
+"C05583","compound","3-Methoxy-4-hydroxyphenylglycolaldehyde",0.00219078420669577
+"C05584","compound","3-Methoxy-4-hydroxymandelate",0.000990893377001467
+"C05587","compound","3-Methoxytyramine",0.000190966157205229
+"C05588","compound","L-Metanephrine",0.000190966157205229
+"C05589","compound","L-Normetanephrine",0.000190966157205229
+"C05590","compound","Hydroiodic acid",0.00429059315866083
+"C05594","compound","3-Methoxy-4-hydroxyphenylethyleneglycol",0.000490938864628777
+"C05600","compound","2-Hydroxyhepta-2,4-dienedioate",0.000990893377001467
+"C05610","compound","Sinapoyl aldehyde",0.0011908751819505
+"C05619","compound","5-Hydroxyferulic acid",0.00549048398835513
+"C05634","compound","5-Hydroxyindoleacetaldehyde",0.00369064774381373
+"C05635","compound","5-Hydroxyindoleacetate",0.000790911572052436
+"C05637","compound","4,8-Dihydroxyquinoline",0.00129086608442502
+"C05638","compound","5-Hydroxykynurenamine",0.00599043850072782
+"C05639","compound","4,6-Dihydroxyquinoline",0.00229077510917029
+"C05640","compound","Cinnavalininate",0.00259074781659383
+"C05642","compound","Formyl-N-acetyl-5-methoxykynurenamine",0.00229077510917029
+"C05643","compound","6-Hydroxymelatonin",0.00539049308588061
+"C05644","compound","3-Methylindolepyruvate",0.00309070232896652
+"C05647","compound","Formyl-5-hydroxykynurenamine",0.00639040211062588
+"C05660","compound","5-Methoxyindoleacetate",0.00069092066957792
+"C05690","compound","Se-Methylselenomethionine",0.0011908751819505
+"C05703","compound","Methaneselenol",0.000790911572052436
+"C05770","compound","Coproporphyrin III",0.00159083879184856
+"C05772","compound","Precorrin 3A",0.000190966157205229
+"C05778","compound","Sirohydrochlorin",0.00519051128093158
+"C05781","compound","Oxyhemoglobin",0.00229077510917029
+"C05782","compound","Myoglobin",0.0102900473071324
+"C05783","compound","Cytochrome a",0.0112899563318777
+"C05784","compound","Catalase",0.0112899563318777
+"C05785","compound","Peroxidase",0.0112899563318777
+"C05793","compound","L-Urobilin",0.00569046579330427
+"C05794","compound","Urobilin",0.0142896834061135
+"C05819","compound","Menaquinol",0.00219078420669577
+"C05825","compound","2-Amino-5-oxohexanoate",0.0135897470887918
+"C05827","compound","Methylimidazole acetaldehyde",0.00339067503639007
+"C05831","compound","3-Methoxyanthranilate",0.000490938864628777
+"C05832","compound","5-Hydroxyindoleacetylglycine",0.00449057496360986
+"C05842","compound","N1-Methyl-2-pyridone-5-carboxamide",0.0133897652838428
+"C05843","compound","N1-Methyl-4-pyridone-5-carboxamide",0.0133897652838428
+"C05849","compound","Vitamin K1 epoxide",0.00289072052401749
+"C06160","compound","(S)-Norcoclaurine",0.000390947962154261
+"C06161","compound","(S)-Coclaurine",0.000590929767103293
+"C06162","compound","Sanguinarine",0.00519051128093158
+"C06163","compound","(S)-cis-N-Methylstylopine",0.000490938864628777
+"C06165","compound","Macarpine",0.000190966157205229
+"C06199","compound","Hordenine",0.000390947962154261
+"C06212","compound","N-Methylserotonin",0.000590929767103293
+"C06213","compound","N-Methyltryptamine",0.000990893377001467
+"C06246","compound","Gla protein",0.000790911572052436
+"C06247","compound","Gla protein precursor",0.000790911572052436
+"C06258","compound","Globin",0.00819023835516739
+"C06316","compound","Dehydro-D-arabinono-1,4-lactone",0.0101900564046579
+"C06319","compound","Precorrin 6Y",0.000290957059679745
+"C06320","compound","Precorrin 6X",0.000490938864628777
+"C06406","compound","Precorrin 3B",0.000390947962154261
+"C06407","compound","Precorrin 4",0.00069092066957792
+"C06408","compound","Precorrin 8X",0.00109088427947598
+"C06416","compound","Precorrin 5",0.00069092066957792
+"C06454","compound","Fosfomycin",0.00349066593886459
+"C06563","compound","Genistein",0.000390947962154261
+"C06566","compound","Cephamycin C",0.000890902474526952
+"C06569","compound","7a-Hydroxy-O-carbamoyl-deacetylcephalosporin ...",0.00209079330422125
+"C06616","compound","Erythromycin C",0.000590929767103293
+"C06627","compound","4-Keto-anhydrotetracycline",0.00109088427947598
+"C06629","compound","6-Methylpretetramide",0.000390947962154261
+"C06630","compound","3-O-alpha-Mycarosylerythronolide B",0.00109088427947598
+"C06633","compound","Erythromycin D",0.00069092066957792
+"C06635","compound","Erythronolide B",0.0035906568413391
+"C06653","compound","Erythromycin B",0.00109088427947598
+"C06654","compound","4-Amino-anhydrotetracycline",0.00069092066957792
+"C06801","compound","Tetracenomycin C",0.00579045669577879
+"C06972","compound","Dronabinol",0.00219078420669577
+"C07027","compound","N6,N6,O-Tridemethylpuromycin-5'-phosphate",0.0052905021834061
+"C07028","compound","N-Acetyl-N6,N6,O-tridemethylpuromycin-5'-phos...",0.000390947962154261
+"C07029","compound","N-Acetyl-N6,O-didemethylpuromycin-5'-phosphat...",0.000490938864628777
+"C07030","compound","N-Acetyl-O-demethylpuromycin-5'-phosphate",0.000790911572052436
+"C07031","compound","N-Acetyl-O-demethylpuromycin",0.000790911572052436
+"C07032","compound","N-Acetylpuromycin",0.00129086608442502
+"C07349","compound","3'-Demethylstaurosporine",0.0011908751819505
+"C07480","compound","Theobromine",0.00189081149927222
+"C07481","compound","Caffeine",0.0023907660116448
+"C07572","compound","Citalopram",0.00619042030567685
+"C07576","compound","Psilocybin",0.00769028384279481
+"C07578","compound","Cannabidiol",0.00219078420669577
+"C08300","compound","D-Cathine",0.000890902474526952
+"C08301","compound","Cathinone",0.000990893377001467
+"C08491","compound","(-)-Jasmonic acid",0.004690556768559
+"C08830","compound","24-Methylidenecycloartanol",0.00309070232896652
+"C09131","compound","Chanoclavine-I",0.00659038391557491
+"C09244","compound","Tabersonine",0.00489053857350803
+"C09694","compound","Juvenile hormone III",0.000790911572052436
+"C10447","compound","3,4-Dihydroxyphenylpropanoate",0.00829022925764191
+"C10557","compound","Dihydroanhydropodorhizol",0.00149084788937405
+"C10784","compound","Cannabidiolic acid",0.00129086608442502
+"C11460","compound","dTDP-4-oxo-5-C-methyl-L-rhamnose",0.00189081149927222
+"C11469","compound","Calicheamicin gamma(1)I",0.00189081149927222
+"C11512","compound","Methyl jasmonate",0.00209079330422125
+"C11523","compound","24-Ethylidenelophenol",0.00289072052401749
+"C11538","compound","Cobalt-sirohydrochlorin",0.00069092066957792
+"C11540","compound","Cobalt-precorrin 4",0.00179082059679771
+"C11542","compound","Cobalt-precorrin 6",0.000490938864628777
+"C11543","compound","Cobalt-dihydro-precorrin 6",0.000390947962154261
+"C11545","compound","Cobalt-precorrin 8",0.00109088427947598
+"C11643","compound","16-Hydroxytabersonine",0.000390947962154261
+"C11675","compound","16-Methoxytabersonine",0.000390947962154261
+"C11850","compound","Divinylchlorophyll a",0.0146896470160116
+"C11910","compound","dTDP-3-amino-3,4,6-trideoxy-D-glucose",0.00689035662299857
+"C11911","compound","dTDP-D-desosamine",0.000890902474526952
+"C11912","compound","dTDP-6-deoxy-D-allose",0.00399062045123728
+"C11915","compound","dTDP-3-methyl-4-oxo-2,6-dideoxy-L-allose",0.00479054767103352
+"C11916","compound","dTDP-L-mycarose",0.00179082059679771
+"C11920","compound","dTDP-L-olivose",0.00179082059679771
+"C11921","compound","dTDP-L-oleandrose",0.0011908751819505
+"C11923","compound","dTDP-D-olivose",0.000890902474526952
+"C11925","compound","dTDP-3-amino-3,6-dideoxy-D-glucose",0.0135897470887918
+"C11926","compound","dTDP-4-oxo-6-deoxy-D-allose",0.00379063864628825
+"C11927","compound","dTDP-4-oxo-2,6-dideoxy-L-mannose",0.00229077510917029
+"C11928","compound","dTDP-4-oxo-2,6-dideoxy-D-allose",0.00199080240174674
+"C11933","compound","dTDP-D-mycaminose",0.00069092066957792
+"C11963","compound","Avermectin B1b aglycone",0.000790911572052436
+"C11964","compound","Avermectin A1b aglycone",0.000990893377001467
+"C11965","compound","Avermectin B1b monosaccharide",0.00109088427947598
+"C11966","compound","Avermectin A1b monosaccharide",0.000990893377001467
+"C11967","compound","Avermectin B1b",0.00109088427947598
+"C11968","compound","Avermectin A1b",0.00109088427947598
+"C11979","compound","Avermectin B1a aglycone",0.000790911572052436
+"C11980","compound","Avermectin A1a aglycone",0.000990893377001467
+"C11981","compound","Avermectin B1a monosaccharide",0.00109088427947598
+"C11982","compound","Avermectin A1a monosaccharide",0.000990893377001467
+"C11983","compound","Avermectin B1a",0.00109088427947598
+"C11984","compound","Avermectin A1a",0.00109088427947598
+"C11990","compound","Oleandolide",0.00109088427947598
+"C11991","compound","L-Olivosyl-oleandolide",0.000790911572052436
+"C11992","compound","L-Oleandrosyl-oleandolide",0.000990893377001467
+"C11993","compound","10-Deoxymethynolide",0.00109088427947598
+"C11994","compound","10-Deoxymethymycin",0.00349066593886459
+"C11997","compound","Narbonolide",0.00109088427947598
+"C11998","compound","Narbomycin",0.00349066593886459
+"C12000","compound","Tylactone",0.00139085698689953
+"C12001","compound","5-O-beta-D-Mycaminosyltylactone",0.00149084788937405
+"C12002","compound","5-O-beta-D-Mycaminosyltylonolide",0.00439058406113534
+"C12003","compound","Demethyllactenocin",0.00129086608442502
+"C12204","compound","5-Hydroxyconiferaldehyde",0.000990893377001467
+"C12318","compound","dTDP-3-amino-2,3,6-trideoxy-4-keto-D-glucose",0.00279072962154298
+"C12319","compound","dTDP-3-amino-2,3,6-trideoxy-C-methyl-D-erythr...",0.00199080240174674
+"C12368","compound","Tetracenomycin D3",0.000190966157205229
+"C12369","compound","Tetracenomycin B3",0.000590929767103293
+"C12370","compound","Tetracenomycin E",0.00069092066957792
+"C12371","compound","Tetracenomycin A2",0.000490938864628777
+"C12378","compound","Tetracenomycin B2",0.000490938864628777
+"C12379","compound","8-Demethyltetracenomycin C",0.000890902474526952
+"C12381","compound","Elloramycin A",0.00129086608442502
+"C12382","compound","4-Demethylpremithramycinone",0.00129086608442502
+"C12383","compound","Premithramycinone",0.000990893377001467
+"C12384","compound","Premithramycin A1",0.000890902474526952
+"C12385","compound","Premithramycin A2'",0.000890902474526952
+"C12386","compound","Premithramycin A3'",0.000990893377001467
+"C12387","compound","Premithramycin A3",0.000990893377001467
+"C12388","compound","Premithramycin B",0.000590929767103293
+"C12415","compound","Methyl nogalonate",0.00069092066957792
+"C12416","compound","Nogalonate",0.000390947962154261
+"C12420","compound","12-Deoxyaklanonic acid",0.000190966157205229
+"C12421","compound","Aklanonate",0.000390947962154261
+"C12422","compound","Methyl aklanonate",0.00069092066957792
+"C12423","compound","Aklaviketone",0.0011908751819505
+"C12444","compound","dTDP-D-mycarose",0.000890902474526952
+"C12446","compound","dTDP-D-oliose",0.000990893377001467
+"C12474","compound","Novobiocic acid",0.00139085698689953
+"C12475","compound","Demethyldecarbamoylnovobiocin",0.00109088427947598
+"C12476","compound","Decarbamoylnovobiocin",0.00409061135371179
+"C12481","compound","dTDP-5-dimethyl-L-lyxose",0.0023907660116448
+"C12631","compound","2-Hydroxy-2,3-dihydrogenistein",9.09752547307133e-05
+"C13747","compound","1,7-Dimethylxanthine",0.00379063864628825
+"C14151","compound","delta-Tocopherol",0.00179082059679771
+"C14152","compound","beta-Tocopherol",0.00179082059679771
+"C14153","compound","alpha-Tocotrienol",0.00129086608442502
+"C14154","compound","beta-Tocotrienol",0.00129086608442502
+"C14155","compound","gamma-Tocotrienol",0.00159083879184856
+"C14156","compound","delta-Tocotrienol",0.00159083879184856
+"C14279","compound","Furfural",0.00759029294032018
+"C15503","compound","N,N-Dihydroxy-L-tyrosine",0.00429059315866083
+"C15681","compound","Mycinamicin III",0.00109088427947598
+"C15682","compound","Mycinamicin VI",0.000790911572052436
+"C15683","compound","Mycinamicin VII",0.00129086608442502
+"C15684","compound","Mycinamicin VIII",0.0011908751819505
+"C15685","compound","Protomycinolide IV",0.00129086608442502
+"C15874","compound","3,4-Dehydrorhodopin",0.00429059315866083
+"C15877","compound","Anhydrorhodovibrin",0.000990893377001467
+"C15878","compound","Rhodovibrin",0.000590929767103293
+"C15879","compound","Hydroxyspirilloxanthin",0.00069092066957792
+"C15881","compound","Spirilloxanthin",0.000990893377001467
+"C15882","compound","2-Methyl-6-phytylquinol",0.00189081149927222
+"C15883","compound","2,3-Dimethyl-5-phytylquinol",0.00179082059679771
+"C15886","compound","3,4-Dihydroanhydrorhodovibrin",0.000890902474526952
+"C15887","compound","3',4'-Dihydrorhodovibrin",0.000790911572052436
+"C15888","compound","3,4,3',4'-Tetrahydrospirilloxanthin",0.0011908751819505
+"C15892","compound","Chloroxanthin",0.000990893377001467
+"C15895","compound","3,4-Dihydrospheroidene",0.00109088427947598
+"C15898","compound","Demethylspheroidene",0.000790911572052436
+"C15900","compound","Spheroidene",0.00069092066957792
+"C15902","compound","Hydroxyspheroidene",0.00719032933042212
+"C16168","compound","(6Z,9Z,12Z,15Z,18Z,21Z)-Tetracosahexaenoyl-Co...",0.00729032023289664
+"C16172","compound","(6Z,9Z,12Z,15Z,18Z)-Tetracosapentaenoyl-CoA",0.00729032023289664
+"C16242","compound","Cobalt-precorrin 5A",0.00139085698689953
+"C16243","compound","Cobalt-precorrin 5B",0.00109088427947598
+"C16244","compound","Cobalt-precorrin 7",0.000490938864628777
+"C16356","compound","1,7-Dimethyluric acid",0.010590020014556
+"C16360","compound","3,7-Dimethyluric acid",0.00979009279475987
+"C16361","compound","1,3,7-Trimethyluric acid",0.00829022925764191
+"C16362","compound","3,6,8-Trimethylallantoin",0.00929013828238718
+"C16374","compound","(2E,6Z,9Z,12Z,15Z,18Z,21Z)-Tetracosaheptaenoy...",0.0106900109170306
+"C16387","compound","(2E,6Z,9Z,12Z,15Z,18Z)-Tetracosahexaenoyl-CoA",0.0107900018195051
+"C16502","compound","Farnesoic acid",0.000790911572052436
+"C16503","compound","Methyl farnesoate",0.000590929767103293
+"C16504","compound","Juvenile hormone III acid",0.000590929767103293
+"C16506","compound","(10S)-Juvenile hormone III acid diol",0.00289072052401749
+"C16508","compound","12-trans-Hydroxy juvenile hormone III",0.00169082969432319
+"C16608","compound","Demethylcitalopram",0.00389062954876276
+"C16609","compound","Didemethylcitalopram",0.00369064774381373
+"C16610","compound","Citalopram propionic acid",0.00319069323144104
+"C16612","compound","Citalopram aldehyde",0.00169082969432319
+"C16613","compound","6-Thiourate",0.00909015647743814
+"C16614","compound","6-Methylmercaptopurine",0.0146896470160116
+"C16620","compound","6-Methylthioguanosine monophosphate",0.00209079330422125
+"C16673","compound","Isoglutamine",0.0111899654294032
+"C16674","compound","Formylisoglutamine",0.0116899199417759
+"C16695","compound","Plastoquinol-9",0.00129086608442502
+"C16719","compound","(-)-Norephedrine",0.000790911572052436
+"C16753","compound","Aflatoxin B2",0.000490938864628777
+"C16754","compound","Aflatoxin G2",0.000390947962154261
+"C16755","compound","Aflatoxin G1",0.000390947962154261
+"C17268","compound","Pyruvophenone",0.0099900745997089
+"C17401","compound","Cobalt-factor III",0.00169082969432319
+"C17551","compound","2-Polyprenyl-6-hydroxyphenol",0.00159083879184856
+"C17552","compound","2-Polyprenyl-6-methoxyphenol",0.00129086608442502
+"C17554","compound","3,4-Dihydroxy-5-polyprenylbenzoate",0.00289072052401749
+"C17559","compound","3-Methoxy-4-hydroxy-5-polyprenylbenzoate",0.000990893377001467
+"C17570","compound","2-Methyl-6-solanyl-1,4-benzoquinol",0.00199080240174674
+"C17936","compound","Phaeomelanin",0.00549048398835513
+"C17937","compound","Eumelanin",0.00199080240174674
+"C17938","compound","5,6-Indolequinone-2-carboxylic acid",0.00199080240174674
+"C18033","compound","dTDP-4-amino-2,3,4,6-tetradeoxy-D-glucose",0.00559047489082964
+"C18034","compound","dTDP-D-forosamine",0.00149084788937405
+"C18035","compound","dTDP-3-methyl-4-oxo-2,6-dideoxy-D-glucose",0.00179082059679771
+"C18062","compound","TRIBOA-glucoside",0.00249075691411932
+"C18064","compound","Pyropheophorbide a",0.00349066593886459
+"C18092","compound","dTDP-L-ristosamine",0.0035906568413391
+"C18157","compound","8-Ethyl-12-methyl-3-vinylbacteriochlorophylli...",0.000390947962154261
+"C18160","compound","Bacteriochlorophyllide d",0.00379063864628825
+"C18169","compound","Diacylglyceryl-N,N,N-trimethylhomoserine",0.0119898926491994
+"C18293","compound","Nonaketamide monocyclic intermediate",0.000190966157205229
+"C18294","compound","Nonaketamide tricyclic intermediate",0.000390947962154261
+"C18295","compound","Pretetramid",0.000590929767103293
+"C18332","compound","7,9,12-Decaketide intermediate 3",0.00189081149927222
+"C18335","compound","7,9,12-Decaketide intermediate 6",0.00219078420669577
+"C18629","compound","Deoxynogalonate",9.09752547307133e-05
+"C18630","compound","Nogalaviketone",0.0011908751819505
+"C18710","compound","3A-Deolivosylpremithramycin B",0.000890902474526952
+"C18846","compound","Mycinamicin IV",0.000490938864628777
+"C18872","compound","Trimethylselenonium",0.000990893377001467
+"C18902","compound","Methylselenic acid",0.004690556768559
+"C19673","compound","Malonyl-[acp] methyl ester",0.00809024745269287
+"C19688","compound","2-Imino-3-(7-chloroindol-3-yl)propanoate",0.00559047489082964
+"C19691","compound","Farnesylcysteine",0.00199080240174674
+"C19699","compound","Dichloroarcyriaflavin A",0.00539049308588061
+"C19700","compound","4'-O-Demethylrebeccamycin",0.0011908751819505
+"C19701","compound","Rebeccamycin",0.00129086608442502
+"C19795","compound","1-Hydroxy-1,2-dihydrolycopene",0.00449057496360986
+"C19847","compound","Demethylmenaquinol",0.00859020196506546
+"C19858","compound","2-Methoxy-6-all-trans-polyprenyl-1,4-benzoqui...",0.00159083879184856
+"C19859","compound","6-Methoxy-3-methyl-2-all-trans-polyprenyl-1,4...",0.00379063864628825
+"C19947","compound","dTDP-3-amino-3,6-dideoxy-alpha-D-galactopyran...",0.00619042030567685
+"C19948","compound","dTDP-3-dimethylamino-3,6-dideoxy-alpha-D-gala...",0.00139085698689953
+"C20265","compound","2,3-Epoxymenaquinone",0.00389062954876276
+"C20299","compound","Papaveroxine",0.00949012008733621
+"C20410","compound","4-Dimethylallyl-L-abrine",0.00379063864628825
+"C20444","compound","Dihydrodemethylsterigmatocystin",0.000590929767103293
+"C20445","compound","Dihydrosterigmatocystin",0.000890902474526952
+"C20513","compound","6-Hydroxytryprostatin B",0.00069092066957792
+"C20575","compound","Versicolorin B",0.000190966157205229
+"C20583","compound","Versicolorin A",0.000390947962154261
+"C20604","compound","Fumitremorgin C",0.00749030203784567
+"C20607","compound","Tryprostatin A",0.000490938864628777
+"C20629","compound","8-Demethylnovobiocic acid",0.00829022925764191
+"C20737","compound","6-Geranylgeranyl-2-methylbenzene-1,4-diol",0.00209079330422125
+"C20738","compound","6-Geranylgeranyl-2,3-dimethylbenzene-1,4-diol",0.00159083879184856
+"C20841","compound","2-Hydroxy-7-methoxy-5-methyl-1-naphthoate",0.0070903384279476
+"C20857","compound","2,7-Dihydroxy-5-methyl-1-naphthoate",0.00129086608442502
+"C20974","compound","8-Demethyl-8-alpha-L-rhamnosyltetracenomycin ...",0.000890902474526952
+"C20975","compound","8-Demethyl-8-(2-O-methyl-alpha-L-rhamnosyl)te...",0.00129086608442502
+"C20976","compound","8-Demethyl-8-(2,3-di-O-methyl-alpha-L-rhamnos...",0.00129086608442502
+"C20977","compound","8-Demethyl-8-(2,3,4-tri-O-methyl-alpha-L-rham...",0.00129086608442502
+"C20981","compound","5,10-Dihydrophenazine-1-carboxylate",9.09752547307133e-05
+"C21071","compound","dTDP-3-O-methyl-4-oxo-2,6-dideoxy-L-mannose",0.00149084788937405
+"C21073","compound","dTDP-3-N,N-dimethylamino-2,3,6-trideoxy-4-ket...",0.00259074781659383
+"C21084","compound","Demethylphylloquinol",0.00149084788937405
+"C21126","compound","K-252c",0.00279072962154298
+"C21127","compound","Holyrine A",0.00109088427947598
+"C21128","compound","O-Demethyl-N-demethyl-staurosporine",0.000890902474526952
+"C21136","compound","Violacein",0.0131897834788937
+"C21137","compound","dTDP-3-amino-4-oxo-2,3,6-trideoxy-L-allose",0.00719032933042212
+"C21183","compound","Bursehernin",0.000490938864628777
+"C21184","compound","(-)-5'-Demethylyatein",0.000390947962154261
+"C21191","compound","Pluviatolide",0.000390947962154261
+"C21284","compound","Fe-coproporphyrin III",0.0127898198689957
+"C21295","compound","5-Methylphenazine-1-carboxylate",0.000190966157205229
+"C21312","compound","6-Methylsalicylyl-CoA",0.00519051128093158
+"C21313","compound","3,6-Dimethylsalicylyl-CoA",0.00159083879184856
+"C21337","compound","Calicheamicinone",0.00189081149927222
+"C21338","compound","Calicheamicin T0",0.00319069323144104
+"C21340","compound","Calicheamicin PsAg",0.00919014737991266
+"C21341","compound","Calicheamicin alpha1(I)",0.00229077510917029
+"C21342","compound","Calicheamicin alpha3(I)",0.00229077510917029
+"C21343","compound","Orsellinate-[acp]",0.0011908751819505
+"C21344","compound","2-Methoxyorsellinate-[acp]",0.000990893377001467
+"C21345","compound","5-Iodo-2-methoxyorsellinate-[acp]",0.000990893377001467
+"C21346","compound","3-Hydroxy-5-iodo-2-methoxyorsellinate-[acp]",0.000990893377001467
+"C21347","compound","5-Iodo-2,3-dimethoxyorsellinate-[acp]",0.00329068413391556
+"C21348","compound","dTDP-4-hydroxyamino-4,6-dideoxy-alpha-D-gluco...",0.00189081149927222
+"C21349","compound","dTDP-4-deoxy-4-thio-alpha-D-digitoxose",0.0035906568413391
+"C21350","compound","dTDP-3-O-methyl-beta-L-rhamnose",0.00229077510917029
+"C21356","compound","dTDP-4-ethylamino-3-O-methyl-2,4-dideoxy-L-th...",0.00229077510917029
+"C21408","compound","(1R,6R)-1,4,5,5a,6,9-Hexahydrophenazine-1,6-d...",0.00229077510917029
+"C21411","compound","(1R,10aS)-1,4,10,10a-Tetrahydrophenazine-1-ca...",0.00149084788937405
+"C21412","compound","(10aS)-10,10a-Dihydrophenazine-1-carboxylate",0.000590929767103293
+"C21427","compound","8,12-Diethyl-3-vinylbacteriochlorophyllide d",0.000490938864628777
+"C21428","compound","12-Ethyl-8-propyl-3-vinylbacteriochlorophylli...",0.000490938864628777
+"C21429","compound","12-Ethyl-8-isobutyl-3-vinylbacteriochlorophyl...",0.000390947962154261
+"C21431","compound","8-Ethyl-12-methylbacteriochlorophyllide d",9.09752547307133e-05
+"C21432","compound","8,12-Diethylbacteriochlorophyllide d",9.09752547307133e-05
+"C21433","compound","12-Ethyl-8-propylbacteriochlorophyllide d",9.09752547307133e-05
+"C21434","compound","12-Ethyl-8-isobutylbacteriochlorophyllide d",9.09752547307133e-05
+"C21442","compound","Phenazine-1-carboxylate",0.000190966157205229
+"C21569","compound","4-Hydroxy-2,2'-bipyrrole-5-carbaldehyde",0.00219078420669577
+"C21570","compound","4-Methoxy-2,2'-bipyrrole-5-carbaldehyde",0.00769028384279481
+"C21586","compound","(S)-1-Hydroxy-cis-N-methylcanadine",0.00459056586608437
+"C21589","compound","(13S,14R)-13-O-Acetyl-1,8-dihydroxy-cis-N-met...",0.000590929767103293
+"C21590","compound","4'-O-Desmethyl-3-O-acetylpapaveroxine",0.000490938864628777
+"C21591","compound","3-O-Acetylpapaveroxine",0.0011908751819505
+"C21646","compound","8-Amino-8-demethylriboflavin",0.00129086608442502
+"C21647","compound","Roseoflavin",0.00129086608442502
+"C21648","compound","8-Demethyl-8-(methylamino)riboflavin",0.00129086608442502
+"C21764","compound","5-Hydroxybenzimidazole",0.0052905021834061
+"C21778","compound","Norbaeocystin",0.00439058406113534
+"C21779","compound","Baeocystin",0.00159083879184856
+"C21835","compound","12,18-Didecarboxysiroheme",0.0102900473071324
+"C21860","compound","3-Demethylubiquinol",0.00449057496360986
+"C21903","compound","Delta9-Tetrahydrocannabinolate",0.00129086608442502
+"C22038","compound","(R)-3-(3,4-Dihydroxyphenyl)lactate",0.00799025655021836
+"C22425","compound","3-Amino-2-hydroxy-4-methoxybenzoate",0.00499052947598255
+"C22450","compound","5-Methoxybenzimidazole",0.00499052947598255
+"C22455","compound","3-Amino-2,4-dihydroxybenzoate",0.000790911572052436
+"C22619","compound","5-Dehydrofumagillol",0.000890902474526952
+"C22631","compound","5-Dehydro-6-demethoxy-6-hydroxyfumagillol",0.00249075691411932

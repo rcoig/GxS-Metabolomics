@@ -1,0 +1,128 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Preprocess"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Compiling the master raw df for TAG (absolute).
+---
+Load required packages.
+```{r}
+library(tidyr)#data manipulation
+library(dplyr)#data manipulation
+```
+Reading in raw Plate data. TAG is an absorbance value using the infinity triglycerides stable reagent assay from Thermo Scientific (TR22421).
+```{r,read in raw plate data}
+rm(list = ls())
+setwd("data/raw/Plates")
+temp = list.files(pattern="*.csv")
+list2env(
+  lapply(setNames(temp, make.names(gsub("*.csv$", "", temp))), 
+         read.csv), envir = .GlobalEnv)
+df.list <- ls(pattern = "Plate")
+my_plates <- lapply(temp, read.csv)
+rm(list=df.list)
+```
+Formatting the data
+```{r}
+factorize <- function(df){
+  df[df == " "] <- ""
+  df[is.na(df)] <- ""
+  df$batch<-substr(df$plate, 1, 1)
+  df$batch<-as.numeric(as.character(df$batch))
+  df$samplemod<-paste(df$batch,df$sample,df$modifier)
+  #df$sample<-NULL
+  df$modifier<-NULL
+  df$volume<-NULL
+  df$wavelength<-NULL
+  df$incubationTime<-NULL
+  df$assaydate<-NULL
+  df$assayer<-NULL
+  df$standard<-as.factor(as.character(df$standard))
+  df$samplemod<-as.factor(as.character(df$samplemod))
+  df$conc<-as.numeric(as.character(df$conc))
+  df
+}
+my_plates2 <- lapply(my_plates, factorize)
+```
+Separate Standards, Samples and Batch controls by plate
+```{r}
+standardonly <- function(df){
+  df <- subset(df, df$standard == 'Standard')
+  df$reptype<-NULL
+  df$samplemod<-NULL
+  df
+}
+my_standards <- lapply(my_plates2, standardonly)
+
+BConly <- function(df){
+  df <- subset(df, df$standard == 'BC')
+  df$reptype<-NULL
+  df$samplemod<-NULL
+  df
+}
+my_BCs <- lapply(my_plates2, BConly)
+
+Samplesonly <- function(df){
+  df <- subset(df, df$standard == 'Sample')
+  df$standard<-NULL
+  df
+}
+my_samples <- lapply(my_plates2, Samplesonly)
+Samples<-do.call("rbind", my_samples)
+```
+Calculate Standard curves for each plate and extract the beta and intercept
+```{r}
+counter<-1
+par(mfrow=c(2,3))
+MakeStandards <- function(df){
+  LM<-(lm(data=df,absorbance~conc))
+  plot(absorbance ~ conc, data=df,xlim=c(0,2),ylim=c(0,2),main=paste("Standard curve", df.list[counter]))
+  abline(0, LM$coefficients[2]) 
+  counter<<-counter+1
+  df$beta<-LM$coefficients[2]
+  df$int<-LM$coefficients[1]
+  df}
+my_standards <- lapply(my_standards, MakeStandards)
+```
+Standards all have linear standard curves. Now reading in the sample metadata
+```{r}
+TAG<-read.csv("data/raw/TAGSamples.csv")
+Mass<-read.csv("data/raw/MassSamples.csv")
+```
+Merging TAG metadata with absorbance readings. 320 TAG samples all together.
+```{r}
+TAG_all<-distinct(merge(Samples,TAG,by=c("sample","plate"),all=T))
+raw_tag<-TAG_all%>%rename(absn5=absorbance)%>%select(sex,genotype,absn5)
+TAG_all<-TAG_all%>%select(sample,sampleID,sex,genotype,absorbance,plate)%>%distinct()
+```
+Calculating means by metabolome sample for TAG (some had replicate measures of TAG)
+```{r}
+TAG_means_by_metabolome_sample<-TAG_all%>%group_by(sample)%>%
+  reframe(
+    sampleID=sampleID,
+    sex=sex,
+    genotype=genotype,
+    absn5=round(mean(absorbance),3)
+          )%>%
+  distinct()
+
+Mass_means_by_metabolome_sample<-Mass%>%group_by(sampleID)%>%
+  reframe(
+    sex=sex,
+    genotype=genotype,
+    massn5 = ifelse(all(is.na(massn5)), NA, round(mean(massn5, na.rm = TRUE), 2))          )%>%
+  distinct()
+```
+Combine all data into a single dataframe.
+```{r}
+raw_Phenos_by_mz_sample<-merge(TAG_means_by_metabolome_sample,Mass_means_by_metabolome_sample,by=c("sampleID","sex","genotype"),all=T)%>%select(sampleID,sex,genotype,absn5,massn5)
+```
+
+Save out csvs
+```{r}
+write.csv(raw_Phenos_by_mz_sample, "../data/raw/Phenos_by_mz_sample.csv", row.names = FALSE)
+write.csv(raw_tag,"data/raw/raw_absorbances.csv",row.names=F)
+```

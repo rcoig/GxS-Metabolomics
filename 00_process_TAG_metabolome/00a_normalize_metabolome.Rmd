@@ -1,0 +1,335 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Preprocess"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Normalizing the raw metabolome data.
+```{r,load required libraries}
+library(reshape2)
+library(dplyr)
+library(tidyr)
+library(pdftools)
+library(purrr)
+library(Rmisc)
+library(ggplot2)
+```
+Loading in raw data. The raw data frame has data for 198 metabolites, including QC samples. QC(S) samples have all the same compounds as the experimental samples, and the same sample was run on the instrument after every 10 experimental samples. 
+```{r,loading in mz and QC data}
+rm(list = ls())
+load('data/raw/raw.data')
+```
+We start by creating log transformed and scaled dataframes
+```{r,log transforming the data}
+# Log-transform the data
+log_mz <- log10(raw)
+log_by_sample<-as.data.frame(t(log_mz))
+
+boxplot(log10((raw)))
+boxplot(t(log_by_sample))
+```
+Adding keys for plotting/analysis.
+```{r,}
+log_key<-log_by_sample
+log_key$order<-row.names(log_key)
+log_key<-merge(key,log_key,by="order")
+log_key <- log_key %>% arrange(run_order)
+
+melted_log <- melt(log_key[,c(3,14:198)],id.vars = "run_order")
+colnames(melted_log) <- c("run_order", "COMPOUND", "value")
+melted_log <- merge(melted_log,key,by="run_order")
+
+ggplot(melted_log,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")+
+  facet_grid(~assayer+sex)
+
+ggplot(melted_raw,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")+
+  facet_grid(~assayer+sex)
+
+ggplot(melted_log,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")+
+  facet_grid(~sex+box+assayer)
+
+ggplot(melted_log,aes(x=run_order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")
+```
+We find that LH's male samples are lower because of assayer protocol differences in tissue collection, before scaling we will median center these four groups in the log corrected data
+```{r}
+# Calculate median for each group using dplyr
+medians <- melted_log %>%
+  group_by(assayer,sex) %>%
+  dplyr::summarize(assayer=assayer,
+            sex=sex,
+            median_value = median(value))%>%distinct()
+medians$median_value<-medians$median_value-min(medians$median_value)
+
+# Merge median values back to the original data
+melted_adjusted <- melted_log %>%
+  left_join(medians, by = c("assayer", "sex")) %>%
+  mutate(value = value - median_value)
+
+ggplot(melted_adjusted,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")+
+  facet_grid(~assayer+sex+box)
+
+ggplot(melted_adjusted,aes(x=run_order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")
+```
+Now the medians of all groups are the same.
+```{r}
+melted_adjusted<-melted_adjusted[,1:3]
+adjusted_key <- dcast(melted_adjusted, run_order ~ COMPOUND, value.var = "value")
+adjusted_by_sample<-adjusted_key[,-1]
+```
+
+
+```{r,}
+scale_by_sample <- as.data.frame(t(apply(adjusted_by_sample, 1, function(x) scale(x, center = TRUE, scale = TRUE))))
+colnames(scale_by_sample)<-mz
+
+scale_key<-scale_by_sample
+scale_key$run_order<-row.names(scale_key)
+scale_key<-merge(key,scale_key,by="run_order")
+scale_key <- scale_key %>% arrange(run_order)
+
+melted_scale <- melt(scale_key[,c(1,14:198)],id.vars = "run_order")
+colnames(melted_scale) <- c("run_order", "COMPOUND", "value")
+melted_scale <- merge(melted_scale,key,by="run_order")
+
+ggplot(melted_scale,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")+
+  facet_grid(~assayer+sex)
+
+ggplot(melted_scale,aes(x=run_order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex),method="lm")
+```
+Plotting metabolites across run order (log10)
+```{r}
+# Create a list of ggplot objects for each COMPOUND
+plots_list <- melted_log %>%
+  group_split(COMPOUND) %>%
+  map(function(subset) {
+    ggplot(subset, aes(x = run_order, y = value, color = batch,shape=type)) +
+      geom_point() + 
+      geom_line(data = subset %>% filter(type == "pooled fly heads")) +
+      theme_classic() +
+      ggtitle(paste("Compound:", unique(subset$COMPOUND)))+
+      guides(shape = FALSE)
+  })
+
+# Function to save plots to multiple pages in a PDF file
+save_plots_to_pdf <- function(plots_list, file_name_prefix, plots_per_page) {
+  num_plots <- length(plots_list)
+  num_pages <- ceiling(num_plots / plots_per_page)
+  
+  for (i in 1:num_pages) {
+    start_idx <- (i - 1) * plots_per_page + 1
+    end_idx <- min(i * plots_per_page, num_plots)
+    plots_on_page <- plots_list[start_idx:end_idx]
+    
+    pdf(paste0(file_name_prefix, i, ".pdf"), width = 11, height = 8.5) # Adjust width and height as needed
+    
+    multiplot(plotlist = plots_on_page, cols = 1) # 1 metabolite per row
+    
+    dev.off()
+  }
+}
+
+# Save the plots to multiple pages in a PDF file with 5 plots per page
+save_plots_to_pdf(plots_list, "plots_page_", plots_per_page = 5)
+
+# List of file names for the individual PDFs
+pdf_files <- paste0("plots_page_", 1:37, ".pdf")
+
+# Output file name for the combined PDF
+output_pdf <- "plots/00a_log10_metabolites_by_run_order.pdf"
+
+# Combine the individual PDFs into a single PDF
+pdf_combine(pdf_files, output_pdf)
+
+# Clean up: Delete the individual PDF files if needed
+file.remove(pdf_files)
+
+```
+Plotting metabolites across run order (log and scale, mean-centered)
+```{r}
+# Create a list of ggplot objects for each COMPOUND
+plots_list <- melted_scale %>%
+  group_split(COMPOUND) %>%
+  map(function(subset) {
+    ggplot(subset, aes(x = run_order, y = value, color = batch,shape=type)) +
+      geom_point() + 
+      geom_line(data = subset %>% filter(type == "pooled fly heads")) +
+      theme_classic() +
+      ggtitle(paste("Compound:", unique(subset$COMPOUND)))+
+      guides(shape = FALSE)
+  })
+
+# Function to save plots to multiple pages in a PDF file
+save_plots_to_pdf <- function(plots_list, file_name_prefix, plots_per_page) {
+  num_plots <- length(plots_list)
+  num_pages <- ceiling(num_plots / plots_per_page)
+  
+  for (i in 1:num_pages) {
+    start_idx <- (i - 1) * plots_per_page + 1
+    end_idx <- min(i * plots_per_page, num_plots)
+    plots_on_page <- plots_list[start_idx:end_idx]
+    
+    pdf(paste0(file_name_prefix, i, ".pdf"), width = 11, height = 8.5) # Adjust width and height as needed
+    
+    multiplot(plotlist = plots_on_page, cols = 1) # 1 metabolite per row
+    
+    dev.off()
+  }
+}
+
+# Save the plots to multiple pages in a PDF file with 5 plots per page
+save_plots_to_pdf(plots_list, "plots_page_", plots_per_page = 5)
+
+# List of file names for the individual PDFs
+pdf_files <- paste0("plots_page_", 1:37, ".pdf")
+
+# Output file name for the combined PDF
+output_pdf <- "plots/00a_log10_scaled_metabolites_by_run_order.pdf"
+
+# Combine the individual PDFs into a single PDF
+pdf_combine(pdf_files, output_pdf)
+
+# Clean up: Delete the individual PDF files if needed
+file.remove(pdf_files)
+
+```
+Plotting metabolites across run order (log and scale, mean-centered) colored by assayer
+```{r}
+# Create a list of ggplot objects for each COMPOUND
+plots_list <- melted_scale %>%
+  group_split(COMPOUND) %>%
+  map(function(subset) {
+    ggplot(subset, aes(x = run_order, y = value, color = assayer,shape=type)) +
+      scale_color_manual(values=c("red","black"))+
+      geom_point() + 
+      geom_line(data = subset %>% filter(type == "pooled fly heads")) +
+      theme_classic() +
+      ggtitle(paste("Compound:", unique(subset$COMPOUND)))+
+      guides(shape = FALSE)
+  })
+
+# Function to save plots to multiple pages in a PDF file
+save_plots_to_pdf <- function(plots_list, file_name_prefix, plots_per_page) {
+  num_plots <- length(plots_list)
+  num_pages <- ceiling(num_plots / plots_per_page)
+  
+  for (i in 1:num_pages) {
+    start_idx <- (i - 1) * plots_per_page + 1
+    end_idx <- min(i * plots_per_page, num_plots)
+    plots_on_page <- plots_list[start_idx:end_idx]
+    
+    pdf(paste0(file_name_prefix, i, ".pdf"), width = 11, height = 8.5) # Adjust width and height as needed
+    
+    multiplot(plotlist = plots_on_page, cols = 1) # 1 metabolite per row
+    
+    dev.off()
+  }
+}
+
+# Save the plots to multiple pages in a PDF file with 5 plots per page
+save_plots_to_pdf(plots_list, "plots_page_", plots_per_page = 5)
+
+# List of file names for the individual PDFs
+pdf_files <- paste0("plots_page_", 1:37, ".pdf")
+
+# Output file name for the combined PDF
+output_pdf <- "plots/00a_metabolites_by_run_order_colored_assayer.pdf"
+
+# Combine the individual PDFs into a single PDF
+pdf_combine(pdf_files, output_pdf)
+
+# Clean up: Delete the individual PDF files if needed
+file.remove(pdf_files)
+
+```
+Plotting metabolites across run order (log and scale, mean-centered) colored by sex
+```{r}
+# Create a list of ggplot objects for each COMPOUND
+plots_list <- melted_scale %>%
+  group_split(COMPOUND) %>%
+  map(function(subset) {
+    ggplot(subset, aes(x = run_order, y = value, color = sex,shape=type)) +
+      scale_color_manual(values=c("turquoise","purple","gray"))+
+      geom_point() + 
+      geom_line(data = subset %>% filter(type == "pooled fly heads")) +
+      theme_classic() +
+      ggtitle(paste("Compound:", unique(subset$COMPOUND)))+
+      guides(shape = FALSE)
+  })
+
+# Function to save plots to multiple pages in a PDF file
+save_plots_to_pdf <- function(plots_list, file_name_prefix, plots_per_page) {
+  num_plots <- length(plots_list)
+  num_pages <- ceiling(num_plots / plots_per_page)
+  
+  for (i in 1:num_pages) {
+    start_idx <- (i - 1) * plots_per_page + 1
+    end_idx <- min(i * plots_per_page, num_plots)
+    plots_on_page <- plots_list[start_idx:end_idx]
+    
+    pdf(paste0(file_name_prefix, i, ".pdf"), width = 11, height = 8.5) # Adjust width and height as needed
+    
+    multiplot(plotlist = plots_on_page, cols = 1) # 1 metabolite per row
+    
+    dev.off()
+  }
+}
+
+# Save the plots to multiple pages in a PDF file with 5 plots per page
+save_plots_to_pdf(plots_list, "plots_page_", plots_per_page = 5)
+
+# List of file names for the individual PDFs
+pdf_files <- paste0("plots_page_", 1:37, ".pdf")
+
+# Output file name for the combined PDF
+output_pdf <- "plots/00a_metabolites_by_run_order_colored_sex.pdf"
+
+# Combine the individual PDFs into a single PDF
+pdf_combine(pdf_files, output_pdf)
+
+# Clean up: Delete the individual PDF files if needed
+file.remove(pdf_files)
+
+```
+Removing QC(S) samples
+```{r}
+scale_key<-scale_key%>%filter(!is.na(assayer))
+scale_key$order<-as.numeric(as.character(scale_key$order))
+scale_key$genotype<-droplevels(scale_key$genotype)
+scale_key$sex<-droplevels(scale_key$sex)
+scale_key$batch<-droplevels(scale_key$batch)
+scale_key$type<-NULL
+scale_key$run_order<-NULL
+scale_key$complete_mzs<-NULL
+melted_scale <- melt(scale_key[,c(1,11:195)],id.vars = "order")
+colnames(melted_scale) <- c("order", "COMPOUND", "value")
+melted_scale <- merge(melted_scale,key,by="order")
+scale_by_sample<-scale_key[,-c(1:10)]
+key<-scale_key[,c(1:10)]
+```
+Saving out normalized files
+```{r,save out csv files}
+write.csv(scale_by_sample,"data/processed/00a_normalized_metabolites.csv",row.names=T)
+```
+Saving out r files
+```{r,save out r files}
+save(file='data/processed/normalized.data', scale_by_sample, scale_key, melted_scale, mz, key)
+rm(list=ls())
+```

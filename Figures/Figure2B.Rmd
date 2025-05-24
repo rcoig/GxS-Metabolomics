@@ -1,0 +1,117 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Fig 2B
+```{r,load required libraries}
+library(ggplot2)
+library(dplyr)
+library(viridis)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/processed/PCA.data')
+```
+Formatting df for plotting weighted ESD
+```{r}
+PC_dist_plot<-melted_PC_dist%>%dplyr::filter(PC=="PC1"|PC=="PC2"|PC=="PC3"|PC=="PC4"
+                                               |PC=="PC5"|PC=="PC6")
+# Subset the PVE values for PCs 1 to 6
+PC_dist_plot <- merge(PC_dist_plot,PC_var_explained,by="PC")
+PVE_values<-PC_var_explained$PVE[1:6]
+PVEtotal<-sum(PVE_values)
+
+# Weight the Euclidean distances by PVE for each PC (PC1 to PC6)
+PC_dist_plot$weightedPVE <- PC_dist_plot$PVE/PVEtotal
+PC_dist_plot$weightedPC <- PC_dist_plot$dist_score*PC_dist_plot$weightedPVE
+# Summarize the data
+summary_data <- PC_dist_plot %>%
+  group_by(genotype) %>%
+  dplyr::summarise(total_dist = sum(weightedPC)) 
+
+# Merge summarized data with the original dataframe
+PC_dist_plot <- left_join(PC_dist_plot, summary_data, by = "genotype")
+
+PC_dist_plot<-PC_dist_plot%>%
+    mutate(genotype = reorder(genotype, -total_dist))
+
+
+# Generate a color palette with 6 colors
+color_palette <- viridis(6)
+PC_dist_plot<-merge(PC_dist_plot,n_samples,by="genotype")
+```
+Plots
+```{r}
+ggplot(PC_dist_plot,aes(x=genotype,y=dist_score,fill=PC))+
+  geom_bar(stat="identity",color="black")+
+  scale_fill_viridis_d(option="D")+
+  #geom_bar(position="fill")+
+  #facet_grid(~n_samples)+
+  ylab("PC Sex Distance")+
+  xlab("Genotype")+
+  theme_classic()+
+ theme(text = element_text(size = 30),
+       legend.background = element_rect(fill = "transparent"),
+    legend.position = c(1, .8), 
+    legend.justification = c(1, 0)
+  ) +
+  guides(size = "none")
+
+ggplot(PC_dist_plot,aes(x=genotype,y=weightedPC,fill=PC))+
+  geom_bar(stat="identity",color="black")+
+  scale_fill_viridis_d(option="D")+
+  #geom_bar(position="fill")+
+  #facet_grid(~n_samples)+
+  ylab("PC Sex Distance")+
+  xlab("DGRP Genotype")+
+  theme_classic()+
+ theme(text = element_text(size = 30),
+       axis.text.x = element_text(size = 14),
+       legend.background = element_rect(fill = "transparent"),
+    #legend.position = c(1, .8), 
+    #legend.justification = c(1, 0)
+  ) 
+
+ggsave("plots/Fig2B.jpg", width = 17, height = 7)
+
+```
+
+
+```{r}
+ggplot(PC_dist_plot%>%filter(n_samples==6),aes(x=genotype,y=dist_score,fill=PC))+
+  geom_bar(stat="identity",color="black")+
+  scale_fill_viridis_d(option="D")+
+  #geom_bar(position="fill")+
+  #facet_grid(~n_samples)+
+  ylab("PC Sex Distance")+
+  xlab("Genotype")+
+  theme_classic()+
+ theme(text = element_text(size = 30),
+       legend.background = element_rect(fill = "transparent"),
+    legend.position = c(1, .8), 
+    legend.justification = c(1, 0)
+  ) +
+  guides(size = "none")
+ggplot(PC_dist_plot%>%filter(n_samples==6),aes(x=genotype,y=weightedPC,fill=PC))+
+  geom_bar(stat="identity",color="black")+
+  scale_fill_viridis_d(option="D")+
+  #geom_bar(position="fill")+
+  #facet_grid(~n_samples)+
+  ylab("PC Sex Distance")+
+  xlab("Genotype")+
+  theme_classic()+
+  theme_classic()+
+ theme(text = element_text(size = 30),
+       legend.background = element_rect(fill = "transparent"),
+    legend.position = c(1, .8), 
+    legend.justification = c(1, 0)
+  ) +
+  guides(size = "none")
+
+
+```

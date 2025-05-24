@@ -1,0 +1,158 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Univariate analysis"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Univariate analysis, TAG-Metabolite level correlations (All Samples, without sex as a covariate)
+```{r,load required libraries}
+library(tidyr)#Data manipulation
+library(dplyr)#Data manipulation
+library(smatr)#Computing relative TAG
+library(reshape2)
+```
+Loading in batch corrected data for analysis
+```{r,loading in batch corrected metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+melted_dat<-melted_dat%>%filter(!is.na(absn5))
+```
+TAG Correlations across all metabolites for means
+```{r}
+# Create an empty results data frame to store the results
+TAG_mz_COR_results <- data.frame(COMPOUND = character(0), 
+                                    TAG_R_spearman = numeric(0),
+                                    TAG_p = numeric(0),
+                                    SSD = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$absn5, subset_data$value, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          TAG_R_spearman = spearman_result$estimate,
+                          TAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    TAG_mz_COR_results <- distinct(rbind(TAG_mz_COR_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+TAG_mz_COR_results$TAG_adj <- p.adjust(TAG_mz_COR_results$TAG_p, method = "fdr")
+TAG_mz_COR_results<-TAG_mz_COR_results%>%arrange(TAG_p)
+TAG_mz_COR_results$sig_TAG <- ifelse(TAG_mz_COR_results$TAG_adj < 0.01, "SIG", "NS")
+
+sig_TAG_mz<-TAG_mz_COR_results%>%filter(sig_TAG=="SIG")%>%pull(COMPOUND)
+```
+Creating relative TAG column as the residuals of TAG~Mass
+```{r}
+# Perform SMA regression
+mass_key<-dat_key%>%filter(!is.na(massn5))
+mass_key<-mass_key%>%filter(!is.na(absn5))
+sma_model <- sma(mass_key$absn5 ~ mass_key$massn5, na.rm=T)
+# Extract the residuals
+mass_key$rTAG <- residuals(sma_model)
+key_mass<-mass_key%>%select(order,sex,genotype,rTAG,massn5)
+
+melted_mass <- melt(mass_key[,c(1,11:195)],id.vars = "order")
+colnames(melted_mass) <- c("order", "COMPOUND", "value")
+melted_mass <- merge(melted_mass,key_mass,by="order")
+```
+Mass Correlations across all metabolites for means
+```{r}
+# Create an empty results data frame to store the results
+mass_mz_COR_results <- data.frame(COMPOUND = character(0), 
+                                    mass_R_spearman = numeric(0),
+                                    mass_p = numeric(0),
+                                    SSD = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(melted_mass, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$massn5, subset_data$value, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          mass_R_spearman = spearman_result$estimate,
+                          mass_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    mass_mz_COR_results <- distinct(rbind(mass_mz_COR_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+mass_mz_COR_results$mass_adj <- p.adjust(mass_mz_COR_results$mass_p, method = "fdr")
+mass_mz_COR_results<-mass_mz_COR_results%>%arrange(mass_p)
+mass_mz_COR_results$sig_mass <- ifelse(mass_mz_COR_results$mass_adj < 0.01, "SIG", "NS")
+
+sig_mass_mz<-mass_mz_COR_results%>%filter(sig_mass=="SIG")%>%pull(COMPOUND)
+```
+rTAG Correlations across all metabolites for means
+```{r}
+# Create an empty results data frame to store the results
+rTAG_mz_COR_results <- data.frame(COMPOUND = character(0), 
+                                    rTAG_R_spearman = numeric(0),
+                                    rTAG_p = numeric(0),
+                                    SSD = numeric(0))
+
+# Loop through unique PCs
+for (metabolite in mz) {
+  subset_data <- subset(melted_mass, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    # Calculate Spearman correlation for TAG and each metabolite
+    spearman_result <- cor.test(subset_data$rTAG, subset_data$value, 
+                                method = "spearman")
+
+
+    # Create a temporary data frame for each PC
+    temp_df <- data.frame(COMPOUND = metabolite, 
+                          rTAG_R_spearman = spearman_result$estimate,
+                          rTAG_p = spearman_result$p.value)
+    
+    # Append the temporary data frame to the results
+    rTAG_mz_COR_results <- distinct(rbind(rTAG_mz_COR_results, temp_df))
+  }
+}
+
+# Adjust p-values for False Discovery Rate for T
+rTAG_mz_COR_results$rTAG_adj <- p.adjust(rTAG_mz_COR_results$rTAG_p, method = "fdr")
+rTAG_mz_COR_results<-rTAG_mz_COR_results%>%arrange(rTAG_p)
+rTAG_mz_COR_results$sig_rTAG <- ifelse(rTAG_mz_COR_results$rTAG_adj < 0.01, "SIG", "NS")
+
+sig_rTAG_mz<-rTAG_mz_COR_results%>%filter(sig_rTAG=="SIG")%>%pull(COMPOUND)
+```
+Combining Phenotype Results
+```{r}
+Pheno_Results_All_samples<-merge(TAG_mz_COR_results,mass_mz_COR_results,by="COMPOUND")
+Pheno_Results_All_samples<-merge(Pheno_Results_All_samples,rTAG_mz_COR_results,by="COMPOUND")
+```
+Saving out results for summary document
+```{r}
+write.csv(TAG_mz_COR_results,"output/03_All_Sample_tag_mz_results.csv",row.names=F)
+write.csv(mass_mz_COR_results,"output/03_All_Sample_mass_mz_results.csv",row.names=F)
+write.csv(rTAG_mz_COR_results,"output/03_All_Sample_rtag_mz_results.csv",row.names=F)
+write.csv(Pheno_Results_All_samples,"output/03_All_Sample_pheno_mz_results.csv",row.names=F)
+```
+Saving out r files
+```{r}
+save(file='../data/results/TAG_mz_COR_results.data', Pheno_Results_All_samples, sig_TAG_mz, sig_mass_mz, mz)
+save(file='../data/processed/mass_for_correlations.data', melted_mass)
+rm(list = ls())
+```

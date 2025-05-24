@@ -1,0 +1,54 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure 3C-mass
+```{r,load required libraries}
+library(ggplot2)
+library(dplyr)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/processed/phenotype-dimorphism.data')
+load('../data/processed/phenotype-mass.data')
+```
+Formatting df for plot 
+```{r}
+Pheno_Plot<-merge(mass_sex_geno_long,dimorphism_summary[,c(1,8)],by="genotype")
+```
+Calculating Spearman's correlation coefficients and p-values
+```{r}
+spearman_cor_deltamass_Fmass4 <- cor.test(dimorphism_summary$diff_mass, dimorphism_summary$mass_4_mu_ss_female, method = "spearman")
+deltamass_Fmass4_cor_coef<- round(spearman_cor_deltamass_Fmass4$estimate,2)
+deltamass_Fmass4_p <- round(spearman_cor_deltamass_Fmass4$p.value,7)
+
+spearman_cor_deltamass_Mmass4 <- cor.test(dimorphism_summary$diff_mass, dimorphism_summary$mass_4_mu_ss_male, method = "spearman")
+deltamass_Mmass4_cor_coef<- round(spearman_cor_deltamass_Mmass4$estimate,2)
+deltamass_Mmass4_p <- round(spearman_cor_deltamass_Mmass4$p.value,3)
+```
+Plot for delta mass by sex-specific mass for both sexes
+```{r}
+
+ggplot(Pheno_Plot, aes(x = diff_mass, y = mass_4_mu_ss)) +
+  geom_smooth(aes(color=sex),method = "lm", se = T) +  # Add linear regression line
+  geom_point(aes(fill = sex), size = 5, stroke = 1, shape = 21) +
+  labs(x = "\u0394mass", y = "Mean mass") +
+  #geom_text(aes(label = genotype), size = 2.5, check_overlap = FALSE) +
+  scale_color_manual(values=c("turquoise","purple")) +
+  scale_fill_manual(values=c("turquoise","purple")) +
+  theme_classic() +
+  theme(text = element_text(size = 30),
+    legend.position = "none"  # Remove the default legend
+  )+
+    geom_text(x = 0.5,
+            y = 5,
+            label = paste("p.F =", deltamass_Fmass4_p, "\np.M =", deltamass_Mmass4_p),
+            size = 10, hjust = 0, vjust = 1, color = "black")
+
+ggsave("plots/FigS3C.jpg", width = 7, height = 7)
+```

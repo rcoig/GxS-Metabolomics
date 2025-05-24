@@ -1,0 +1,126 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - PCA"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: PCA, and calculating mean PCs by sex and genotype
+```{r,load required libraries}
+library(reshape2)#Melting dataframes
+library(tidyr)#Data manipulation
+library(dplyr)#Data manipulation
+library(AssocTests)#Tracy Widom Test
+```
+Loading in normalized metabolome data for analysis
+```{r,loading in normalized metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+```
+PCA
+```{r, performing PCA}
+PCA_dat <- prcomp(dat_by_sample, scale. = TRUE, center = TRUE)
+
+# Extract the scores (principal components for each sample) and eigenvalues
+pc_scores <- PCA_dat$x
+
+eigenvalues <- sort(PCA_dat$sdev^2, decreasing = TRUE)
+eigenL <- length(eigenvalues)
+
+# Perform the Tracy-Widom test with FDR = 0.01
+tw_test_results <- tw(eigenvalues, eigenL, criticalpoint = .9849) # For FDR = 0.01
+
+# Extracting the number of significant eigenvalues
+significant_eigenvalues <- tw_test_results$SigntEigenL#24 significant eigenvalues
+```
+The first 24 PCs have significant eigenvalues according to the Tracy Widom test. Selecting these 24 and adding sex and genotype data before transforming data to long format for plotting. 
+```{r,scores for plotting}
+PCs_sig<-cbind(key%>%select(sex,genotype),pc_scores[,1:24])
+melted_PC_samples<-melt(PCs_sig, id.vars = c("sex", "genotype"),variable.name = "PC",value.name = "score")
+```
+Calculating the mean PC values by sex and genotype for each PC (1:24)
+```{r, mean PC values by sex and genotype}
+PC_means <- PCs_sig %>%
+  dplyr::group_by(sex, genotype) %>%
+  dplyr::summarise(across(PC1:PC24, ~ mean(., na.rm = TRUE)))
+```
+Transforming the sex and genotype PC means into long format for plotting
+```{r}
+melted_PC_means<-melt(PC_means, id.vars = c("sex", "genotype"),variable.name = "PC",value.name = "mean_score")
+```
+Calculating the variance explained by PC and by sex and genotype
+```{r}
+pr.var <- PCA_dat$sdev^2
+# Calculate the total variance explained by all principal components
+total_variance_explained <- sum(pr.var)
+
+# Calculate the proportion of variance explained (PVE) for each principal component
+pve <- pr.var / total_variance_explained
+
+# Convert PVE to percentages
+pve_percent <- pve * 100
+
+# Sum of PVE should be 100%
+sum_pve_percent <- sum(pve_percent)
+
+# Print the sum of PVE in percentage
+print(sum_pve_percent)
+PCs<-colnames(PCs_sig[3:26])
+PC_var_explained<-as.data.frame(cbind(PCs[1:24],round(pve_percent[1:24],2)))
+colnames(PC_var_explained)<-c("PC","PVE")
+PC_var_explained$PVE<-as.numeric(PC_var_explained$PVE)
+PC_loadings <- as.data.frame(PCA_dat$rotation[,1:24])
+```
+Calculate PC distances between males and females for each genotype separately, for each PC 
+```{r}
+# Calculate means by sex for each PC
+PC_means_M <- as.matrix(PC_means[PC_means$sex=="male",3:26])
+PC_means_F <- as.matrix(PC_means[PC_means$sex=="female",3:26])
+
+n_rows <- nrow(PC_means_F)
+n_cols <- ncol(PC_means_F)
+
+# Initialize a matrix to store PC distances
+PC_distances <- matrix(0, nrow = n_rows, ncol = n_cols)
+
+# Calculate PC distances cell by cell
+for (i in 1:n_rows) {
+  for (j in 1:n_cols) {
+    PC_distances[i, j] <- sqrt((PC_means_F[i, j] - PC_means_M[i, j])^2)
+  }
+}
+
+PC_distances<-as.data.frame(PC_distances)
+colnames(PC_distances)<-colnames(PC_means_F)
+PC_distances$genotype<-PC_means$genotype[1:29]
+PC_distances<-PC_distances[,c(25,1:24)]#reorder genotype to first column
+```
+Transforming the PC distances by genotype into long format for plotting
+```{r}
+melted_PC_dist<-melt(PC_distances, id.vars = c("genotype"),variable.name = "PC",value.name = "dist_score")
+```
+Calculating the total number of samples per genotype
+```{r}
+n_samples <- key %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarise(n_samples = dplyr::n())
+```
+Adding n_samples to the df for weighting regressions, and PVE.
+```{r}
+melted_PC_samples<-merge(melted_PC_samples,PC_var_explained,by="PC")
+melted_PC_samples<-merge(melted_PC_samples,n_samples,by="genotype")
+```
+Saving out PCA results for summary document
+```{r}
+write.csv(PC_distances,"output/01_PC_distance.csv",row.names=F)
+write.csv(PC_means,"output/01_PC_means_by_sex_and_genotype.csv",row.names=F)
+write.csv(PCs_sig,"output/01_PCs_1_24.csv",row.names=F)
+write.csv(PC_var_explained,"output/01_PC_var_explained.csv",row.names=F)
+write.csv(PC_loadings,"output/01_PC_loadings.csv",row.names=T)
+```
+Saving out r files
+```{r}
+save(file='../data/processed/PCA.data', PCs_sig, key, melted_PC_samples, PC_means, melted_PC_means, PC_distances, melted_PC_dist, PC_var_explained, n_samples)
+rm(list = ls())
+```

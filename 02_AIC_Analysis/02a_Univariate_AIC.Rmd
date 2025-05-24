@@ -1,0 +1,107 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - AIC"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: AIC analysis for sex, genotype and interaction across metabolites
+```{r,load required libraries}
+library(dplyr)
+library(tidyr)
+```
+Loading in metabolite genotype summaries for AIC analysis
+```{r,loading in batch corrected metabolome data}
+rm(list = ls())
+load('../data/processed/batch_corrected.data')
+n_samples <- key %>%
+  dplyr::group_by(genotype) %>%
+  dplyr::summarise(n_samples = dplyr::n())
+melted_dat<-merge(melted_dat,n_samples,by="genotype")
+```
+Calculating AIC of 5 possible models:
+1. lm(metabolite~sex)
+2. lm(metabolite~genotype)
+3. lm(metabolite~sex+genotype)
+4. lm(metabolite~sex*genotype)
+5. lm(metabolite~1)
+```{r,calculate AIC across metabolites}
+# Create an empty results data frame to store the results
+AIC_results <- data.frame(COMPOUND = character(0), 
+                          AIC_sex = numeric(0),
+                          AIC_geno = numeric(0),
+                          AIC_null=numeric(0),
+                          AIC_sex_geno=numeric(0),
+                          AIC_int=numeric(0))
+
+# Loop through unique metabolite values
+for (metabolite in mz) {
+  subset_data <- subset(melted_dat, COMPOUND == metabolite)
+
+  if (nrow(subset_data) > 0) {
+    null.model <- lm(value ~ 1, data = subset_data, weights=n_samples)
+    sex.fixed <- lm(value ~ sex, data = subset_data, weights=n_samples)
+    G.only <- lm(value ~ genotype, data = subset_data, weights=n_samples)
+    S.plus.G <- lm(value ~ sex + genotype, data = subset_data, weights=n_samples)
+    SG.int.full <- lm(value ~ sex*genotype, data = subset_data,weights=n_samples)     
+    AIC_sex<-AIC(sex.fixed)
+    AIC_geno<-AIC(G.only)
+    AIC_null<-AIC(null.model)
+    AIC_sex_geno<-AIC(S.plus.G)
+    AIC_int<-AIC(SG.int.full)
+
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, 
+    AIC_null=AIC_null,
+    AIC_sex=AIC_sex,
+    AIC_geno=AIC_geno,
+    AIC_sex_geno=AIC_sex_geno,
+    AIC_int=AIC_int)
+
+    # Append the temporary data frame to the results
+    AIC_results <- distinct(rbind(AIC_results, temp_df))
+      }
+}
+
+AIC_results$AIC_min <- apply(AIC_results[, 2:6], 1, function(row) {
+  min(row)  # Get the index of the most negative number
+})
+```
+Calculating the delta AIC between the lowest AIC and the next parsimonious model
+```{r,calculate delta AIC}
+AIC_results <- AIC_results %>%
+  mutate(delta_null_s = ifelse(AIC_min == AIC_sex, AIC_null - AIC_min, NA_real_),
+         delta_null_g = ifelse(AIC_min == AIC_geno, AIC_null - AIC_min, NA_real_),
+         delta_sex = ifelse(AIC_min == AIC_sex_geno, AIC_sex - AIC_sex_geno, NA_real_),
+         delta_geno = ifelse(AIC_min == AIC_sex_geno, AIC_geno - AIC_sex_geno, NA_real_),
+         delta_sex_geno = ifelse(AIC_min == AIC_int, AIC_sex_geno - AIC_int, NA_real_))
+```
+Determining the best model for each metabolite
+```{r,determine best model for each metabolite}
+AIC_results_Uni <- AIC_results %>%
+  mutate(best_fit = case_when(
+    AIC_min == AIC_null ~ "AIC_null",
+    delta_null_s >= 2 ~ "AIC_sex",
+    delta_null_s < 2 ~ "AIC_null",
+    delta_null_g >= 2 ~ "AIC_geno",
+    delta_null_g < 2 ~ "AIC_null",
+    delta_sex >= 2 ~ "AIC_sex_geno",
+    delta_sex < 2 ~ "AIC_sex",
+    delta_geno >= 2 ~ "AIC_sex_geno",
+    delta_geno < 2 ~ "AIC_geno",
+    delta_sex_geno >= 2 ~ "AIC_int",
+    delta_sex_geno < 2 ~ "AIC_sex_geno",
+    TRUE ~ NA_character_
+  ))
+table(AIC_results_Uni$best_fit)
+```
+Save out results:
+```{r}
+write.csv(AIC_results_Uni,"output/02a_AIC_analysis_by_metabolite.csv",row.names = F)
+```
+Saving out .rds files
+```{r,save out r files}
+save(file='../data/results/AIC_results_Univariate.data', AIC_results_Uni)
+rm(list = ls())
+```

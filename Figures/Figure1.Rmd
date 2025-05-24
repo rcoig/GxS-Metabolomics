@@ -1,0 +1,107 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure 1
+```{r,load required libraries}
+library(dplyr)
+library(ggplot2)
+```
+Loading summary statistics and calculated dimorphism metrics for TAG and mass
+```{r,loading in phenotype data}
+rm(list = ls())
+load('../data/processed/phenotype-TAG.data')
+load('../data/processed/phenotype-dimorphism.data')
+dimorphism_summary<-merge(TAG_sex_geno_wide[,c(1,21)],dimorphism_summary,by="genotype")
+```
+Calculate means of SD phenotypes
+```{r}
+mean_mass_SD4<-round(mean(dimorphism_summary$diff_mass,na.rm=T),2)
+mean_tTAG_SD4<-round(mean(dimorphism_summary$diff_TAG,na.rm=T),4)
+```
+tTAG DGRP plot 
+```{r}
+dimorphism_summary<-dimorphism_summary%>%dplyr::arrange(desc(diff_TAG))%>%
+  mutate(genotype = factor(genotype, levels = unique(genotype)))
+dimorphism_summary <- dimorphism_summary %>%
+  mutate(genotype_order = as.numeric(factor(genotype)))
+
+#for the placement of genotype labels
+genos_right <- dimorphism_summary %>%
+  filter(diff_TAG > mean_tTAG_SD4) %>% pull(genotype)%>%droplevels()
+
+tTAG_4_pl_se <- mean(dimorphism_summary$tTAG_4_pl_se)
+
+ggplot(dimorphism_summary, aes(x = genotype, y = diff_TAG)) +
+  geom_hline(yintercept = mean_tTAG_SD4, color = "lightgray", linetype = "dashed") +
+    geom_errorbar(aes(ymin = diff_TAG - tTAG_4_pl_se, ymax = diff_TAG + tTAG_4_pl_se), width = 0.2) +  # Add error bars
+  geom_point(aes(fill = diff_TAG), size = 3.5, stroke = 1, shape = 21) +
+  labs(x = "DGRP Genotype", y = "\u0394TAG") +
+geom_text(data = dimorphism_summary %>% filter(diff_TAG > mean_tTAG_SD4),aes(label = genotype,y=diff_TAG+tTAG_4_pl_se+.02), size = 4, check_overlap=F)+
+geom_text(data = dimorphism_summary %>% filter(diff_TAG < mean_tTAG_SD4),aes(label = genotype, y=diff_TAG-tTAG_4_pl_se-.02), size = 4, check_overlap = FALSE) + 
+  scale_fill_gradient(
+    low = "#2B9DEE", high = "#F7DA6E",
+    guide = FALSE  # Remove the existing fill legend
+  ) +
+  ylim(-0.0700,0.500)+
+  theme_classic() +
+  theme(
+    axis.title = element_text(size = 20),
+    axis.text.x = element_blank(),
+    axis.text = element_text(size = 16),
+    axis.ticks.x = element_blank(),
+    legend.position = "none"  # Remove the default legend
+  )
+#+scale_y_continuous(labels = function(x) sprintf("%.4f", x))
+
+
+ggsave("plots/Fig1B.jpg", width = 9, height = 6)
+```
+
+Female TAG mu by Male TAG mu
+```{r}
+# Calculate Spearman's correlation coefficient and p-value
+spearman_cor_tTAG4 <- cor.test(dimorphism_summary$tTAG_4_mu_ss_male, dimorphism_summary$tTAG_4_mu_ss_female, method = "spearman")
+cor_coef_tTAG4 <- round(spearman_cor_tTAG4$estimate,2)
+p_value_tTAG4 <- round(spearman_cor_tTAG4$p.value,6)
+
+# Plot with annotations
+# Plot with annotations
+ggplot(dimorphism_summary, aes(x = tTAG_4_mu_ss_male, y = tTAG_4_mu_ss_female, label = genotype, fill = diff_TAG)) +
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "solid") +  # Add the line of unity 
+  geom_segment(data = subset(dimorphism_summary, genotype == 535),
+               aes(x = tTAG_4_mu_ss_male, y=tTAG_4_mu_ss_male, xend = tTAG_4_mu_ss_male, yend = tTAG_4_mu_ss_female), 
+               color = "black", size = 1) +
+  geom_point(size = 8, pch = 21, stroke = 1) +
+  geom_text(data = subset(dimorphism_summary, genotype == 535| genotype == 31),size = 5, nudge_y=.03) +
+  labs(
+    x = "Mean male TAG",
+    y = "Mean female TAG"
+  ) +
+  scale_fill_gradient(high = "#F7DA6E", low = "#2B9DEE", guide = "none") +
+  theme_classic() +
+  coord_fixed() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title=element_text(size=20),
+        axis.text=element_text(size=16)) +
+  geom_text(x = 0.1,
+            y = 0.85,
+            label = paste("ρ =", cor_coef_tTAG4, "\np =", p_value_tTAG4),
+            size = 8, hjust = 0, vjust = 1, color = "black")+
+    geom_text(data = subset(dimorphism_summary, genotype == 535),
+            aes(x = .1, y = .5, 
+                label = "\u0394TAG"),
+            size = 8, hjust = 0, vjust = 0, color = "black")+
+geom_segment(
+    aes(x = 0.2, y = 0.51, xend = 0.25, yend = 0.51),
+    arrow = arrow(length = unit(0.1, "inches")), # Adjust the length of the arrow as needed
+    color = "black"
+  )
+
+# Save the plot to a PNG file with specific dimensions
+ggsave("plots/Fig1A.jpg", width = 5, height = 7)
+```

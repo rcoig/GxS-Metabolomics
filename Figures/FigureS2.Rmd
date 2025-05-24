@@ -1,0 +1,48 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure S2
+```{r,load required libraries}
+library(dplyr)
+library(ggplot2)
+```
+Loading summary statistics and calculated dimorphism metrics for TAG and mass
+```{r,loading in phenotype data}
+rm(list = ls())
+load('../data/processed/phenotype-dimorphism.data')
+```
+delta TAG by delta mass
+```{r}
+# Calculate Spearman's correlation coefficient and p-value
+spearman_cor <- cor.test(dimorphism_summary$diff_TAG, dimorphism_summary$diff_mass, method = "spearman")
+cor_coef <- round(spearman_cor$estimate,2)
+p_value <- round(spearman_cor$p.value,3)
+
+# Plot with annotations
+# Plot with annotations
+ggplot(dimorphism_summary%>%filter(!is.na(diff_mass)), aes(x = diff_TAG, y = diff_mass, label = genotype, fill = diff_TAG)) +
+geom_point(size=3)+
+  geom_smooth(method="lm",se=T)+
+  labs(
+    x = "\u0394TAG",
+    y = "\u0394Mass"
+  ) +
+  scale_fill_gradient(high = "#F7DA6E", low = "#2B9DEE", guide = "none") +
+  theme_classic() +
+  #coord_fixed() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title=element_text(size=20),
+        axis.text=element_text(size=16)) +
+  geom_text(x = 0.3,
+            y = 0.8,
+            label = paste("ρ =", cor_coef, "\np =", p_value),
+            size = 8, hjust = 0, vjust = 1, color = "black")
+
+# Save the plot to a PNG file with specific dimensions
+ggsave("plots/FigS2A.jpg", width = 5, height = 5)
+```

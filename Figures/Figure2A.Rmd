@@ -1,0 +1,58 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure 2A
+```{r,load required libraries}
+library(ggplot2)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/processed/PCA.data')
+```
+PCs 1 and 2 plotted by sex
+```{r}
+ggplot() +
+  geom_point(data = PCs_sig, aes(x = PC1, y = PC2, color = sex)) +
+  stat_ellipse(data = PCs_sig, aes(x = PC1, y = PC2, color = sex), level = 0.95) +
+  scale_color_manual(values = c("turquoise", "purple"),name="") +
+  #coord_fixed() +
+  #xlim(-15,15) +
+  #ylim(-9,7) +
+  xlab(paste("PC1 ",PC_var_explained$PVE[1],"%")) +
+  ylab(paste("PC2 ",PC_var_explained$PVE[2],"%")) +
+  theme_classic()+
+   theme(
+    legend.position = c(1, .05),  
+    legend.justification = c(1, 0)
+  ) +
+  guides(size = "none")
+
+ggplot() +
+  stat_ellipse(data = PCs_sig, aes(x = PC1, y = PC2, color = sex), level = 0.90) +
+  geom_line(data = PC_means, aes(x = PC1, y = PC2, group = genotype), color = "black",alpha=.5) +
+  geom_point(data = PC_means, aes(x = PC1, y = PC2, color = sex), size = 5, shape = 21, fill = "white", stroke = 1.5) +
+    #geom_text(data = PC_means, aes(x = PC1, y = PC2, label = genotype), vjust = -.5, hjust = 0.5, size = 3) +
+  scale_color_manual(values = c("turquoise", "purple"),name = "") +
+  #coord_fixed() +
+  xlim(-12,13) +
+  #ylim(-5,5) +
+  xlab(paste("PC1 ",PC_var_explained$PVE[1],"%")) +
+  ylab(paste("PC2 ",PC_var_explained$PVE[2],"%")) +
+  theme_classic()+
+ theme(text = element_text(size = 30),
+       legend.background = element_rect(fill = "transparent"),
+    legend.position = c(.35, .75), 
+    legend.justification = c(1, 0),
+    legend.text = element_text(size = 30) # Adjust the size as needed
+
+  ) +
+  guides(size = "none")
+
+ggsave("plots/Fig2A.jpg", width = 7, height = 7)
+```

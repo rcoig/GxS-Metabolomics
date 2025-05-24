@@ -1,0 +1,219 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Preprocess"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Batch Correction
+```{r,load required libraries}
+library(reshape2)
+library(dplyr)
+library(tidyr)
+library(pdftools)
+library(purrr)
+library(Rmisc)
+library(ggplot2)
+library(factoextra)#for PCA
+```
+Loading in log, centered and scaled data
+```{r,loading in scaled data}
+rm(list = ls())
+load('data/processed/normalized.data')
+```
+PCA plots prior to batch correction to identify batch variables
+```{r}
+scaled_PCA <- prcomp(scale_by_sample,scale. = T)
+sex<-scale_key$sex
+batch<-scale_key$batch
+box<-scale_key$box
+genotype<-scale_key$genotype
+assayer<-scale_key$assayer
+```
+Plotting PCAs of Batch effects in scaled data
+```{r}
+fviz_pca_ind(scaled_PCA,
+             col.ind = factor(batch), # color by groups
+             #palette = c("black",  "red"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Batch Effects before correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+
+fviz_pca_ind(scaled_PCA,
+             col.ind = factor(sex), # color by groups
+             palette = c("turquoise",  "purple","black"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Sex Effects before correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+
+fviz_pca_ind(scaled_PCA,
+             col.ind = factor(box), # color by groups
+             #palette = c("black",  "red"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Box Effects before correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+```
+We are expecting a typical effect of Batch (preparation of samples at the LC-MS lab). It looks like there is also an effect of Box (samples were stored in 2 different boxes), but that may be a function of Batch. We will assess the main effects of these variables in the data across metabolites:
+Main effect of Batch:90/185(49%) metabolites affected
+```{r}
+# Create an empty data frame to store the order information
+order_info <- data.frame(COMPOUND = character(0), Order = integer(0))
+# Create an empty results data frame to store the results
+batch_results <- data.frame(COMPOUND = character(0), B_p_value = numeric(0))
+
+# Create an empty residuals data frame to store the correction
+batch_correction <- as.data.frame(matrix(nc=185, nr=141))
+colnames(batch_correction)<-mz
+
+# Loop through unique metabolite values
+for (metabolite in mz) {
+  subset_data <- subset(melted_scale, COMPOUND == metabolite)
+subset_data<-subset_data%>%arrange(order)
+  if (nrow(subset_data) > 0) {
+    model <- lm(value ~ batch, data = subset_data)
+    B_p_value <- anova(model)$`Pr(>F)`[1]
+    
+    # Create a temporary data frame for each metabolite
+    temp_df <- data.frame(COMPOUND = metabolite, B_p_value = B_p_value)
+
+    # Append the temporary data frame to the results
+    batch_results <- rbind(batch_results, temp_df)
+    
+      # Calculate residuals
+    residuals <- model$residuals
+    order_info_subset <- data.frame(COMPOUND = metabolite, Order = subset_data$order)
+    
+    # Append the order information to the order_info data frame
+    order_info <- rbind(order_info, order_info_subset)
+    
+    # Sort residuals based on order
+    batch_main_residuals <- residuals[subset_data$order]
+    
+    # Add residuals to the residuals_df data frame, naming the column with the metabolite name
+    batch_correction[,metabolite] <- batch_main_residuals
+
+  }
+}
+
+# Sort the results by B_p_value
+batch_results <- batch_results %>% arrange(B_p_value)
+any(is.na(batch_results))#Check for NAs
+
+# Add adjusted p-values using the BH method
+batch_results <- batch_results %>%
+  mutate(B_p_value_adjusted = p.adjust(B_p_value, method = "BH"))
+sig_batch_main <- batch_results$COMPOUND[batch_results$B_p_value_adjusted < 0.05]
+```
+Melting the residuals for plotting and analysis
+```{r}
+BA_key<-batch_correction
+BA_key$order<-order_info_subset$Order
+BA_key<-merge(key,BA_key,by="order")
+melted_BA <- melt(BA_key[,c(1,11:195)],id.vars = "order")
+colnames(melted_BA) <- c("order", "COMPOUND", "value")
+melted_BA <- merge(melted_BA,key,by="order")
+```
+Plotting PCAs of Batch effects in corrected data
+```{r}
+corrected_PCA <- prcomp(batch_correction,scale. = T)
+
+fviz_pca_ind(corrected_PCA,
+             col.ind = factor(batch), # color by groups
+             #palette = c("black",  "red"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Batch Effects after correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+
+fviz_pca_ind(corrected_PCA,
+             col.ind = factor(sex), # color by groups
+             palette = c("turquoise",  "purple","black"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Sex Effects after correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+
+fviz_pca_ind(corrected_PCA,
+             col.ind = factor(box), # color by groups
+             #palette = c("black",  "red"),
+             addEllipses = TRUE, # Concentration ellipses
+             axes = c(1,2),
+             ellipse.type = "confidence",
+             legend.title = "",
+             repel = TRUE,
+             label = "none",
+             title = "Box Effects after correction")+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",
+        panel.background = element_rect(fill = "white"))
+# Specify the file name and dimensions
+file_name <- "plots/00b_PCA_corrected_box.jpg"
+width <- 8  # Width in inches
+height <- 6  # Height in inches
+```
+Plotting Assayer effects after initial batch correction
+```{r}
+ggplot(melted_BA,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex))+
+  facet_grid(~assayer+sex)
+
+ggplot(melted_scale,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex))+
+  facet_grid(~assayer+sex)
+
+ggplot(melted_scale,aes(x=order,y=value, color=sex))+
+geom_point()+
+  geom_smooth(aes(color=sex))+
+  facet_grid(~box)
+
+ggplot(melted_scale,aes(x=order,y=value))+
+geom_point()+
+  geom_smooth(aes(color=batch))
+```
+Preparing final batch corrected dfs for export
+```{r}
+dat_key<-BA_key
+
+dat_by_sample<-dat_key[,11:195]
+key<-dat_key[,1:10]
+melted_dat <- melt(dat_key[,c(1,11:195)],id.vars = "order")
+colnames(melted_dat) <- c("order", "COMPOUND", "value")
+melted_dat <- merge(melted_dat,key,by="order")
+```
+Saving out batch corrected files for analysis.
+```{r,save out batch corrected files}
+write.csv(dat_by_sample,"data/processed/corrected_metabolites.csv",row.names=T)
+
+save(file='../data/processed/batch_corrected.data', dat_by_sample, dat_key, melted_dat, mz,  key)
+rm(list=ls())
+```

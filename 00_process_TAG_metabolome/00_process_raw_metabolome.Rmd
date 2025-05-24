@@ -1,0 +1,239 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Preprocess"
+output:   html_notebook
+by:       R. Coig
+updated:  5/7/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Formatting the excel files that came from the Raftery Lab into data frames and R files accessible for sharing raw data
+```{r,load required libraries}
+library(readxl)
+library(dplyr)
+library(reshape2)
+library(pdftools)
+library(purrr)
+library(ggplot2)
+library(Rmisc)
+```
+Reading metabolomics data from excel files.
+```{r,formatting raw data}
+rm(list=ls())
+sheet.names <- print(excel_sheets("../doc/2023-08-28_Promislow-141.xlsx")) 
+raw <- read_excel("../doc/2023-08-28_Promislow-141.xlsx", c(1:length(sheet.names))[sheet.names=='Relative Quant Data'])
+raw[raw=='N/A'] = NA
+QCraw <- read_excel("../doc/2023-08-28_Promislow-141.xlsx", skip=1, c(1:length(sheet.names))[sheet.names=='Data Reproducibility']) 
+QCraw[QCraw=='N/A'] = NA
+QC_summary <- read_excel("../doc/2023-08-28_Promislow-141.xlsx", c(1:length(sheet.names))[sheet.names=='Sample ID']) 
+colnames(QC_summary)[3] <- c("complete_mzs")
+QC_summary <- subset(QC_summary, !grepl("^QC\\(I\\)", order))
+#incorporate Sample QCs with sample data (these were pooled from all samples present)
+QCraw_Pool<-QCraw[,c(1:3,22:37)]
+colnames(QCraw_Pool)[19] <- c("QC_S_cv")
+raw<-merge(raw[,-c(2:3)],QCraw_Pool[,c(1,4:18)],by=c("COMPOUND"))
+```
+extracting CVs for the QC run
+```{r}
+cv_by_metabolite<-QCraw_Pool[,c(1,19)]
+rm(QCraw,QCraw_Pool)
+```
+Removing the isotopes (standards) from the metabolites, we have not found these to be useful, instead we can look at the QC(S) metabolites to determine any overall run order effects due to instrument drift, and later scaling will adjust for overall protein content. 
+```{r}
+raw_isotopes <- subset(raw, grepl("C13", COMPOUND))
+raw_isotopes <- raw_isotopes[complete.cases(raw_isotopes), ]
+isotopes<-raw_isotopes$COMPOUND
+raw_isotopes$COMPOUND<-NULL
+raw <- subset(raw, !grepl("C13", COMPOUND))
+raw_isotopes <- as.data.frame(sapply(raw_isotopes, function(x) as.numeric(x, dec = ".")))
+#167550062.735971 should be the first row, first column cell
+```
+We will use the QC(S) samples to determine samples to keep, these were metabolites present in a mix of all samples.
+```{r}
+#Create a column to measure missing metabolites in QC(S) samples
+raw_missing<-raw
+raw_missing$missing_count <- rowSums(is.na(raw_missing[,c(143:157)]))
+table(raw_missing$missing_count)
+#metabolites are either complete in all 15 QC runs or 0
+raw_to_remove <- raw_missing[raw_missing$missing_count == 15, ]
+#removing the metabolites from the raw df
+raw <- raw[-which(raw$COMPOUND %in% raw_to_remove$COMPOUND), ]
+raw_missing <- raw_missing[-which(raw_missing$COMPOUND %in% raw_to_remove$COMPOUND), ]
+#isotopes <- subset(raw, grepl("C13", COMPOUND))
+```
+198 metabolites are detected in the QC(S) samples. Now we check for missingness across our 141 experimental samples. 
+```{r,assess incompleteness}
+raw_missing$missing_count <- rowSums(is.na(raw_missing[,c(2:142)]))
+#table(raw_missing$missing_count)
+raw_missing$prop_complete<-round((198-raw_missing$missing_count)/198,2)
+table(raw_missing$prop_complete)
+incomplete <- raw_missing[raw_missing$prop_complete < 1, ]
+raw <- raw[-which(raw$COMPOUND %in% incomplete$COMPOUND), ]
+raw_missing <- raw_missing[-which(raw_missing$COMPOUND %in% incomplete$COMPOUND), ]
+incomplete_mz<-incomplete$COMPOUND
+incomplete<-incomplete[,-c(158:159)]
+```
+13 metabolites are incomplete, we proceed with a total of 185 metabolites for the main analysis.
+```{r,final metabolites lists}
+mz_details <- read_excel("../doc/2023-08-28_Promislow-141.xlsx", c(1:length(sheet.names))[sheet.names=='Metabolite Information']) 
+mz_details <- mz_details[which(mz_details$COMPOUND %in% raw$COMPOUND), ]
+mz_details <- merge(cv_by_metabolite,mz_details,by="COMPOUND")
+#converting raw data to numeric
+mz<-raw$COMPOUND
+#7311016.748852995 1st row 1st column value
+raw <- as.data.frame(sapply(raw[-1], function(x) as.numeric(x, dec = ".")))
+row.names(raw)<-mz
+incomplete <- as.data.frame(sapply(incomplete[-1], function(x) as.numeric(x, dec = ".")))
+row.names(incomplete)<-incomplete_mz
+row.names(raw_isotopes)<-isotopes
+```
+Reading in the key from Raftery lab and adding our metadata. Per Danijel, the samples were prepared in 5 batches (First 4 batches were 30 samples each, then 21 samples in the 5th and final batch.)
+```{r,formatting the sample key}
+key <- read_excel("../doc/2023-08-28_Promislow-141_SampleList.xlsx", 2, skip = 2,n_max=31) # sample information
+key$new<-NA
+# Call function to split and rbind every 5 columns
+source("src/split_and_rbind_matrix.R")
+key<-split_and_rbind_matrix(key)
+# Rename the first 5 columns
+colnames(key)[1:6] <- c("sample_order", "sampleID", "type", "genotype", "box", "batch")
+# Add the batch column based on row index, assuming batches are of size 30 based on the 
+key$batch <- (seq_len(nrow(key)) - 1) %/% 30 + 1
+key<-key[-c(142:150),]
+# Remove leading spaces from all columns
+key[] <- lapply(key, function(x) if(is.character(x)) trimws(x, which = "left") else x)
+```
+Adding phenotype metadata:
+```{r}
+key_pheno <- read.csv("data/key_pheno.csv", header = TRUE, colClasses = "character")
+TAG <- read.csv("../data/raw/Phenos_by_mz_sample.csv")
+TAG$sampleID<-as.character(as.numeric(TAG$sampleID))
+TAG$genotype<-as.character(as.numeric(TAG$genotype))
+
+# Perform an outer join on sampleID, genotype, and box
+key <- full_join(key_pheno, key, by = c("sampleID","genotype","box"))
+key <- left_join(key, TAG, by = c("sampleID","genotype","sex"))
+
+rm(key_pheno,split_and_rbind_matrix)
+```
+Merging key with QC summary data
+```{r,final formatting}
+QC_summary$run_order<-as.numeric(row.names(QC_summary))
+QC_summary$group<-factor(QC_summary$group)
+key<-merge(QC_summary[,-2],key,by.x="order",by.y="sample_order",all=T)
+key <- key %>%
+  arrange(run_order)
+key <- key %>% 
+  mutate(type = ifelse(grepl("^QC\\(S\\)", order), "pooled fly heads", type))%>%
+  mutate(batch = ifelse(grepl("^QC\\(S\\)", order), "0", batch))%>%
+  mutate(genotype = ifelse(grepl("^QC\\(S\\)", order), "none", genotype))%>%
+  mutate(sex = ifelse(grepl("^QC\\(S\\)", order), "none", sex))
+key$assayer <- factor(key$assayer, levels = c("RC", "LH"))
+key$batch<-as.factor(key$batch)
+key$genotype<-as.factor(key$genotype)
+key$sex<-as.factor(key$sex)
+key$sampleID<-as.numeric(as.character(key$sampleID))
+key$box<-as.factor(key$box)
+key$type <- factor(key$type, levels = c("pooled fly heads", "fly heads"))
+run_order <- key$order
+```
+Formatting raw dfs
+```{r}
+raw <- as.data.frame(raw[, key$order])#re-ordering columns by run order
+raw_by_sample<-as.data.frame(t(raw))
+raw_key <- raw_by_sample
+raw_key$order<-row.names(raw_key)
+raw_key<-merge(key,raw_key,by="order")
+raw_key <- raw_key %>% arrange(run_order)
+
+incomplete <- as.data.frame(incomplete[, key$order])#re-ordering columns by run order
+incomplete_by_sample<-as.data.frame(t(incomplete))
+incomplete_key <- incomplete_by_sample
+incomplete_key$order<-row.names(incomplete_key)
+incomplete_key<-merge(key,incomplete_key,by="order")
+incomplete_key <- incomplete_key %>% arrange(run_order)
+
+raw_isotopes <- as.data.frame(raw_isotopes[, key$order])#re-ordering columns by run order
+isotopes_by_sample<-as.data.frame(t(raw_isotopes))
+isotopes_key <- isotopes_by_sample
+isotopes_key$order<-row.names(isotopes_key)
+isotopes_key<-merge(key,isotopes_key,by="order")
+isotopes_key <- isotopes_key %>% arrange(run_order)
+```
+Melt the raw data for plotting run order effects visualizing the QC(S) samples along with the rest of the data across the run, for complete and incomplete metabolites.
+```{r}
+melted_raw <- melt(raw_key[,c(3,13:197)],id.vars = "run_order")
+colnames(melted_raw) <- c("run_order", "COMPOUND", "value")
+melted_raw <- merge(melted_raw,key,by="run_order")
+
+melted_raw_incomplete <- melt(incomplete_key[,c(3,13:25)],id.vars = "run_order")
+colnames(melted_raw_incomplete) <- c("run_order", "COMPOUND", "value")
+melted_raw_incomplete <- merge(melted_raw_incomplete,key,by="run_order")
+
+melted_isotopes <- melt(isotopes_key[,c(3,13:16)],id.vars = "run_order")
+colnames(melted_isotopes) <- c("run_order", "COMPOUND", "value")
+melted_isotopes <- merge(melted_isotopes,key,by="run_order")
+```
+Plotting metabolites across run order (raw)
+```{r}
+# Create a list of ggplot objects for each COMPOUND
+plots_list <- melted_raw %>%
+  group_split(COMPOUND) %>%
+  map(function(subset) {
+    ggplot(subset, aes(x = run_order, y = value, color = batch,shape=type)) +
+      geom_point() + 
+      geom_line(data = subset %>% filter(type == "pooled fly heads")) +
+      theme_classic() +
+      ggtitle(paste("Compound:", unique(subset$COMPOUND)))+
+      guides(shape = FALSE)
+  })
+
+# Function to save plots to multiple pages in a PDF file
+save_plots_to_pdf <- function(plots_list, file_name_prefix, plots_per_page) {
+  num_plots <- length(plots_list)
+  num_pages <- ceiling(num_plots / plots_per_page)
+  
+  for (i in 1:num_pages) {
+    start_idx <- (i - 1) * plots_per_page + 1
+    end_idx <- min(i * plots_per_page, num_plots)
+    plots_on_page <- plots_list[start_idx:end_idx]
+    
+    pdf(paste0(file_name_prefix, i, ".pdf"), width = 11, height =8.5) # Adjust width and height as needed
+    
+    multiplot(plotlist = plots_on_page, cols = 1) # 1 metabolite per row
+    
+    dev.off()
+  }
+}
+
+# Save the plots to multiple pages in a PDF file with 6 plots per page
+save_plots_to_pdf(plots_list, "plots_page_", plots_per_page = 5)
+
+# List of file names for the individual PDFs
+pdf_files <- paste0("plots_page_", 1:37, ".pdf")
+
+# Output file name for the combined PDF
+output_pdf <- "plots/00_raw_metabolites_by_run_order.pdf"
+
+# Combine the individual PDFs into a single PDF
+pdf_combine(pdf_files, output_pdf)
+
+# Clean up: Delete the individual PDF files if needed
+file.remove(pdf_files)
+
+```
+Saving out raw data files for normalization + batch correction
+```{r,save out files}
+write.csv(mz_details,"../data/metabolite_info.csv",row.names=F)
+write.csv(raw,"data/raw/raw_metabolites.csv",row.names=F)
+write.csv(incomplete,"data/raw/incomplete_metabolites.csv",row.names=F)
+write.csv(raw_isotopes,"data/raw/isotopes.csv",row.names=F)
+write.csv(key,"data/key_metabolomics.csv",row.names=F)
+```
+Saving out .rds files
+```{r,save out r files}
+save(file='data/raw/raw.data', raw, raw_by_sample, raw_key, melted_raw, mz, key, run_order)
+save(file='data/keys.data', mz_details, mz, key, run_order)
+
+save(file='data/raw/incomplete.data', incomplete, incomplete_by_sample, incomplete_key, melted_raw_incomplete, incomplete, key, run_order)
+save(file='data/raw/isotopes.data', raw_isotopes, isotopes_by_sample, isotopes_key, melted_isotopes, key, run_order)
+rm(list=ls())
+```

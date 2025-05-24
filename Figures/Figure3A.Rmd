@@ -1,0 +1,58 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Figures"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Figure 3A
+```{r,load required libraries}
+library(ggplot2)
+library(dplyr)
+```
+Loading in batch corrected data for analysis
+```{r,loading in PCA data}
+rm(list = ls())
+load('../data/processed/PCA.data')
+load('../data/processed/phenotype-dimorphism.data')
+load('../data/processed/phenotype-TAG.data')
+```
+Formatting df for plotting delta PC1 by delta TAG 
+```{r}
+deltaPC1_plot<-melted_PC_dist%>%dplyr::filter(PC=="PC1")
+PC1_plot<-melted_PC_means%>%dplyr::filter(PC=="PC1")
+
+#Adding phenotype data
+deltaPC1_plot<-merge(deltaPC1_plot,TAG_sex_geno_wide[,c(1,9,10)],by="genotype")
+deltaPC1_plot<-merge(deltaPC1_plot,dimorphism_summary,by="genotype")
+```
+Calculating Spearman's correlation coefficients and p-values
+```{r}
+spearman_cor_dist_diffTAG <- cor.test(deltaPC1_plot$dist_score, deltaPC1_plot$diff_TAG, method = "spearman")
+dist_diffTAG_cor_coef <- round(spearman_cor_dist_diffTAG$estimate,2)
+dist_diffTAG_p<- round(spearman_cor_dist_diffTAG$p.value,5)
+```
+Plot for delta PC1 by delta TAG
+```{r}
+ggplot(deltaPC1_plot, aes(x = dist_score, y = diff_TAG)) +
+  geom_smooth(method = "lm", se = T, color = "black") +  # Add linear regression line
+  geom_point(aes(fill = diff_TAG), size = 5, stroke = 1, shape = 21) +
+  labs(x = "\u0394PC1", y = "\u0394TAG") +
+  #geom_text(aes(label = genotype), size = 2.5, check_overlap = FALSE) +
+  scale_fill_gradient(
+    low = "#2B9DEE", high = "#F7DA6E",
+    guide = FALSE  # Remove the existing fill legend
+  ) +
+  theme_classic() +
+  theme(text = element_text(size = 30),
+    legend.position = "none"  # Remove the default legend
+  )+
+    geom_text(x = min(deltaPC1_plot$dist_score),
+            y = max(deltaPC1_plot$diff_TAG),
+            #label = sprintf("ρ = %.6f\np = %.1e", dist_diffTAG_cor_coef, dist_diffTAG_p),
+            label = paste("ρ =", dist_diffTAG_cor_coef, "\np =", dist_diffTAG_p),
+            size = 10, hjust = 0, vjust = 1, color = "black")
+
+ggsave("plots/Fig3A.jpg", width = 7, height = 7)
+```

@@ -1,0 +1,63 @@
+---
+title:   "Sex Variation in the DGRP Metabolome - Phenotype"
+output:   html_notebook
+by:       R. Coig
+updated:  3/31/24
+---
+Project Summary: The overarching goal of this project is to investigate the metabolome of flies that are highly dimorphic and non dimorphic for body fat and mass phenotypes, to identify molecular mechanisms driving continuous variation in sexual size dimorphism. These metabolome data come from 141 head samples of males and females from 29 DGRP lines (Mackay et al, 2012) previously identified as "high dimorphism" or "low dimorphism" for body fat. 
+
+Notebook Summary: Calculating Dimorphism metrics for TAG and mass
+---
+Load required packages.
+```{r}
+library(tidyr)#data manipulation
+library(dplyr)#data manipulation
+library(reshape2)#data manipulation
+```
+Reading in raw phenotype data for TAG and mass
+```{r}
+rm(list = ls())
+load('../data/processed/phenotype-TAG.data')
+load('../data/processed/phenotype-mass.data')
+```
+Calculating the values of high and low dimorphism for the genotype-specific mean values of all 3 phenotypes using two metrics:
+1) F-M subtracting male from female mean values by genotype (diff_tTAG)
+2) log (F/M) (log_div_tTAG)
+```{r}
+diff_mass <- mass_sex_geno_wide[,c(1,8,9)]
+diff_mass$diff_mass <- diff_mass$mass_4_mu_ss_female-diff_mass$mass_4_mu_ss_male
+diff_mass$log_div_mass =round(log(diff_mass$mass_4_mu_ss_female/diff_mass$mass_4_mu_ss_male),2)
+
+diff_TAG <- TAG_sex_geno_wide[,c(1,8,9)]
+diff_TAG$diff_TAG <- diff_TAG$tTAG_4_mu_ss_female-diff_TAG$tTAG_4_mu_ss_male
+diff_TAG$log_div_TAG =round(log(diff_TAG$tTAG_4_mu_ss_female/diff_TAG$tTAG_4_mu_ss_male),4)
+
+dimorphism_summary<-left_join(diff_TAG,diff_mass,by="genotype")
+```
+Summary SSD stats
+```{r}
+SSD_summary <- dimorphism_summary %>%
+  dplyr::summarize(
+    SSD_TAG_mu = round(mean(diff_TAG), 4),
+    SSD_TAG_sd = round(sd(diff_TAG), 4),
+    SSD_TAG_var = round(var(diff_TAG), 4),  # Calculate variance
+    SSD_TAG_cv = round((SSD_TAG_sd / SSD_TAG_mu) * 100, 4),  # Calculate CV
+    SSD_TAG_se = round(SSD_TAG_sd / sqrt(n()), 4),  # Calculate SE
+    SSD_TAG_n = n(),
+    SSD_mass_mu = round(mean(diff_mass,na.rm=T), 2),
+    SSD_mass_sd = round(sd(diff_mass,na.rm=T), 2),
+    SSD_mass_var = round(var(diff_mass,na.rm=T), 2),  # Calculate variance
+    SSD_mass_cv = round((SSD_mass_sd / SSD_mass_mu) * 100, 2),  # Calculate CV
+    SSD_mass_se = round(SSD_mass_sd / sqrt(n()), 2),  # Calculate SE
+    SSD_mass_n = n()    )
+```
+Save out results:
+```{r,save out results in csv format}
+write.csv(dimorphism_summary,"output/01_dimorphism_summary.csv",row.names=F)
+write.csv(SSD_summary,"output/01_SSD_pop_summary.csv",row.names=F)
+```
+saving out r data files
+```{r}
+save(file='../data/processed/phenotype-dimorphism.data', dimorphism_summary)
+rm(list=ls())
+```
