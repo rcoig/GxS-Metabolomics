@@ -21,9 +21,15 @@ src/: .R files sourced in various .Rmd files
   output: receives output of .Rmd files in 00_compile_TAG_pheno folder
 
 00_process_TAG_metabolome/: raw metabolome data and .Rmd files for normalizing metabolome data
+
 01_PCA_Univariate_Summaries:Rmd files for summarizing sex, genotype and sex differences statistics for metabolome data
+
 02_AIC_Analysis		.Rmd files used for running the AIC analysis
+
 03_TAG_Correlations		.Rmd files used for associating phenotype with metabolome
+
 04_WithinSex_TAG_Correlations		Files for female- and male- only associations between phenotype and metabolome
+
 05_Pathway		Files for FELLA pathway analysis
+
 06_SD_Correlations		.Rmd files used to identify correlations between metabolite level sex differences
